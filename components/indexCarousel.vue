@@ -36,7 +36,6 @@
 	}
 
 	.imgs {
-		height: 170px;
 		width: 100%;
 	}
 </style>
