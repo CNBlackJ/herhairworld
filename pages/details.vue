@@ -25,7 +25,8 @@
 				<detailTypes title="hair type" v-bind:vals="['Brazilian Hair', 'Peruvian Hair', 'Malaysian Hair', 'Indian Hair']"></detailTypes>
 			</div>
 
-			<div class="prod-quantity">
+			<div class="prod-count-con">
+				<div class="quantity-title">Quantity: </div>
 				<div class="cart-prod-count">
 					<a @click="plus(prod._id)" class="cart-btn-plus" :class="{'cart-btn-dis': isMax}">+</a>
 					<span class="cart-pord-sum">
@@ -34,17 +35,30 @@
 					<a @click="minus(prod._id)" class="cart-btn-minus" :class="{'cart-btn-dis': isMinimum}">-</a>
 				</div>
 			</div>
+
+			<div class="total-price">
+				<div class="tp-title">Total Price: </div>
+				<div class="tp-price">$ {{totalPrice.toFixed(2)}}</div>
+			</div>
+
+			<purchase></purchase>
+		</div>
+
+		<div class="prod-descriptions">
+			TODO: It is prod descriptions
 		</div>
 	</div>
 </template>
 
 <script>
 	import detailTypes from '@/components/detailTypes'
+	import purchase from '@/components/purchase'
 
 	export default {
 		layout: 'main',
 		components: {
-			detailTypes
+			detailTypes,
+			purchase
 		},
 		data () {
 			return {
@@ -68,8 +82,30 @@
 				discount: {
 					price: '$3',
 					code: 'nadula'
-				}
+				},
+				count: 1,
+        isMinimum: false,
+				isMax: false,
+				totalPrice: 0
 			}
+		},
+		methods: {
+			plus (prodId) {
+        this.isMinimum = false
+        if (this.count >= 15) {
+					this.isMax = true
+				} else {
+					this.count ++
+				}
+      },
+      minus (prodId) {
+        this.isMax = false
+        if (this.count <= 0) {
+					this.isMinimum = true
+				} else {
+					this.count --
+				}
+      }
 		}
 	}
 </script>
@@ -116,5 +152,52 @@
 	.prod-attr {
 		width: 100%;
 		text-transform: capitalize;
+	}
+
+	.prod-count-con {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-start;
+		padding: 10px 0;
+		width: 100%;
+	}
+
+  .cart-prod-count {
+    font-size: 12px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+		padding: 0 20px;
+  }
+
+  .cart-btn-plus {
+    padding: 5px 10px;
+    border: 1px solid #efefef;
+    border-radius: 5px;
+  }
+
+  .cart-btn-minus {
+    padding: 5px 10px;
+    border: 1px solid #efefef;
+    border-radius: 5px;
+  }
+
+  .cart-pord-sum {
+    padding: 5px 15px;
+    border: 1px solid #efefef;
+    border-radius: 5px;
+  }
+
+	.total-price {
+		display: flex;
+		flex-direction: row;
+		width: 100%;
+	}
+
+	.tp-price {
+		padding: 0 10px;
+		color: #dd127b;
 	}
 </style>

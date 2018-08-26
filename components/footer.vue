@@ -6,9 +6,7 @@
 			</el-col>
 		</el-row>
 		<div class="infos">
-			<span class="content">
-				HerHairWorld.com © All Rights Reserved.
-			</span>
+			HerHairWorld.com © All Rights Reserved.
 		</div>
 	</div>
 </template>
