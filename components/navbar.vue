@@ -24,6 +24,9 @@
 		justify-content: space-between;
 		width: 100%;
 		background-color: #000;
+		position: fixed;
+	  top: 0;
+		z-index: 5;
 	}
 
 	.navbar-left {

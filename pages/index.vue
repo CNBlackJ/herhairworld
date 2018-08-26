@@ -113,6 +113,10 @@
 </script>
 
 <style>
+  .index.container {
+    padding-top: 50px;
+  }
+
   .bs-container {
     display: flex;
     flex-direction: column;
