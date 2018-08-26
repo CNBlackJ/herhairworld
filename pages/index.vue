@@ -60,8 +60,6 @@
     </div>
 
     <social></social>
-
-    <cusFooter></cusFooter>
   </div>
 </template>
 
@@ -71,7 +69,6 @@
   import category from '@/components/category'
   import indexBtn from '@/components/indexBtn'
   import social from '@/components/social'
-  import footer from '@/components/footer'
 
   export default {
     layout: 'main',
@@ -80,8 +77,7 @@
       indexContent,
       category,
       indexBtn,
-      social,
-      cusFooter: footer 
+      social
     },
     data () {
       return {
@@ -113,7 +109,7 @@
 </script>
 
 <style>
-  .index.container {
+  .index-container {
     padding-top: 50px;
   }
 
