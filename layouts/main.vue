@@ -41,4 +41,9 @@ body {
 	font-size: 17px;
 	font-family: 'Helvetica Neue', Helvetica, sans-serif
 }
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
 </style>

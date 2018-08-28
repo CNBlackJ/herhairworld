@@ -13,22 +13,24 @@
 				</div>
 			</div>
 			<div class="sidebar-group">
-				<div class="sidebar-menu">
-					<i class="el-icon-setting"></i>
-					<router-link to="/admin">
-						控制面板
+				<div class="sidebar-menu" @click="closeSidebar">
+					<router-link to="/list">
+						Frontal
 					</router-link>
 				</div>
-				<div class="sidebar-menu">
-					<i class="el-icon-setting"></i>
-					<router-link to="/admin">
-						控制面板
+				<div class="sidebar-menu" @click="closeSidebar">
+					<router-link to="/list">
+						Closure
 					</router-link>
 				</div>
-				<div class="sidebar-menu">
-					<i class="el-icon-setting"></i>
-					<router-link to="/admin">
-						控制面板
+				<div class="sidebar-menu" @click="closeSidebar">
+					<router-link to="/list">
+						Lace Wigs
+					</router-link>
+				</div>
+				<div class="sidebar-menu" @click="closeSidebar">
+					<router-link to="/list">
+						hair Extension
 					</router-link>
 				</div>
 			</div>
@@ -63,7 +65,6 @@
 	}
 
 	.fe-sidebar-left {
-		text-align: center;
 		width: 70%;
 		height: 100%;
 		background-color: black;
@@ -78,14 +79,28 @@
 	}
 
 	.sidebar-head {
+		text-align: center;
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
 		padding: 10px;
+		border-bottom: 1px solid #efefef;
 	}
 
 	.menu-text {
 		text-transform: uppercase;
+	}
+
+	.sidebar-group {
+		display: flex;
+		flex-direction: column;
+		align-items: left;
+		text-transform: capitalize;
+		padding: 10px 0 0 10px;
+	}
+
+	.sidebar-menu {
+		padding: 5px 0;
 	}
 </style>
