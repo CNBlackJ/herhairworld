@@ -9,12 +9,12 @@
 <script>
 	import navbar from '@/components/navbar'
 	import footer from '@/components/footer'
-	
+
 	export default {
 		components: {
 			navbar,
-			cusFooter: footer 
-    },
+			cusFooter: footer
+		}
 	}
 </script>
 

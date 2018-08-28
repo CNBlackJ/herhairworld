@@ -1,7 +1,9 @@
 <template>
-	<div class="index-btn-container">
-		<div class="index-btn">
-			<span>{{title}}</span>
+	<div>
+		<div class="index-btn-container">
+			<div class="index-btn">
+				<span>{{title}}</span>
+			</div>
 		</div>
 	</div>
 </template>
@@ -9,8 +11,13 @@
 <script>
 	export default {
 		props: [
-			"title"
-		]
+			'title'
+		],
+		data () {
+			return {
+				name: 'inde Btn'
+			}
+		}
 	}
 </script>
 
@@ -19,7 +26,6 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		width: 80%;
 		padding: 0 10%;
 	}
 

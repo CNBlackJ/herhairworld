@@ -1,5 +1,6 @@
 <template>
   <div class="index-container">
+    <inquiry v-if="isInquiry" v-on:updateInquiry="cancelInquiry"></inquiry>
     <indexCarousel></indexCarousel>
     <indexContent title="featured categories"></indexContent>
     <category></category>
@@ -16,7 +17,10 @@
         </el-col>
       </div>
     </div>
-    <indexBtn title="get your own solution"></indexBtn>
+    <indexBtn
+      title="get your own solution"
+      @click.native="getInquiry"
+    ></indexBtn>
 
     <indexContent title="factory direct price"></indexContent>
     <div class="fc-container">
@@ -27,7 +31,10 @@
       </div>
       <img class="fc-img" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/plant.jpg"/>
     </div>
-    <indexBtn title="get factory price now"></indexBtn>
+    <indexBtn
+      title="get factory price now"
+      @click.native="getInquiry"
+    ></indexBtn>
 
     <indexContent title="secret of hair market"></indexContent>
     <div class="secret-container">
@@ -38,7 +45,10 @@
       </div>
       <img class="fc-img" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/market.jpg"/>
     </div>
-    <indexBtn title="know more secret now"></indexBtn>
+    <indexBtn
+      title="know more secret now"
+      @click.native="getInquiry"
+    ></indexBtn>
 
     <indexContent title="hair branding"></indexContent>
     <div class="brand-container">
@@ -49,7 +59,10 @@
       </div>
       <img class="fc-img" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/branding.jpg"/>
     </div>
-    <indexBtn title="customize your branding now"></indexBtn>
+    <indexBtn
+      title="customize your branding now"
+      @click.native="getInquiry"
+    ></indexBtn>
 
     <indexContent title="why choose us"></indexContent>
     <div class="choose-container">
@@ -69,15 +82,25 @@
   import category from '@/components/category'
   import indexBtn from '@/components/indexBtn'
   import social from '@/components/social'
+  import inquiry from '@/components/inquiry'	
+
+  import store from '@/store'
 
   export default {
+    store,
     layout: 'main',
     components: {
       indexCarousel,
       indexContent,
       category,
       indexBtn,
-      social
+      social,
+      inquiry
+    },
+    computed: {
+      isInquiry () { 
+        return this.$store.state.isInquiry
+      }
     },
     data () {
       return {
@@ -103,6 +126,16 @@
             img: 'choose_4.jpg'
           }
         ]
+      }
+    },
+    methods: {
+      getInquiry () {
+        this.$store.commit('setIsInquiry')
+        console.log(this.$store.state)
+      },
+      cancelInquiry () {
+        this.$store.commit('setIsInquiry')
+        console.log(this.$store.state)
       }
     }
   }
