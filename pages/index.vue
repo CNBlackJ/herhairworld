@@ -82,7 +82,7 @@
   import category from '@/components/category'
   import indexBtn from '@/components/indexBtn'
   import social from '@/components/social'
-  import inquiry from '@/components/inquiry'	
+  import inquiry from '@/components/inquiry'
 
   import store from '@/store'
 
@@ -131,11 +131,9 @@
     methods: {
       getInquiry () {
         this.$store.commit('setIsInquiry')
-        console.log(this.$store.state)
       },
       cancelInquiry () {
         this.$store.commit('setIsInquiry')
-        console.log(this.$store.state)
       }
     }
   }

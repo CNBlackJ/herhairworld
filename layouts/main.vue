@@ -1,6 +1,7 @@
 <template>
 	<div>
-		<navbar></navbar>
+		<navbar v-on:clickBtn="handleClick"></navbar>
+		<feSidebar v-show="!isCloseMenu" v-on:closeSidebar="closeSidebar"></feSidebar>
 		<nuxt/>
 		<cusFooter></cusFooter>
 	</div>
@@ -8,12 +9,27 @@
 
 <script>
 	import navbar from '@/components/navbar'
+	import sidebar from '@/components/sidebar'
 	import footer from '@/components/footer'
 
 	export default {
 		components: {
 			navbar,
+			feSidebar: sidebar,
 			cusFooter: footer
+		},
+		data () {
+			return {
+				isCloseMenu: true
+			}
+		},
+		methods: {
+			handleClick ({ btn }) {
+				if (btn === 'menu') this.isCloseMenu = false
+			},
+			closeSidebar () {
+				this.isCloseMenu = true
+			}
 		}
 	}
 </script>
