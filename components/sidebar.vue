@@ -2,8 +2,8 @@
 	<div class="sidebar-container">
 		<div class="fe-sidebar-left">
 			<div class="sidebar-head">
-				<div class="menu-icon">
-					<img class="navbar-icon" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/menu.png">
+				<div class="menu-icon" @click="goIndex">
+					<img class="navbar-icon" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/home.png">
 				</div>
 				<div class="menu-text">
 					Menu
@@ -13,24 +13,9 @@
 				</div>
 			</div>
 			<div class="sidebar-group">
-				<div class="sidebar-menu" @click="closeSidebar">
-					<router-link to="/list">
-						Frontal
-					</router-link>
-				</div>
-				<div class="sidebar-menu" @click="closeSidebar">
-					<router-link to="/list">
-						Closure
-					</router-link>
-				</div>
-				<div class="sidebar-menu" @click="closeSidebar">
-					<router-link to="/list">
-						Lace Wigs
-					</router-link>
-				</div>
-				<div class="sidebar-menu" @click="closeSidebar">
-					<router-link to="/list">
-						hair Extension
+				<div v-for="sidebar in sidebars" :key="sidebar.id" class="sidebar-menu" @click="closeSidebar">
+					<router-link :to="sidebar.url">
+						{{ sidebar.text }}
 					</router-link>
 				</div>
 			</div>
@@ -41,9 +26,23 @@
 
 <script>
 	export default {
+		data () {
+			return {
+				sidebars: [
+					{ id: 0, text: 'frontal', url: '/list?type=frontal' },
+					{ id: 1, text: 'closure', url: '/list?type=closure' },
+					{ id: 2, text: 'lace wigs', url: '/list?type=lace_wigs' },
+					{ id: 3, text: 'hair extension', url: '/list?type=hair_extension' }
+				]
+			}
+		},
 		methods: {
 			closeSidebar () {
 				this.$emit('closeSidebar')
+			},
+			goIndex () {
+				this.$router.push({path:'/'})
+				this.closeSidebar()
 			}
 		}
 	}

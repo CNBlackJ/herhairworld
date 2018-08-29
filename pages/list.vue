@@ -28,6 +28,9 @@
 		components: {
 			types,
 			card
+		},
+		fetch ({ query }) {
+			console.log(query)
 		}
 	}
 </script>

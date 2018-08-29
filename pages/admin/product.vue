@@ -2,6 +2,15 @@
 	<div class="admin-inquiry-con">
 		<div class="prod-sub-menu">
 			<el-row>
+				<el-col :span="2">
+					<el-button
+						type="success" 
+						plain
+						@click="addProdDialogVisible = true">
+						<i class="el-icon-circle-plus el-icon--right"></i>
+						添加产品
+					</el-button>
+				</el-col>
 				<el-col :span="3">
 					<el-button
 						type="primary" 
@@ -11,7 +20,7 @@
 						产品数据导入
 					</el-button>
 				</el-col>
-				<el-col :span="21">
+				<el-col :span="19">
 					<el-form :inline="true" :model="searchCondition" class="demo-form-inline">
 						<el-form-item label="产品名称">
 							<el-input v-model="searchCondition.name" placeholder="产品名称"></el-input>
@@ -42,6 +51,14 @@
 			</el-row>
 		</div>
 		<cusTable></cusTable>
+
+		<el-dialog
+			title="添加产品"
+			:visible.sync="addProdDialogVisible"
+			width="50%">
+			<addProdForm></addProdForm>
+		</el-dialog>
+
 		<el-dialog
 			title="导入产品数据"
 			:visible.sync="uploadDialogVisible"
@@ -50,6 +67,7 @@
 				class="upload-demo"
 				drag
 				action="https://jsonplaceholder.typicode.com/posts/"
+				accept=".xls,.xlsx"
 				multiple>
 				<i class="el-icon-upload"></i>
 				<div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -61,15 +79,18 @@
 
 <script>
 	import table from '@/components/admin/table'
+	import addProdForm from '@/components/admin/addProdForm'
 
 	export default {
 		layout: 'admin',
 		components: {
-			cusTable: table
+			cusTable: table,
+			addProdForm
 		},
 		data () {
 			return {
 				uploadDialogVisible: false,
+				addProdDialogVisible: false,
 				searchCondition: {
 					name: '',
 					type: '',
