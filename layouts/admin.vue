@@ -38,7 +38,8 @@ body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,input,button,textarea,p,blockquote,
 
 body {
 	font-size: 17px;
-	font-family: 'Helvetica Neue', Helvetica, sans-serif
+	font-family: 'Helvetica Neue', Helvetica, sans-serif;
+	background-color: #efefef;
 }
 
 a {
@@ -50,7 +51,6 @@ a {
 	display: flex;
 	flex-direction: row;
 	width: 100%;
-	background-color: #efefef;
 	justify-content: space-between;
 }
 
@@ -67,11 +67,13 @@ a {
 
 .navbar {
 	width: 100%;
+	padding-bottom: 30px;
 }
 
 .main-body {
-	padding: 20px 0;
+	padding: 10px;
 	width: 95%;
+	background-color: white;
 }
 
 </style>

@@ -32,6 +32,7 @@
 					{ index: 4, text: '询盘用户', url: '/admin/inquiry', icon: 'el-icon-service' },
 					{ index: 5, text: '用户信息', url: '/admin/user', icon: 'el-icon-circle-plus-outline' },
 					{ index: 6, text: '支付信息', url: '/admin/payment', icon: 'el-icon-success' },
+					{ index: 7, text: '数据导入', url: '/admin/data', icon: 'el-icon-refresh' },
 				],
 				selectedSidebar: 0
 			}

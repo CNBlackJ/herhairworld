@@ -1,5 +1,5 @@
 <template>
-	<div class="admin-index-con">
+	<div class="admin-order-con">
 		I am order
 	</div>
 </template>
