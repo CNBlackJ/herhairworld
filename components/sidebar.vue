@@ -35,9 +35,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="fe-sidebar-right">
-
-		</div>
+		<div class="fe-sidebar-right" @click="closeSidebar"></div>
 	</div>
 </template>
 

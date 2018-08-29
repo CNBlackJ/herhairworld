@@ -50,6 +50,8 @@ a {
 	display: flex;
 	flex-direction: row;
 	width: 100%;
+	background-color: #efefef;
+	justify-content: space-between;
 }
 
 .sidebar {
@@ -65,6 +67,11 @@ a {
 
 .navbar {
 	width: 100%;
+}
+
+.main-body {
+	padding: 20px 0;
+	width: 95%;
 }
 
 </style>

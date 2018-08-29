@@ -4,41 +4,17 @@
 			<img class="admin-logo-img" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/logo.png">
 		</div>
 		<div class="btn-group">
-			<div class="sidebar-btn">
-				<i class="sidebar-icon el-icon-setting"></i>
-				<router-link to="/admin">
-          控制面板
+			<div
+				v-for="sidebar in adminSidebars"
+				:key="sidebar.index"
+				class="sidebar-btn"
+				@click="sidebarClick(sidebar.index)"
+				:class="{'sidebar-selected': sidebar.index === selectedSidebar}"
+			>
+				<i class="sidebar-icon" :class="sidebar.icon"></i>
+				<router-link :to="sidebar.url">
+          {{ sidebar.text }}
         </router-link>
-			</div>
-			<div class="sidebar-btn">
-				<i class="sidebar-icon el-icon-edit"></i>
-				<router-link to="/admin/page">
-					页面编辑
-				</router-link>
-			</div>
-			<div class="sidebar-btn">
-				<i class="sidebar-icon el-icon-tickets"></i>
-				<router-link to="/admin/order">
-					订单管理
-				</router-link>
-			</div>
-			<div class="sidebar-btn">
-				<i class="sidebar-icon el-icon-goods"></i>
-				<router-link to="/admin/product">
-					产品列表
-				</router-link>
-			</div>
-			<div class="sidebar-btn">
-				<i class="sidebar-icon el-icon-circle-plus-outline"></i>
-				<router-link to="/admin/user">
-					用户信息
-				</router-link>
-			</div>
-			<div class="sidebar-btn">
-				<i class="sidebar-icon el-icon-success"></i>
-				<router-link to="/admin/payment">
-					支付信息
-				</router-link>
 			</div>
 		</div>
 	</div>
@@ -46,9 +22,23 @@
 
 <script>
 	export default {
+		data () {
+			return {
+				adminSidebars: [
+					{ index: 0, text: '控制面板', url: '/admin', icon: 'el-icon-setting' },
+					{ index: 1, text: '页面编辑', url: '/admin/page', icon: 'el-icon-edit' },
+					{ index: 2, text: '订单管理', url: '/admin/order', icon: 'el-icon-tickets' },
+					{ index: 3, text: '产品列表', url: '/admin/product', icon: 'el-icon-goods' },
+					{ index: 4, text: '询盘用户', url: '/admin/inquiry', icon: 'el-icon-service' },
+					{ index: 5, text: '用户信息', url: '/admin/user', icon: 'el-icon-circle-plus-outline' },
+					{ index: 6, text: '支付信息', url: '/admin/payment', icon: 'el-icon-success' },
+				],
+				selectedSidebar: 0
+			}
+		},
 		methods: {
-			sidebarHover () {
-				console.log('aa')
+			sidebarClick (i) {
+				this.selectedSidebar = i
 			}
 		}
 	}
@@ -83,7 +73,13 @@
 	.sidebar-btn:hover {
 		background-color: white;
 		color: black;
-		width: 100%;
+		width: 90%;
+	}
+
+	.sidebar-selected {
+		background-color: white;
+		color: black;
+		width: 90%;
 	}
 
 	.sidebar-icon {
