@@ -1,46 +1,159 @@
 <template>
 	<div class="addprod-con">
-		<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-			<el-form-item label="产品名称" prop="name">
-				<el-input v-model="prod.name"></el-input>
+		<el-form :model="prod" :rules="rules" ref="prod" label-width="100px" class="demo-ruleForm">
+
+			<el-row>
+				<el-col :span="10">
+					<el-form-item label="产品名称" prop="name">
+						<el-input v-model="prod.name"></el-input>
+					</el-form-item>
+				</el-col>
+				<el-col :span="8">
+					<el-form-item label="model" prop="model">
+						<el-input v-model="prod.model"></el-input>
+					</el-form-item>
+				</el-col>
+				<el-col :span="6">
+					<el-form-item label="最小订单数" prop="orderMin">
+							<el-input v-model.number="prod.orderMin"></el-input>
+						</el-form-item>
+				</el-col>
+			</el-row>
+
+			<el-row>
+				<el-col :span="8">
+					<el-form-item label="颜色" prop="color">
+						<el-input v-model="prod.color"></el-input>
+					</el-form-item>
+				</el-col>
+				<el-col :span="8">
+					<el-form-item label="材料" prop="material">
+						<el-input v-model="prod.material"></el-input>
+					</el-form-item>
+				</el-col>
+				<el-col :span="8">
+					<el-form-item label="包装" prop="package">
+						<el-input v-model="prod.package"></el-input>
+					</el-form-item>
+				</el-col>
+			</el-row>
+			
+			<el-row>
+				<el-col :span="8">
+					<el-form-item label="原价" prop="originPrice">
+						<el-input v-model.number="prod.originPrice"></el-input>
+					</el-form-item>
+				</el-col>
+				<el-col :span="8">
+					<el-form-item label="现价" prop="price">
+						<el-input v-model.number="prod.price"></el-input>
+					</el-form-item>
+				</el-col>
+				<el-col :span="8">
+					<el-form-item label="库存数" prop="quantity">
+						<el-input v-model.number="prod.quantity"></el-input>
+					</el-form-item>
+				</el-col>
+			</el-row>
+
+			<el-row>
+				<el-col :span="12">
+					<el-form-item label="长度" required>
+						<el-col :span="11">
+							<el-form-item prop="minLen">
+								<el-input v-model.number="prod.minLen"></el-input>
+							</el-form-item>
+						</el-col>
+						<el-col :span="2">-</el-col>
+						<el-col :span="11">
+							<el-form-item prop="maxLen">
+								<el-input v-model.number="prod.maxLen"></el-input>
+							</el-form-item>
+						</el-col>
+					</el-form-item>
+				</el-col>
+				<el-col :span="12">
+					<el-form-item label="重量" required>
+						<el-col :span="11">
+							<el-form-item prop="minWeight">
+								<el-input v-model.number="prod.minWeight"></el-input>
+							</el-form-item>
+						</el-col>
+						<el-col class="line" :span="2">-</el-col>
+						<el-col :span="11">
+							<el-form-item prop="maxWeight">
+								<el-input v-model.number="prod.maxWeight"></el-input>
+							</el-form-item>
+						</el-col>
+					</el-form-item>
+				</el-col>
+			</el-row>
+			<el-row>
+				<el-col :span="24">
+					<el-form-item label="类别" prop="categories">
+						<el-checkbox-group v-model="prod.categories">
+							<el-checkbox label="Virgin Hair" name="type"></el-checkbox>
+							<el-checkbox label="Brazilian Virgin Hair" name="type"></el-checkbox>
+							<el-checkbox label="Malasian" name="type"></el-checkbox>
+							<el-checkbox label="Pre-bonded Hair" name="type"></el-checkbox>
+						</el-checkbox-group>
+					</el-form-item>
+				</el-col>
+			</el-row>
+
+			<el-form-item label="描述" prop="description">
+				<el-input rows="4" type="textarea" v-model="prod.description"></el-input>
 			</el-form-item>
-			<el-form-item label="closure" prop="closure">
-				<el-select v-model="prod.closure" placeholder="请选择closure">
-					<el-option label="closure 1" value="closure_1"></el-option>
-					<el-option label="closure 2" value="closure_2"></el-option>
-				</el-select>
-			</el-form-item>
-			<el-form-item label="类型" prop="type">
-				<el-select v-model="prod.type" placeholder="请选择类型">
-					<el-option label="Frontal" value="frontal"></el-option>
-					<el-option label="Closure" value="closure"></el-option>
-					<el-option label="Lace Wigs" value="lace_wigs"></el-option>
-					<el-option label="Hair Extension" value="hair_extension"></el-option>
-				</el-select>
-			</el-form-item>
+
+			<el-row :gutter="20">
+				<el-col :span="10">
+					<el-form-item label="封面图" prop="description">
+						<el-card>
+							<div slot="header">
+								<span>选择一张图片做为产品展示封面图片</span>
+							</div>
+							<div>
+								<el-upload
+									class="mainimg-uploader"
+									action="https://jsonplaceholder.typicode.com/posts/"
+									:show-file-list="false"
+									:on-success="handleMainImgSuccess"
+									:before-upload="beforeMainImgUpload">
+									<img v-if="prod.mainImg" :src="prod.mainImg" class="mainimg">
+									<i v-else class="el-icon-plus mainimg-uploader-icon"></i>
+								</el-upload>
+							</div>
+						</el-card>
+					</el-form-item>
+				</el-col>
+
+				<el-col :span="12">
+					<el-form-item label="产品图" prop="description">
+						<el-card>
+							<div>
+								<el-upload
+									class="upload-demo"
+									action="https://jsonplaceholder.typicode.com/posts/"
+									:on-preview="handlePreview"
+									:on-remove="handleRemove"
+									:file-list="fileList2"
+									list-type="picture">
+									<el-button size="small" type="primary">点击上传</el-button>
+									<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+								</el-upload>
+							</div>
+						</el-card>
+					</el-form-item>
+				</el-col>
+			</el-row>
+
 			<el-form-item label="是否上线" prop="online">
 				<el-switch v-model="prod.online"></el-switch>
 			</el-form-item>
-			<el-form-item label="活动性质" prop="type">
-				<el-checkbox-group v-model="ruleForm.type">
-					<el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
-					<el-checkbox label="地推活动" name="type"></el-checkbox>
-					<el-checkbox label="线下主题活动" name="type"></el-checkbox>
-					<el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
-				</el-checkbox-group>
-			</el-form-item>
-			<el-form-item label="特殊资源" prop="resource">
-				<el-radio-group v-model="ruleForm.resource">
-					<el-radio label="线上品牌商赞助"></el-radio>
-					<el-radio label="线下场地免费"></el-radio>
-				</el-radio-group>
-			</el-form-item>
-			<el-form-item label="活动形式" prop="desc">
-				<el-input type="textarea" v-model="ruleForm.desc"></el-input>
-			</el-form-item>
+
 			<el-form-item>
-				<el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
-				<el-button @click="resetForm('ruleForm')">重置</el-button>
+				<el-button type="primary" @click="submitForm('prod')">立即创建</el-button>
+				<el-button @click="resetForm('prod')">重置</el-button>
 			</el-form-item>
 		</el-form>
 	</div>
@@ -50,50 +163,83 @@
 	export default {
 		data() {
 			return {
+				fileList2: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
 				prod: {
+					model: '',
 					name: '',
-					closure: '',
-					length: '',
-					type: '',
-					stock: '',
-					originPrice: '',
-					price: '',
 					description: '',
+					quantity: 999,
+					orderMin: 1,
+					material: '',
+					package: '',
+					originPrice: 199,
+					price: 99,
+					color: '',
+					mainImg: '',
+					categories: [],
 					imgs: [],
-					online: ''
-				},
-				ruleForm: {
-					name: '',
-					region: '',
-					date1: '',
-					date2: '',
-					delivery: false,
-					type: [],
-					resource: '',
-					desc: ''
+					minLen: 15,
+					maxLen: 55,
+					minWeight: 90,
+					maxWeight: 110,
+					online: true
 				},
 				rules: {
 					name: [
-						{ required: true, message: '请输入活动名称', trigger: 'blur' },
-						{ min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+						{ required: true, message: '请输入产品名称', trigger: 'blur' },
 					],
-					region: [
-						{ required: true, message: '请选择活动区域', trigger: 'change' }
+					model: [
+						{ required: true, message: '请输入产品model', trigger: 'blur' }
 					],
-					date1: [
-						{ type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+					description: [
+						{ required: true, message: '请填写产品描述', trigger: 'blur' }
 					],
-					date2: [
-						{ type: 'date', required: true, message: '请选择时间', trigger: 'change' }
+					quantity: [
+						{ type: 'number', required: true, message: '请输入产品数量', trigger: 'blur' },
+						{ type: 'number', message: '库存必须为数字', trigger: 'blur' },
 					],
-					type: [
-						{ type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
+					orderMin: [
+						{ type: 'number', required: true, message: '请输入产品最低价格', trigger: 'blur' },
+						{ type: 'number', message: '最小订单数必须为数字', trigger: 'blur' },
 					],
-					resource: [
-						{ required: true, message: '请选择活动资源', trigger: 'change' }
+					material: [
+						{ required: true, message: '请输入产品材料', trigger: 'blur' },
 					],
-					desc: [
-						{ required: true, message: '请填写活动形式', trigger: 'blur' }
+					package: [
+						{ required: true, message: '请输入包装内容', trigger: 'blur' }
+					],
+					originPrice: [
+						{ type: 'number', required: true, message: '请输入产品原价', trigger: 'blur' },
+						{ type: 'number', message: '产品原价必须为数字', trigger: 'blur' },
+					],
+					price: [
+						{ type: 'number', required: true, message: '请输入产品价格', trigger: 'blur' },
+						{ type: 'number', message: '产品价格必须为数字', trigger: 'blur' },
+					],
+					color: [
+						{ required: true, message: '请输入产品颜色', trigger: 'blur' }
+					],
+					minLen: [
+						{ type: 'number', required: true, message: '请输入产品最小长度', trigger: 'blur' },
+						{ type: 'number', message: '产品长度必须为数字', trigger: 'blur' }
+					],
+					maxLen: [
+						{ type: 'number', required: true, message: '请输入产品最大长度', trigger: 'blur' },
+						{ type: 'number', message: '产品长度必须为数字', trigger: 'blur' }
+					],
+					minWeight: [
+						{ type: 'number', required: true, message: '请输入产品最小重量', trigger: 'blur' },
+						{ type: 'number', message: '产品重量必须为数字', trigger: 'blur' }
+					],
+					maxWeight: [
+						{ type: 'number', required: true, message: '请输入产品最大重量', trigger: 'blur' },
+						{ type: 'number', message: '产品重量必须为数字', trigger: 'blur' }
+					],
+					mainImgs: [
+						{ required: true, message: '请上传封面图片', trigger: 'change' }
+					],
+					categories: [
+						{ type: 'array', required: true, message: '请至少选择一个类别', trigger: 'change' }
 					]
 				}
 			};
@@ -111,7 +257,56 @@
 			},
 			resetForm(formName) {
 				this.$refs[formName].resetFields();
-			}
+			},
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
+			handleMainImgSuccess(res, file) {
+        // this.imageUrl = URL.createObjectURL(file.raw);
+				this.prod.mainImg = 'https://avatars3.githubusercontent.com/u/21023227'
+      },
+      beforeMainImgUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG 格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+        }
+				this.prod.mainImg = 'https://avatars3.githubusercontent.com/u/21023227'
+        return isJPG && isLt2M;
+      }
 		}
 	}
 </script>
+
+<style>
+  .mainimg-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .mainimg-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .mainimg-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .mainimg {
+    width: 160px;
+    height: 160px;
+    display: block;
+  }
+</style>

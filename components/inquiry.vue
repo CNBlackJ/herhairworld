@@ -132,7 +132,7 @@
 		methods: {
 			async addInquiry () {
 				inquiry.create({ inquiry: this.inquiryInfo }).then((resp) => {
-					if (resp.status === "Ok") this.cancelInquiry()
+					if (resp.status === "OK") this.cancelInquiry()
 				})
 			},
 			cancelInquiry () {
