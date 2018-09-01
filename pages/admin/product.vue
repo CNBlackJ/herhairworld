@@ -50,7 +50,8 @@
 				</el-col>
 			</el-row>
 		</div>
-		<cusTable></cusTable>
+
+		<productTable></productTable>
 
 		<el-dialog
 			title="添加产品"
@@ -80,13 +81,13 @@
 </template>
 
 <script>
-	import table from '@/components/admin/table'
+	import productTable from '@/components/admin/productTable'
 	import addProdForm from '@/components/admin/addProdForm'
 
 	export default {
 		layout: 'admin',
 		components: {
-			cusTable: table,
+			productTable,
 			addProdForm
 		},
 		data () {

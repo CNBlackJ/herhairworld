@@ -58,14 +58,10 @@
 </template>
 
 <script>
-	import table from '@/components/admin/table'
 	import inquiry from '@/apis/inquiry'
 
 	export default {
 		layout: 'admin',
-		components: {
-			cusTable: table
-		},
 		data () {
 			return {
 				inquiryList: []

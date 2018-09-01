@@ -1,6 +1,6 @@
 <template>
 	<div class="addprod-con">
-		<el-form :model="prod" :rules="rules" ref="prod" label-width="100px" class="demo-ruleForm">
+		<el-form :model="prod" :rules="rules" ref="prod" label-width="100px">
 
 			<el-row>
 				<el-col :span="10">
@@ -153,8 +153,10 @@
 			</el-form-item>
 
 			<el-form-item>
-				<el-button type="primary" @click="createProd('prod')">立即创建</el-button>
-				<el-button @click="resetForm('prod')">重置</el-button>
+				<el-button v-if="!isEdit" type="primary" @click="createProd('prod')">立即创建</el-button>
+				<el-button v-if="!isEdit" @click="resetForm('prod')">重置</el-button>
+				<el-button type="primary" v-if="isEdit" @click="updateProd('prod')">立即更新</el-button>
+				<el-button type="danger" v-if="isEdit" @click="deleteProd()">删除</el-button>
 			</el-form-item>
 		</el-form>
 	</div>
@@ -164,6 +166,10 @@
 	import product from '@/apis/product'
 	
 	export default {
+		props: [
+			'isEdit',
+			'prodId'
+		],
 		data() {
 			return {
 				prod: {
@@ -246,6 +252,16 @@
 				}
 			};
 		},
+		created () {
+			if (this.isEdit) {
+				product.getById({ id: this.prodId }).then((resp) => {
+					this.prod = resp.data
+					console.log(this.prod)
+				}).catch((err) => {
+					console.log(err)
+				})
+			}
+		},
 		methods: {
 			createProd(formName) {
 				this.$refs[formName].validate((valid) => {
@@ -253,7 +269,6 @@
 						this.prod.imgs = this.prod.imgs.map(img => {
 							return { name: img.name, url: img.url }
 						})
-						console.log(this.prod)
 						product.create(this.prod).then((resp) => {
 							console.log(resp)
 							alert('submit!');
@@ -268,6 +283,34 @@
 			},
 			resetForm(formName) {
 				this.$refs[formName].resetFields();
+			},
+			deleteProd () {
+				this.$confirm(`确认删除商品：${this.prod.name} ？`)
+          .then(_ => {
+            product.deleteById({ id: this.prod._id }).then(() => {
+							console.log('success to delete')
+						}).catch((err) => {
+							console.log(err)
+						})
+          })
+          .catch(_ => {});
+			},
+			updateProd (formName) {
+				this.$refs[formName].validate((valid) => {
+					if (valid) {
+						this.prod.imgs = this.prod.imgs.map(img => {
+							return { name: img.name, url: img.url }
+						})
+						product.update({ prod: this.prod }).then((resp) => {
+							console.log(resp)
+							alert('updated!');
+						}).catch((err) => {
+							console.log(err)
+						})
+					} else {
+						return false;
+					}
+				});
 			},
       handleRemove(file, fileList) {
         console.log(file, fileList);
