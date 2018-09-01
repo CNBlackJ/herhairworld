@@ -1,34 +1,40 @@
 <template>
 	<div class="table-container">
 		<el-table
-      :data="productList"
+			:data="productList"
 			style="width: 100%">
 			<el-table-column type="expand">
 				<template slot-scope="props">
 					<addProdForm :isEdit=true :prodId="props.row._id"></addProdForm>
 				</template>
 			</el-table-column>
-      <el-table-column
+			<el-table-column
+			  sortable
         prop="name"
         label="名称">
 			</el-table-column>
-      <el-table-column
+			<el-table-column
+			sortable
         prop="orderMin"
         label="最小订单数">
 			</el-table-column>
-      <el-table-column
+			<el-table-column
+			sortable
         prop="color"
         label="颜色">
 			</el-table-column>
-      <el-table-column
+			<el-table-column
+			  sortable
         prop="originPrice"
         label="原价 ($)">
 			</el-table-column>
-      <el-table-column
+			<el-table-column
+			  sortable
         prop="price"
         label="价格 ($)">
 			</el-table-column>
-      <el-table-column
+			<el-table-column
+			  sortable
         prop="quantity"
         label="库存数 (件)">
 			</el-table-column>
@@ -54,7 +60,7 @@
 					</el-tag>
 				</template>
 			</el-table-column>
-    </el-table>
+		</el-table>
 	</div>
 </template>
 
@@ -77,9 +83,6 @@
 			})
 		},
 		methods: {
-			formatOnline (row, column) {
-				return String(row.online)
-			},
 			formatWeight (row, column) {
 				return `${row.minWeight} - ${row.maxWeight}`
 			},

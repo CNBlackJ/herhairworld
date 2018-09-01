@@ -33,9 +33,14 @@
 					{ index: 5, text: '用户信息', url: '/admin/user', icon: 'el-icon-circle-plus-outline' },
 					{ index: 6, text: '支付信息', url: '/admin/payment', icon: 'el-icon-success' },
 					{ index: 7, text: '数据导入', url: '/admin/data', icon: 'el-icon-refresh' },
+					{ index: 8, text: '分类管理', url: '/admin/category', icon: 'el-icon-refresh' },
 				],
 				selectedSidebar: 0
 			}
+		},
+		created(){
+			const currentSidebar = this.adminSidebars.find(ele => ele.url === this.$route.path)
+			this.sidebarClick(currentSidebar.index)
 		},
 		methods: {
 			sidebarClick (i) {

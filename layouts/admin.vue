@@ -29,7 +29,7 @@
 			navbar,
 			sidebar,
 			adminFooter: footer
-		},
+		}
 	}
 </script>
 

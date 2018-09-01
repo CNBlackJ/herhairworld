@@ -23,14 +23,16 @@
 	import types from '@/components/types'
 	import card from '@/components/card'
 
+	import product from '@/apis/product'
+
 	export default {
 		layout: 'main',
 		components: {
 			types,
 			card
 		},
-		fetch ({ query }) {
-			console.log(query)
+		fetch (options) {
+			console.log(options)
 		}
 	}
 </script>
