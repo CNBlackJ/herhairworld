@@ -92,10 +92,11 @@
 				<el-col :span="24">
 					<el-form-item label="类别" prop="categories">
 						<el-checkbox-group v-model="prod.categories">
-							<el-checkbox label="Virgin Hair" name="type"></el-checkbox>
-							<el-checkbox label="Brazilian Virgin Hair" name="type"></el-checkbox>
-							<el-checkbox label="Malasian" name="type"></el-checkbox>
-							<el-checkbox label="Pre-bonded Hair" name="type"></el-checkbox>
+							<el-checkbox
+								v-for="category in categories"
+								:key="category._id"
+								:label="category.name">
+							</el-checkbox>
 						</el-checkbox-group>
 					</el-form-item>
 				</el-col>
@@ -164,6 +165,7 @@
 
 <script>
 	import product from '@/apis/product'
+	import category from '@/apis/category'
 	
 	export default {
 		props: [
@@ -172,6 +174,7 @@
 		],
 		data() {
 			return {
+				categories: [],
 				prod: {
 					model: '',
 					name: '',
@@ -253,16 +256,24 @@
 			};
 		},
 		created () {
-			if (this.isEdit) {
+			this.listCategory()
+			if (this.isEdit) { this.getProd() }
+		},
+		methods: {
+			listCategory () {
+				category.list({}).then(resp => {
+					this.categories = resp.data
+				}).catch(err => {
+					console.log(err)
+				})
+			},
+			getProd () {
 				product.getById({ id: this.prodId }).then((resp) => {
 					this.prod = resp.data
-					console.log(this.prod)
 				}).catch((err) => {
 					console.log(err)
 				})
-			}
-		},
-		methods: {
+			},
 			createProd(formName) {
 				this.$refs[formName].validate((valid) => {
 					if (valid) {
