@@ -115,7 +115,7 @@
 							<div>
 								<el-upload
 									class="mainimg-uploader"
-									action="https://jsonplaceholder.typicode.com/posts/"
+									action="http://localhost:3010/api/qiniu/upload"
 									:show-file-list="false"
 									:on-success="handleMainImgSuccess"
 									:before-upload="beforeMainImgUpload">
@@ -133,10 +133,11 @@
 							<div>
 								<el-upload
 									class="upload-demo"
-									action="https://jsonplaceholder.typicode.com/posts/"
+									action="http://localhost:3010/api/qiniu/upload"
 									:on-preview="handlePreview"
 									:on-remove="handleRemove"
-									:file-list="fileList2"
+									:file-list="prod.imgs"
+									:on-success="handleImgsSuccess"
 									list-type="picture">
 									<el-button size="small" type="primary">点击上传</el-button>
 									<div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -152,7 +153,7 @@
 			</el-form-item>
 
 			<el-form-item>
-				<el-button type="primary" @click="submitForm('prod')">立即创建</el-button>
+				<el-button type="primary" @click="createProd('prod')">立即创建</el-button>
 				<el-button @click="resetForm('prod')">重置</el-button>
 			</el-form-item>
 		</el-form>
@@ -160,10 +161,11 @@
 </template>
 
 <script>
+	import product from '@/apis/product'
+	
 	export default {
 		data() {
 			return {
-				fileList2: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
 				prod: {
 					model: '',
 					name: '',
@@ -245,10 +247,19 @@
 			};
 		},
 		methods: {
-			submitForm(formName) {
+			createProd(formName) {
 				this.$refs[formName].validate((valid) => {
 					if (valid) {
-						alert('submit!');
+						this.prod.imgs = this.prod.imgs.map(img => {
+							return { name: img.name, url: img.url }
+						})
+						console.log(this.prod)
+						product.create(this.prod).then((resp) => {
+							console.log(resp)
+							alert('submit!');
+						}).catch((err) => {
+							console.log(err)
+						})
 					} else {
 						console.log('error submit!!');
 						return false;
@@ -265,9 +276,14 @@
         console.log(file);
       },
 			handleMainImgSuccess(res, file) {
-        // this.imageUrl = URL.createObjectURL(file.raw);
-				this.prod.mainImg = 'https://avatars3.githubusercontent.com/u/21023227'
-      },
+				this.prod.mainImg = URL.createObjectURL(file.raw);
+				console.log(this.prod.mainImg)
+			},
+			handleImgsSuccess (res, file, fileList) {
+				this.prod.imgs = fileList.map(file => {
+					return { name: file.name, url: URL.createObjectURL(file.raw) }
+				})
+			},
       beforeMainImgUpload(file) {
         const isJPG = file.type === 'image/jpeg';
         const isLt2M = file.size / 1024 / 1024 < 2;
@@ -278,7 +294,6 @@
         if (!isLt2M) {
           this.$message.error('上传头像图片大小不能超过 2MB!');
         }
-				this.prod.mainImg = 'https://avatars3.githubusercontent.com/u/21023227'
         return isJPG && isLt2M;
       }
 		}

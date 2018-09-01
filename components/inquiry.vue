@@ -106,7 +106,7 @@
 </template>
 
 <script>
-	import inquiry from '@/apis/inquiry'
+	import inquiry from '@/apis'
 
 	import store from '@/store'
 

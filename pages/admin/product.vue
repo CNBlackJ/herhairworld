@@ -55,6 +55,7 @@
 		<el-dialog
 			title="添加产品"
 			:visible.sync="addProdDialogVisible"
+			:before-close="handleClose"
 			width="50%">
 			<addProdForm></addProdForm>
 		</el-dialog>
@@ -62,6 +63,7 @@
 		<el-dialog
 			title="导入产品数据"
 			:visible.sync="uploadDialogVisible"
+			:before-close="handleClose"
 			width="21%">
 			<el-upload
 				class="upload-demo"
@@ -104,7 +106,14 @@
 		methods: {
 			searchProd () {
 				console.log('search prods')
-			}
+			},
+      handleClose(done) {
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {});
+      },
 		}
 	}
 </script>
