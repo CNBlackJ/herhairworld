@@ -103,6 +103,7 @@
 			updateCategory () {
 				category.update({ category: this.categoryObj }).then(async resp => {
 					this.addCategoryVisible = false
+					this.isEdit = false
 					await this.listCategory()
 				}).catch(err => {
 					console.log(err)

@@ -47,7 +47,7 @@
 				label="重量 (g)">
 			</el-table-column>
       <el-table-column
-        prop="categories"
+        :formatter="formatCategory"
         label="类别">
 			</el-table-column>
 			<el-table-column label="状态">
@@ -88,6 +88,9 @@
 			},
 			formatLen (row, column) {
 				return `${row.minLen} - ${row.maxLen}`
+			},
+			formatCategory (row, column) {
+				return row.categories.map((cat, i) => `${i === 0 ? '' : '、'}${cat.name}`)
 			}
 		}
 	}

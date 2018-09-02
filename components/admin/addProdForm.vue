@@ -257,7 +257,9 @@
 		},
 		created () {
 			this.listCategory()
-			if (this.isEdit) { this.getProd() }
+			if (this.isEdit) { 
+				this.getProd()
+			}
 		},
 		methods: {
 			listCategory () {
@@ -269,7 +271,8 @@
 			},
 			getProd () {
 				product.getById({ id: this.prodId }).then((resp) => {
-					this.prod = resp.data
+					const catNames = resp.data.categories.map(cat => cat.name)
+					this.prod = Object.assign({}, resp.data, { categories: catNames })
 				}).catch((err) => {
 					console.log(err)
 				})
@@ -277,9 +280,14 @@
 			createProd(formName) {
 				this.$refs[formName].validate((valid) => {
 					if (valid) {
-						this.prod.imgs = this.prod.imgs.map(img => {
-							return { name: img.name, url: img.url }
+						// 更新图片字段
+						this.prod.imgs = this.prod.imgs.map(img => { return { name: img.name, url: img.url } })
+						// 更新分类字段为ObjectId
+						const objIdCat = []
+						this.categories.forEach(category => {
+							if (this.prod.categories.indexOf(category.name) > -1) objIdCat.push(category._id)
 						})
+						this.prod.categories = objIdCat
 						product.create(this.prod).then((resp) => {
 							console.log(resp)
 							alert('submit!');
@@ -312,8 +320,13 @@
 						this.prod.imgs = this.prod.imgs.map(img => {
 							return { name: img.name, url: img.url }
 						})
+						// 更新分类字段为ObjectId
+						const objIdCat = []
+						this.categories.forEach(category => {
+							if (this.prod.categories.indexOf(category.name) > -1) objIdCat.push(category._id)
+						})
+						this.prod.categories = objIdCat
 						product.update({ prod: this.prod }).then((resp) => {
-							console.log(resp)
 							alert('updated!');
 						}).catch((err) => {
 							console.log(err)
