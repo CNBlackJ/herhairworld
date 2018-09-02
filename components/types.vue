@@ -4,7 +4,7 @@
 			v-for="item in columns"
 			:key="item.key"
 			@click="choice(item)"
-			:class="{'type-btn-click': item.key === activeType}">
+			:class="{'type-btn-click': item.key === clcikType}">
 			<a class="type-btn">
 				{{item.name}}
 			</a>
@@ -15,6 +15,9 @@
 <script>
 
 	export default {
+		props: [
+			'activeType'
+		],
 		data () {
 			return {
 				columns: [
@@ -24,12 +27,12 @@
 					{ _id: 4, key: 'lace_wigs', name: 'Lace Wigs' },
 					{ _id: 5, key: 'hair_extension', name: 'Hair Extension' }
 				],
-				activeType: 'all'
+				clcikType: this.activeType
 			}
 		},
     methods: {
       choice ({ _id, key, name }) {
-        this.activeType = key
+        this.clcikType = key
 			}
 		}
 	}

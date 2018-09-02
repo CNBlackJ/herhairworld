@@ -1,7 +1,10 @@
 <template>
 	<div>
 		<navbar v-on:clickBtn="handleClick"></navbar>
-		<sidebar v-show="!isCloseMenu" v-on:closeSidebar="closeSidebar"></sidebar>
+		<sidebar
+			v-show="!isCloseMenu"
+			v-on:closeSidebar="closeSidebar">
+		</sidebar>
 		<nuxt/>
 		<cusFooter></cusFooter>
 	</div>

@@ -9,7 +9,7 @@
 		</div>
 	
 		<div class="detail-content">
-			<div class="prod-name">
+			<div class="detail-prod-name">
 				{{prod.name}}
 			</div>
 
@@ -28,11 +28,11 @@
 			<div class="prod-count-con">
 				<div class="quantity-title">Quantity: </div>
 				<div class="cart-prod-count">
-					<a @click="plus(prod._id)" class="cart-btn-plus" :class="{'cart-btn-dis': isMax}">+</a>
+					<a @click="minus(prod._id)" class="cart-btn-minus" :class="{'cart-btn-dis': isMinimum}">-</a>
 					<span class="cart-pord-sum">
 							{{count}}
 					</span>
-					<a @click="minus(prod._id)" class="cart-btn-minus" :class="{'cart-btn-dis': isMinimum}">-</a>
+					<a @click="plus(prod._id)" class="cart-btn-plus" :class="{'cart-btn-dis': isMax}">+</a>
 				</div>
 			</div>
 
@@ -53,6 +53,8 @@
 <script>
 	import detailTypes from '@/components/detailTypes'
 	import purchase from '@/components/purchase'
+
+	import product from '@/apis/product'
 
 	export default {
 		layout: 'main',
@@ -76,9 +78,7 @@
 						name: 'details_img_3.jpg'
 					}
 				],
-				prod: {
-					name: '#1B/99J Superior Grade 1 bundle Brazilian straight Virgin Human hair extensions'
-				},
+				prod: {},
 				discount: {
 					price: '$3',
 					code: 'nadula'
@@ -89,13 +89,18 @@
 				totalPrice: 0
 			}
 		},
+		created () {
+			const { _id } = this.$route.query
+			this.getProd(_id)
+		},
 		methods: {
 			plus (prodId) {
         this.isMinimum = false
-        if (this.count >= 15) {
+        if (this.count >= this.prod.quantity) {
 					this.isMax = true
 				} else {
 					this.count ++
+					this.calculatePrice()
 				}
       },
       minus (prodId) {
@@ -104,8 +109,20 @@
 					this.isMinimum = true
 				} else {
 					this.count --
+					this.calculatePrice()
 				}
-      }
+			},
+			getProd (id) {
+				product.getById({ id }).then((resp) => {
+					this.prod = resp.data
+					this.calculatePrice()
+				}).catch(err => {
+					console.log(err)
+				})
+			},
+			calculatePrice () {
+				this.totalPrice = this.count * this.prod.price
+			}
 		}
 	}
 </script>
@@ -122,12 +139,12 @@
 		padding: 10px;
 	}
 
-	.img {
-		width: 100%;
+	.detail-prod-name {
+		padding: 10px 0;
 	}
 
-	.prod-name {
-		padding: 10px 0;
+	.img {
+		width: 100%;
 	}
 
 	.discount {

@@ -1,10 +1,15 @@
 <template>
 	<div class="list-container">
-		<types></types>
+		<types :activeType="activeType"></types>
 		<div class="prod-cards">
 			<el-row>
-				<el-col class="prod-card" v-for="item in 10" :key="item.id" :span="12">
-					<card></card>
+				<el-col 
+					class="prod-card" 
+					v-for="prod in prodList" 
+					:key="prod._id" 
+					:span="12">
+					<card :prod="prod">
+					</card>
 				</el-col>
 			</el-row>
 			<div class="pagination">
@@ -31,8 +36,24 @@
 			types,
 			card
 		},
-		fetch (options) {
-			console.log(options)
+		created () {
+			this.activeType = this.$route.query.type
+			this.listProd()
+		},
+		data () {
+			return {
+				activeType: 'all',
+				prodList: []
+			}
+		},
+		methods: {
+			listProd () {
+				product.list({}).then((resp) => {
+					this.prodList = resp.data
+				}).catch(err => {
+					console.log(err)
+				})
+			}
 		}
 	}
 </script>
@@ -43,8 +64,12 @@
 		background-color: #efefef;
 	}
 
+	.prod-cards {
+		padding-top: 6px;
+	}
+
 	.prod-card {
-    padding: 10px;
+    padding: 6px;
 	}
 
 	.pagination {

@@ -6,7 +6,8 @@ Vue.use(Vuex)
 const store = () => new Vuex.Store({
   state: {
     isInquiry: false,
-    isLogin: false
+    isLogin: false,
+    activeType: 'all'
   },
 
   mutations: {
@@ -15,6 +16,9 @@ const store = () => new Vuex.Store({
     },
     setIslogin (state) {
       state.isLogin = !state.isLogin
+    },
+    setActiveType (state, { activeType }) {
+      state.activeType = activeType
     }
   },
 
@@ -24,6 +28,9 @@ const store = () => new Vuex.Store({
     },
     setIslogin ({ commit }) {
       commit('setIslogin')
+    },
+    setActiveType ({ commit }, { activeType }) {
+      commit('setActiveType', { activeType })
     }
   }
 })

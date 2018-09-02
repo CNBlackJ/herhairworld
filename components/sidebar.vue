@@ -14,9 +14,9 @@
 			</div>
 			<div class="sidebar-group">
 				<div v-for="sidebar in sidebars" :key="sidebar.id" class="sidebar-menu" @click="closeSidebar">
-					<router-link :to="sidebar.url">
+					<div @click="goList(sidebar.key)">
 						{{ sidebar.text }}
-					</router-link>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -29,10 +29,10 @@
 		data () {
 			return {
 				sidebars: [
-					{ id: 0, text: 'frontal', url: '/list?type=frontal' },
-					{ id: 1, text: 'closure', url: '/list?type=closure' },
-					{ id: 2, text: 'lace wigs', url: '/list?type=lace_wigs' },
-					{ id: 3, text: 'hair extension', url: '/list?type=hair_extension' }
+					{ id: 0, text: 'frontal', key:'frontal', url: '/list?type=frontal' },
+					{ id: 1, text: 'closure', key:'closure', url: '/list?type=closure' },
+					{ id: 2, text: 'lace wigs', key:'lace_wigs', url: '/list?type=lace_wigs' },
+					{ id: 3, text: 'hair extension', key:'hair_extension', url: '/list?type=hair_extension' }
 				]
 			}
 		},
@@ -41,8 +41,11 @@
 				this.$emit('closeSidebar')
 			},
 			goIndex () {
-				this.$router.push({path:'/'})
+				this.$router.push({ path:'/' })
 				this.closeSidebar()
+			},
+			goList (activeType) {
+				this.$router.push({ path: `/list?type=${activeType}` })
 			}
 		}
 	}

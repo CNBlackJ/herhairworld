@@ -1,69 +1,73 @@
 <template>
-	<div class="card-container">
-		<div class="card-content">
-			<div>
-				<img class="img-card" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/product_img_1.jpg">
+	<div @click="showDetail(prod._id)">
+		<el-card :body-style="{ padding: '0px' }">
+			<img src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/product_img_1.jpg" class="image">
+			<div class="prod-detail">
+				<span class="prod-name">{{prod.name}}</span>
+				<div class="prod-bottom">
+					<div class="price">
+						$ {{prod.price.toFixed(2)}}
+					</div>
+					<div class="sales">
+						sales: {{prod.sales}}
+					</div>
+				</div>
 			</div>
-	
-			<div class="prod-name">
-				#1B/99J Superior Grade 1 bundle Brazilian straight Virgin Human hair extensions
-			</div>
-	
-			<div class="prod-price">
-				<div class="price">${{price.toFixed(2)}}</div>
-				<div class="sales">sales: {{sales}}</div>
-			</div>
-		</div>
+		</el-card>
 	</div>
 </template>
 
 <script>
 	export default {
+		props: [
+			'prod'
+		],
 		data () {
 			return {
 				price: 53,
 				sales: 999
+			}
+		},
+		methods: {
+			showDetail (id) {
+				this.$router.push({ path: `/details?_id=${id}` })
 			}
 		}
 	}
 </script>
 
 <style>
-	.card-container {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		width: 100%;
-		font-size: 12px;
-		background-color: white;
-	}
+  .button {
+    padding: 0;
+    float: right;
+  }
 
-	.card-content {
-		padding: 5px;
-	}
+  .image {
+    width: 100%;
+    display: block;
+  }
 
-	.img-card {
-		width: 100%;
+	.prod-detail {
+		padding: 6px;
+		font-size: 13px;
 	}
 
 	.prod-name {
-		color: #818181;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
-	.prod-price {
+	.prod-bottom {
 		display: flex;
 		flex-direction: row;
+		align-items: center;
 		justify-content: space-between;
-		width: 100%;
-		padding: 5px 5px;
+		padding: 5px 0;
 	}
 
 	.price {
 		color: #dd127b;
 	}
 
-	.sales {
-		color: #818181;
-		padding: 0 5px;
-	}
 </style>
