@@ -2,7 +2,7 @@
 	<div class="navbar-container">
 		<div class="navbar-left">
 			<img @click="openMenu" class="navbar-icon icon-menu" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/menu.png">
-			<img class="navbar-icon icon-user" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/user.png">
+			<img @click="goUser" class="navbar-icon icon-user" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/user.png">
 		</div>
 
 		<div class="navbar-logo">
@@ -21,6 +21,9 @@
 		methods: {
 			openMenu () {
 				this.$emit('clickBtn', { btn: 'menu' })
+			},
+			goUser () {
+				this.$router.push({ path: '/user' })
 			}
 		}
 	}
