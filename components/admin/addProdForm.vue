@@ -343,13 +343,16 @@
         console.log(file);
       },
 			handleMainImgSuccess(res, file) {
-				this.prod.mainImg = URL.createObjectURL(file.raw);
-				console.log(this.prod.mainImg)
+				// this.prod.mainImg = URL.createObjectURL(file.raw);
+				this.prod.mainImg = res.data[0]
 			},
 			handleImgsSuccess (res, file, fileList) {
-				this.prod.imgs = fileList.map(file => {
-					return { name: file.name, url: URL.createObjectURL(file.raw) }
-				})
+				const url = res.data[0]
+				const payload = { name: file.name, url }
+				this.prod.imgs.push(payload)
+				// this.prod.imgs = fileList.map(file => {
+				// 	return { name: file.name, url: res.data[0] }
+				// })
 			},
       beforeMainImgUpload(file) {
         const isJPG = file.type === 'image/jpeg';

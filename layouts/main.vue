@@ -6,7 +6,9 @@
 			v-on:closeSidebar="closeSidebar">
 		</sidebar>
 		<nuxt/>
-		<cusFooter></cusFooter>
+		<cusFooter
+			v-on:hideFooter="hideFooter"
+			v-if="isHideFooter"></cusFooter>
 	</div>
 </template>
 
@@ -23,7 +25,8 @@
 		},
 		data () {
 			return {
-				isCloseMenu: true
+				isCloseMenu: true,
+				isHideFooter: false
 			}
 		},
 		methods: {
@@ -32,6 +35,9 @@
 			},
 			closeSidebar () {
 				this.isCloseMenu = true
+			},
+			hideFooter (isHideFooter) {
+				this.isHideFooter = isHideFooter
 			}
 		}
 	}

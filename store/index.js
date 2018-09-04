@@ -7,7 +7,7 @@ const store = () => new Vuex.Store({
   state: {
     isInquiry: false,
     isLogin: false,
-    activeType: 'all'
+    fixedFooter: false
   },
 
   mutations: {
@@ -17,8 +17,8 @@ const store = () => new Vuex.Store({
     setIslogin (state) {
       state.isLogin = !state.isLogin
     },
-    setActiveType (state, { activeType }) {
-      state.activeType = activeType
+    setFixedFooter (state) {
+      state.fixedFooter = !state.fixedFooter
     }
   },
 
@@ -29,8 +29,8 @@ const store = () => new Vuex.Store({
     setIslogin ({ commit }) {
       commit('setIslogin')
     },
-    setActiveType ({ commit }, { activeType }) {
-      commit('setActiveType', { activeType })
+    setFixedFooter ({ commit }) {
+      commit('setFixedFooter')
     }
   }
 })

@@ -1,5 +1,5 @@
 <template>
-	<div class="footer-container">
+	<div class="footer-container" :class="{'footer-fixed': fixedFooter}">
 		<el-row class="links">
 			<el-col class="link" :span="12" v-for="link in links" :key="link.id">
 				{{link.title}}
@@ -15,37 +15,14 @@
 	export default {
 		data () {
 			return {
+				fixedFooter: false,
 				links: [
-					{
-						id: 1,
-						title: 'Contact Us',
-						url: ''
-					},
-					{
-						id: 2,
-						title: 'About Us',
-						url: ''
-					},
-					{
-						id: 3,
-						title: 'Why Choose Us',
-						url: ''
-					},
-					{
-						id: 4,
-						title: 'Return & Exchange',
-						url: ''
-					},
-					{
-						id: 5,
-						title: 'News',
-						url: ''
-					},
-					{
-						id: 6,
-						title: 'Home',
-						url: ''
-					}
+					{ id: 1, title: 'Contact Us', url: '' },
+					{ id: 2, title: 'About Us', url: '' },
+					{ id: 3, title: 'Why Choose Us', url: '' },
+					{ id: 4, title: 'Return & Exchange', url: '' },
+					{ id: 5, title: 'News', url: '' },
+					{ id: 6, title: 'Home', url: '' }
 				]
 			}
 		}
@@ -58,6 +35,11 @@
 		background-color: #dd127b;
 		color: white;
 		font-size: 80%;
+	}
+
+	.footer-fixed {
+		position: fixed;
+		bottom: 0;
 	}
 
 	.links {
