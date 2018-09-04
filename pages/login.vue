@@ -3,19 +3,19 @@
 	<div class="user-btns">
 		<div
 			class="user-signin"
-			:class="{'user-btn-unselected': !isSignin}"
-			@click="signin">
+			:class="{'user-btn-unselected': !isSigninTab}"
+			@click="signinTab">
 			Sign In</div>
 		<div
 			class="user-join"
-			:class="{'user-btn-unselected': isSignin}"
-			@click="signup">
+			:class="{'user-btn-unselected': isSigninTab}"
+			@click="signupTab">
 			Join Fress</div>
 		</div>
 
 		<div
 			class="signin-form"
-			v-if="isSignin">
+			v-if="isSigninTab">
 			<div class="email-input-con">
 				<i class="el-icon-message"></i>
 				<input type="text" class="email-input" placeholder="Enter Your Email">
@@ -25,7 +25,9 @@
 				<input type="password" class="password-input"  placeholder="Enter Your Password">
 			</div>
 
-			<div class="signin-btn-con">
+			<div
+				class="signin-btn-con"
+				@click="login">
 				<div class="signin-btn">
 					Sign In
 				</div>
@@ -49,18 +51,28 @@
 
 		<div
 			class="join-form-group"
-			v-if="!isSignin">
-			<div
-				class="join-form"
-				v-for="joinForm in joinFormGroups" :key="joinForm.id">
-				<span class="join-form-label">{{joinForm.label}}</span>
-				<input
-					:type="joinForm.type"
-					class="join-input"
-					:placeholder="joinForm.placeholder">
-			</div>
+			v-if="!isSigninTab">
+			<el-form
+				:model="userInfo"
+				:rules="joinFormRules"
+				ref="userInfo"
+				size="mini">
+				<el-form-item
+					v-for="joinForm in joinFormGroups"
+					:key="joinForm.id"
+					:prop="joinForm.tag">
+					<span class="join-form-label">{{joinForm.label}}</span>
+					<el-input
+						:type="joinForm.type"
+						v-model="userInfo[joinForm.tag]"
+						:placeholder="joinForm.placeholder">
+					</el-input>
+				</el-form-item>
+			</el-form>
 
-			<div class="sign-up-btn">
+			<div
+				class="sign-up-btn"
+				@click="join('userInfo')">
 				<div class="sign-up-text">
 					Sign Up
 				</div>
@@ -70,29 +82,84 @@
 </template>
 
 <script>
+	import user from '@/apis/user'
+
 	export default {
 		layout: 'main',
 		data () {
+      var validatePass = (rule, value, callback) => {
+					if (value !== this.userInfo.password) {
+							callback(new Error('Please check your password'));
+					} else {
+							callback();
+					}
+			};
 			return {
-				isSignin: true,
+				isSigninTab: true,
+				userInfo: {
+					username: '',
+					email: '',
+					password: '',
+					pwConfirm: '',
+					mobile: ''
+				},
+				loginForm: {
+					email: '',
+					password: ''
+				},
 				joinFormGroups: [
-					{ id: 1, label: 'Username', type: 'text', placeholder: 'username' },
-					{ id: 2, label: 'Email *', type: 'text', placeholder: 'you@domain.com' },
-					{ id: 3, label: 'Password *', type: 'password', placeholder: 'at least 6 characters' },
-					{ id: 4, label: 'Confirm *', type: 'password', placeholder: 'conform password' },
-					{ id: 5, label: 'Telephone *', type: 'text', placeholder: 'your telephone' }
-				]
+					{ id: 1, label: 'Username', type: 'text', placeholder: 'username', tag: 'username' },
+					{ id: 2, label: 'Email *', type: 'text', placeholder: 'you@domain.com', tag: 'email' },
+					{ id: 3, label: 'Password *', type: 'password', placeholder: 'at least 6 characters', tag: 'password' },
+					{ id: 4, label: 'Confirm *', type: 'password', placeholder: 'conform password', tag: 'pwConfirm' },
+					{ id: 5, label: 'Telephone *', type: 'text', placeholder: 'your telephone', tag: 'mobile' }
+				],
+				joinFormRules: {
+					username: [
+            { required: true, message: 'Please enter your username', trigger: 'blur' }
+					],
+					email: [
+						{ required: true, message: 'Please enter your email', trigger: 'blur' },
+						{ type: 'email', message: 'Please check your email format', trigger: ['blur', 'change'] }
+					],
+					password: [
+							{ required: true, message: 'Please enter your password', trigger: 'blur' },
+							{ min: 6, max: 16, message: 'at least 6 characters', trigger: 'change' },
+							{ min: 6, max: 16, message: 'max length 16 characters', trigger: 'change' }
+					],
+					pwConfirm: [
+							{ required: true, message: '请再次输入密码', trigger: 'blur' },
+							{ validator: validatePass, trigger: 'change' }
+					],
+					mobile: [
+						{ required: true, message: 'Please enter your mobile', trigger: 'blur' }
+					]
+				}
 			}
 		},
 		created () {
 			this.$emit('hideFooter', true)
 		},
 		methods: {
-			signin () {
-				this.isSignin = true
+			signinTab () {
+				this.isSigninTab = true
 			},
-			signup () {
-				this.isSignin = false
+			signupTab () {
+				this.isSigninTab = false
+			},
+			join (submitForm) {
+				this.$refs[submitForm].validate((valid) => {
+					if (valid) {
+						user.create({ user: this.userInfo })
+						alert('submit!');
+					} else {
+						console.log('error submit!!');
+						return false;
+					}
+				});
+			},
+			login () {
+				user.login(this.loginForm)
 			}
 		}
 	}
@@ -243,13 +310,6 @@
 
 	.join-form-label {
 		padding: 5px 0;
-	}
-
-	.join-input {
-		border: 1px solid #efefef;
-		padding: 10px;
-		font-size: 14px;
-		border-radius: 5px;
 	}
 
 	.join-form {
