@@ -1,71 +1,89 @@
 <template>
 	<div class="wholesale-inquiry">
-		<div class="wi-header" @click="goHome">
-			<i class="el-icon-arrow-left"></i>
-			wholesale inquiry
+		<div
+			class="wi-form-group"
+			v-if="!inquirySuccess">
+			<div class="wi-header" @click="goHome">
+				<i class="el-icon-arrow-left"></i>
+				wholesale inquiry
+			</div>
+			<div class="wi-form">
+				<div class="wi-description">
+					Join us! Accessiong <strong>factory direct prices</strong> and <strong>exciting business solution</strong>.
+				</div>
+	
+				<el-form
+					:model="inquiryInfo"
+					:rules="inquiryFormRules"
+					ref="inquiryInfo"
+					size="small">
+					<el-form-item
+						v-for="inquiryForm in inquiryFormGroup"
+						:key="inquiryForm.id"
+						:prop="inquiryForm.tag">
+						<div>
+							<span class="required-span">*</span>{{inquiryForm.text}}
+						</div>
+						<el-input
+							type="text"
+							v-model="inquiryInfo[inquiryForm.tag]">
+						</el-input>
+					</el-form-item>
+					<el-form-item
+						prop="businessType">
+						<div>
+							<span class="required-span">*</span>Business Type :
+						</div>
+						<el-row>
+							<el-col
+								:span="12"
+								v-for="businessType in businessTypes"
+								:key="businessType.id">
+								<el-radio
+									v-model="inquiryInfo.businessType"
+									:label="businessType.tag">
+									{{businessType.text}}
+								</el-radio>
+							</el-col>
+						</el-row>
+					</el-form-item>
+					<el-form-item
+						prop="comment">
+						<div>
+							<span class="required-span">*</span>Comment :
+						</div>
+						<el-input
+							type="textarea"
+							:rows="4"
+							v-model="inquiryInfo.comment"
+							placeholder="Enter anything you would like to know here,such as  the product">
+						</el-input>
+					</el-form-item>
+	
+					<el-form-item>
+						<div
+							class="wi-btn"
+							@click="createInquiry">
+							Submit
+						</div>
+					</el-form-item>
+				</el-form>
+			</div>
 		</div>
 
-		<div class="wi-form">
-			<div class="wi-description">
-				Join us! Accessiong <strong>factory direct prices</strong> and <strong>exciting business solution</strong>.
+		<div
+			class="wi-success"
+			v-if="inquirySuccess">
+			<div class="wi-success-content">
+				<div class="wi-success-title">
+					Thank you!
+				</div>
+				<div class="wi-success-desc">
+					Your inquiry have been received! We’ll get back to you in 24 hours.
+				</div>
 			</div>
 
-			<el-form
-				:model="inquiryInfo"
-				:rules="inquiryFormRules"
-				ref="inquiryInfo"
-				size="small">
-				<el-form-item
-					v-for="inquiryForm in inquiryFormGroup"
-					:key="inquiryForm.id"
-					:prop="inquiryForm.tag">
-					<div>
-						<span class="required-span">*</span>{{inquiryForm.text}}
-					</div>
-					<el-input
-						type="text"
-						v-model="inquiryInfo[inquiryForm.tag]">
-					</el-input>
-				</el-form-item>
-				<el-form-item
-					prop="businessType">
-					<div>
-						<span class="required-span">*</span>Business Type :
-					</div>
-					<el-row>
-						<el-col
-							:span="12"
-							v-for="businessType in businessTypes"
-							:key="businessType.id">
-							<el-radio
-								v-model="inquiryInfo.businessType"
-								:label="businessType.tag">
-								{{businessType.text}}
-							</el-radio>
-						</el-col>
-					</el-row>
-				</el-form-item>
-				<el-form-item
-					prop="comment">
-					<div>
-						<span class="required-span">*</span>Comment :
-					</div>
-					<el-input
-						type="textarea"
-						:rows="4"
-						v-model="inquiryInfo.comment"
-						placeholder="Enter anything you would like to know here,such as  the product">
-					</el-input>
-				</el-form-item>
-
-				<el-form-item>
-					<div
-						class="wi-btn"
-						@click="createInquiry">
-						Submit
-					</div>
-				</el-form-item>
-			</el-form>
+			<recommend></recommend>
 		</div>
 	</div>
 </template>
@@ -73,10 +91,16 @@
 <script>
 	import inquiry from '@/apis/inquiry'
 
+	import recommend from '@/components/recommend'
+
 	export default {
 		layout: 'main',
+		components: {
+			recommend
+		},
 		data () {
 			return {
+				inquirySuccess: false,
 				inquiryInfo: {
 					name: '',
 					mobile: '',
@@ -122,8 +146,9 @@
 		},
 		methods: {
 			createInquiry () {
-				console.log(this.inquiryInfo)
-				inquiry.create({ inquiry: this.inquiryInfo })
+				inquiry.create({ inquiry: this.inquiryInfo }).then(() => {
+					this.inquirySuccess = true
+				})
 			},
 			goHome () {
 				this.$router.push({ path: '/' })
@@ -164,5 +189,22 @@
 		text-align: center;
 		padding: 5px 0;
 		border-radius: 5px;
+	}
+
+	.wi-success-content {
+		padding: 60px 8px;
+	}
+
+	.wi-success-title {
+		color: #dd127b;
+		font-size: 38px;
+		text-align: center;
+		font-style: italic;
+	}
+
+	.wi-success-desc {
+		text-align: center;
+		font-size: 16px;
+		padding: 10px 0;
 	}
 </style>
