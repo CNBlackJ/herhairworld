@@ -6,20 +6,17 @@
 			v-on:closeSidebar="closeSidebar">
 		</sidebar>
 		<nuxt/>
-		<cusFooter></cusFooter>
 	</div>
 </template>
 
 <script>
 	import navbar from '@/components/navbar'
 	import sidebar from '@/components/sidebar'
-	import footer from '@/components/footer'
 
 	export default {
 		components: {
 			navbar,
-			sidebar,
-			cusFooter: footer
+			sidebar
 		},
 		data () {
 			return {

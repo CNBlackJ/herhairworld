@@ -33,7 +33,9 @@
 				</div>
 			</div>
 
-			<div class="forgot-pw-con">
+			<div
+				class="forgot-pw-con"
+				@click="forgotPassword">
 				<div class="forgot-btn">
 					Forgot your password?
 				</div>
@@ -56,7 +58,7 @@
 				:model="userInfo"
 				:rules="joinFormRules"
 				ref="userInfo"
-				size="mini">
+				size="small">
 				<el-form-item
 					v-for="joinForm in joinFormGroups"
 					:key="joinForm.id"
@@ -85,7 +87,7 @@
 	import user from '@/apis/user'
 
 	export default {
-		layout: 'main',
+		layout: 'mainWithoutFooter',
 		data () {
       var validatePass = (rule, value, callback) => {
 					if (value !== this.userInfo.password) {
@@ -108,7 +110,7 @@
 					password: ''
 				},
 				joinFormGroups: [
-					{ id: 1, label: 'Username', type: 'text', placeholder: 'username', tag: 'username' },
+					{ id: 1, label: 'Username *', type: 'text', placeholder: 'username', tag: 'username' },
 					{ id: 2, label: 'Email *', type: 'text', placeholder: 'you@domain.com', tag: 'email' },
 					{ id: 3, label: 'Password *', type: 'password', placeholder: 'at least 6 characters', tag: 'password' },
 					{ id: 4, label: 'Confirm *', type: 'password', placeholder: 'conform password', tag: 'pwConfirm' },
@@ -137,9 +139,6 @@
 				}
 			}
 		},
-		created () {
-			this.$emit('hideFooter', true)
-		},
 		methods: {
 			signinTab () {
 				this.isSigninTab = true
@@ -160,6 +159,9 @@
 			},
 			login () {
 				user.login(this.loginForm)
+			},
+			forgotPassword () {
+				this.$router.push({ path: '/forgot' })
 			}
 		}
 	}

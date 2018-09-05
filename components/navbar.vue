@@ -23,7 +23,7 @@
 				this.$emit('clickBtn', { btn: 'menu' })
 			},
 			goUser () {
-				this.$router.push({ path: '/user' })
+				this.$router.push({ path: '/login' })
 			}
 		}
 	}
