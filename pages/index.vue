@@ -114,7 +114,7 @@
     },
     methods: {
       getInquiry () {
-        this.$store.commit('setIsInquiry')
+        this.$router.push({ path: '/inquiry' })
       },
       cancelInquiry () {
         this.$store.commit('setIsInquiry')

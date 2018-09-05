@@ -1,6 +1,6 @@
 <template>
 	<div class="wholesale-inquiry">
-		<div class="wi-header">
+		<div class="wi-header" @click="goHome">
 			<i class="el-icon-arrow-left"></i>
 			wholesale inquiry
 		</div>
@@ -20,7 +20,7 @@
 					:key="inquiryForm.id"
 					:prop="inquiryForm.tag">
 					<div>
-						<span>*</span>{{inquiryForm.text}}
+						<span class="required-span">*</span>{{inquiryForm.text}}
 					</div>
 					<el-input
 						type="text"
@@ -30,7 +30,7 @@
 				<el-form-item
 					prop="businessType">
 					<div>
-						<span>*</span>Business Type :
+						<span class="required-span">*</span>Business Type :
 					</div>
 					<el-row>
 						<el-col
@@ -39,7 +39,7 @@
 							:key="businessType.id">
 							<el-radio
 								v-model="inquiryInfo.businessType"
-								:label="businessType.id">
+								:label="businessType.tag">
 								{{businessType.text}}
 							</el-radio>
 						</el-col>
@@ -48,7 +48,7 @@
 				<el-form-item
 					prop="comment">
 					<div>
-						<span>*</span>Comment :
+						<span class="required-span">*</span>Comment :
 					</div>
 					<el-input
 						type="textarea"
@@ -71,6 +71,8 @@
 </template>
 
 <script>
+	import inquiry from '@/apis/inquiry'
+
 	export default {
 		layout: 'main',
 		data () {
@@ -90,11 +92,11 @@
 					{ id: 4, text: 'Country :', tag: 'country' }
 				],
 				businessTypes: [
-					{ id: 1, text: 'Boutique or Shop' },
-					{ id: 2, text: 'Website/Social Medica' },
-					{ id: 3, text: 'Salon/Stylist' },
-					{ id: 4, text: 'New Start Bunsiness' },
-					{ id: 5, text: 'Others' }
+					{ id: 1, text: 'Boutique or Shop', tag: 'boutiqueOrShop' },
+					{ id: 2, text: 'Website/Social Medica', tag: 'website' },
+					{ id: 3, text: 'Salon/Stylist', tag: 'salon' },
+					{ id: 4, text: 'New Start Bunsiness', tag: 'newStart' },
+					{ id: 5, text: 'Others', tag: 'others' }
 				],
 				inquiryFormRules: {
 					name: [
@@ -121,6 +123,10 @@
 		methods: {
 			createInquiry () {
 				console.log(this.inquiryInfo)
+				inquiry.create({ inquiry: this.inquiryInfo })
+			},
+			goHome () {
+				this.$router.push({ path: '/' })
 			}
 		}
 	}
@@ -145,6 +151,11 @@
 	.wi-description {
 		font-size: 14px;
 		padding-bottom: 20px;
+	}
+
+	.required-span {
+		color: #dd127b;
+		padding: 0 3px;
 	}
 
 	.wi-btn {
