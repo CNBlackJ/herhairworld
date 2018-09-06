@@ -73,6 +73,9 @@
     </div>
 
     <social></social>
+
+    <floatBtns
+      v-on:getInquiry="getInquiry"></floatBtns>
   </div>
 </template>
 
@@ -83,6 +86,7 @@
   import indexBtn from '@/components/indexBtn'
   import social from '@/components/social'
   import inquiry from '@/components/inquiry'
+  import floatBtns from '@/components/floatBtns'
 
   import store from '@/store'
 
@@ -95,7 +99,8 @@
       category,
       indexBtn,
       social,
-      inquiry
+      inquiry,
+      floatBtns
     },
     computed: {
       isInquiry () { 

@@ -1,11 +1,15 @@
 <template>
 	<div class="category-container">
 		<el-row>
-			<el-col :span="6" v-for="c in categories" :key="c.id">
+			<el-col
+				:span="6"
+				v-for="category in categories"
+				:key="category.id"
+				@click="goList(category.key)">
 				<div class="category-card">
-					<img :src="'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/' + c.img" class="image">
+					<img :src="'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/' + category.img" class="category-image">
 					<div class="category-title">
-						<span>{{c.title}}</span>
+						<span>{{category.title}}</span>
 					</div>
 				</div>
 			</el-col>
@@ -18,27 +22,17 @@
 		data () {
 			return {
 				categories: [
-					{
-						id: 1,
-						img: 'list_1.jpg',
-						title: 'Frontal'
-					},
-					{
-						id: 2,
-						img: 'list_2.jpg',
-						title: 'Closure'
-					},
-					{
-						id: 3,
-						img: 'list_3.jpg',
-						title: 'Lace Wigs'
-					},
-					{
-						id: 4,
-						img: 'list_4.jpg',
-						title: 'Hair Extension'
-					}
+					{ id: 1, img: 'list_1.jpg', title: 'Frontal', key:'frontal' },
+					{ id: 2, img: 'list_2.jpg', title: 'Closure', key:'closure' },
+					{ id: 3, img: 'list_3.jpg', title: 'Lace Wigs', key:'lace_wigs' },
+					{ id: 4, img: 'list_4.jpg', title: 'Hair Extension', key:'hair_extension' }
 				]
+			}
+		},
+		methods: {
+			goList (activeType) {
+				console.log(activeType)
+				this.$router.push({ path: `/list?type=${activeType}` })
 			}
 		}
 	}
@@ -49,7 +43,7 @@
 		padding: 0 10px;
 	}
 
-	.image {
+	.category-image {
 		width: 100%;
 		display: block;
 		border: 1px solid #cacaca;
