@@ -1,10 +1,10 @@
 <template>
 	<div class="dt-container">
-		<div class="title">
+		<div class="dt-title">
 			{{title}}
 		</div>
 
-		<el-row class="content">
+		<el-row class="dt-content">
 			<el-col
 				class="type-val"
 				:span="6"
@@ -47,11 +47,11 @@
 		font-size: 14px;
 	}
 
-	.title {
+	.dt-title {
 		padding: 20px 0 10px 0;
 	}
 
-	.content {
+	.dt-content {
 		width: 100%;
 		display: flex;
 		flex-direction: row;

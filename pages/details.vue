@@ -41,7 +41,9 @@
 				<div class="tp-price">$ {{totalPrice.toFixed(2)}}</div>
 			</div>
 
-			<purchase></purchase>
+			<purchase
+				v-on:addToCart="addToCart"
+				v-on:buyNow="buyNow"></purchase>
 		</div>
 
 		<div class="prod-descriptions">
@@ -55,6 +57,7 @@
 	import purchase from '@/components/purchase'
 
 	import product from '@/apis/product'
+	import cart from '@/apis/cart'
 
 	export default {
 		layout: 'main',
@@ -94,6 +97,21 @@
 			this.getProd(_id)
 		},
 		methods: {
+			addToCart () {
+				const cartInfo = {
+					userId: '',
+					productId: this.prod._id,
+					count: this.count
+				}
+				cart.create({ cart: cartInfo }).thne((resp) => {
+					console.log(resp.data)
+				}).catch(err => {
+					console.log(err)
+				})
+			},
+			buyNow () {
+				console.log('buy now')
+			},
 			plus (prodId) {
         this.isMinimum = false
         if (this.count >= this.prod.quantity) {

@@ -92,7 +92,7 @@
 
   export default {
     store,
-    layout: 'main',
+    layout: 'mainWithInquiry',
     components: {
       indexCarousel,
       indexContent,

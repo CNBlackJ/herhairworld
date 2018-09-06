@@ -1,10 +1,14 @@
 <template>
 	<div class="purchase-container">
 		<div class="purchase">
-			<div class="purchase-btn">
+			<div
+				class="purchase-btn"
+				@click="addToCart">
 				add to cart
 			</div>
-			<div class="purchase-btn buynow">
+			<div
+				class="purchase-btn buynow"
+				@click="buyNow">
 				buy now
 			</div>
 		</div>
@@ -18,6 +22,19 @@
 		</div>
 	</div>
 </template>
+
+<script>
+	export default {
+		methods: {
+			addToCart () {
+				this.$emit('addToCart')
+			},
+			buyNow () {
+				this.$emit('buyNow')
+			}
+		}
+	}
+</script>
 
 <style>
 	.purchase-container {

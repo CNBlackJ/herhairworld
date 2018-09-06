@@ -16,14 +16,35 @@
 		<div
 			class="signin-form"
 			v-if="isSigninTab">
-			<div class="email-input-con">
-				<i class="el-icon-message"></i>
-				<input type="text" class="email-input" placeholder="Enter Your Email">
-			</div>
-			<div class="password-input-con">
-				<i class="el-icon-news"></i>
-				<input type="password" class="password-input"  placeholder="Enter Your Password">
-			</div>
+
+			<el-form
+				ref="loginForm"
+				size="small"
+				:model="loginForm">
+				<el-form-item>
+					<div class="email-input-con">
+						<i class="el-icon-message"></i>
+						<el-input
+							class="email-input"
+							type="email"
+							v-model="loginForm.email"
+							placeholder="Enter Your Email">
+						</el-input>
+					</div>
+				</el-form-item>
+
+				<el-form-item>
+					<div class="password-input-con">
+						<i class="el-icon-news"></i>
+						<el-input
+							class="password-input"
+							type="password"
+							v-model="loginForm.password"
+							placeholder="Enter Your Password">
+						</el-input>
+					</div>
+				</el-form-item>
+			</el-form>
 
 			<div
 				class="signin-btn-con"
@@ -158,7 +179,13 @@
 				});
 			},
 			login () {
-				user.login(this.loginForm)
+				user.login(this.loginForm).then((resp) => {
+					if (resp.code === 200) {
+						this.$router.push({ path: '/user' })
+					} else {
+						alert(resp.error_msg)
+					}
+				}).catch(err => alert(err))
 			},
 			forgotPassword () {
 				this.$router.push({ path: '/forgot' })
@@ -229,10 +256,13 @@
 	}
 
 	.email-input {
-		border: none;
 		padding: 10px;
 		border-bottom: 1px solid #ddd;
 		width: 100%;
+	}
+
+	.email-input input {
+		border: none;
 	}
 
 	.password-input-con {
@@ -244,10 +274,13 @@
 	}
 
 	.password-input {
-		border: none;
 		padding: 10px;
 		border-bottom: 1px solid #ddd;
 		width: 100%;
+	}
+
+	.password-input input {
+		border: none;
 	}
 
 	.signin-btn-con {
