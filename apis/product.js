@@ -6,8 +6,8 @@ export default class product {
     return resp.data
   }
 
-  static async list ({ limit, skip, sort }) {
-    const queryStr = `?limit=${limit || 20}&skip=${skip || 0}&sort=${sort || '-createdAt'}`
+  static async list ({ limit, skip, sort, categoryId }) {
+    const queryStr = `?limit=${limit || 20}&skip=${skip || 0}&sort=${sort || '-createdAt'}&categoryId=${categoryId || ''}`
     const resp = await request.get(`/api/products${queryStr}`)
     return resp.data
   }

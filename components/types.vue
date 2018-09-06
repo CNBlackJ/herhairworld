@@ -39,7 +39,8 @@
 				})
 			},
       choice (_id) {
-        this.clickType = _id
+				this.clickType = _id
+				this.$emit('clickType', _id)
 			}
 		}
 	}

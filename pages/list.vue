@@ -1,6 +1,8 @@
 <template>
 	<div class="list-container">
-		<types :activeType="activeType"></types>
+		<types
+			:activeType="activeType"
+			v-on:clickType="listProd"></types>
 		<div class="prod-cards">
 			<el-row>
 				<el-col 
@@ -38,7 +40,6 @@
 		},
 		created () {
 			this.activeType = this.$route.query.type
-			console.log(this.activeType)
 			this.listProd()
 		},
 		data () {
@@ -48,8 +49,8 @@
 			}
 		},
 		methods: {
-			listProd () {
-				product.list({}).then((resp) => {
+			listProd (categoryId) {
+				product.list({ categoryId: categoryId || this.activeType }).then((resp) => {
 					this.prodList = resp.data
 				}).catch(err => {
 					console.log(err)
