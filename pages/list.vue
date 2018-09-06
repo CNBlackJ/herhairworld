@@ -38,6 +38,7 @@
 		},
 		created () {
 			this.activeType = this.$route.query.type
+			console.log(this.activeType)
 			this.listProd()
 		},
 		data () {

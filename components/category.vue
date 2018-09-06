@@ -4,12 +4,13 @@
 			<el-col
 				:span="6"
 				v-for="category in categories"
-				:key="category.id"
-				@click="goList(category.key)">
-				<div class="category-card">
-					<img :src="'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/' + category.img" class="category-image">
+				:key="category.id">
+				<div
+					class="category-card"
+					@click="goList(category._id)">
+					<img :src="category.img" class="category-image">
 					<div class="category-title">
-						<span>{{category.title}}</span>
+						<span>{{category.name}}</span>
 					</div>
 				</div>
 			</el-col>
@@ -18,20 +19,26 @@
 </template>
 
 <script>
+	import category from '@/apis/category'
+
 	export default {
 		data () {
 			return {
-				categories: [
-					{ id: 1, img: 'list_1.jpg', title: 'Frontal', key:'frontal' },
-					{ id: 2, img: 'list_2.jpg', title: 'Closure', key:'closure' },
-					{ id: 3, img: 'list_3.jpg', title: 'Lace Wigs', key:'lace_wigs' },
-					{ id: 4, img: 'list_4.jpg', title: 'Hair Extension', key:'hair_extension' }
-				]
+				categories: []
 			}
 		},
+		created () {
+			this.listCategory()
+		},
 		methods: {
+			listCategory () {
+				category.list({}).then((resp) => {
+					this.categories = resp.data
+				}).catch(err => {
+					console.log()
+				})
+			},
 			goList (activeType) {
-				console.log(activeType)
 				this.$router.push({ path: `/list?type=${activeType}` })
 			}
 		}

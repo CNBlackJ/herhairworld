@@ -13,9 +13,9 @@
 				</div>
 			</div>
 			<div class="sidebar-group">
-				<div v-for="sidebar in sidebars" :key="sidebar.id" class="sidebar-menu" @click="closeSidebar">
-					<div @click="goList(sidebar.key)">
-						{{ sidebar.text }}
+				<div v-for="category in categories" :key="category._id" class="sidebar-menu" @click="closeSidebar">
+					<div @click="goList(category._id)">
+						{{ category.name }}
 					</div>
 				</div>
 			</div>
@@ -25,9 +25,12 @@
 </template>
 
 <script>
+	import category from '@/apis/category'
+
 	export default {
 		data () {
 			return {
+				categories: [],
 				sidebars: [
 					{ id: 0, text: 'frontal', key:'frontal', url: '/list?type=frontal' },
 					{ id: 1, text: 'closure', key:'closure', url: '/list?type=closure' },
@@ -36,7 +39,17 @@
 				]
 			}
 		},
+		created () {
+			this.listCategory()
+		},
 		methods: {
+			listCategory () {
+				category.list({}).then((resp) => {
+					this.categories = resp.data
+				}).catch(err => {
+					console.log()
+				})
+			},
 			closeSidebar () {
 				this.$emit('closeSidebar')
 			},

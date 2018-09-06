@@ -1,10 +1,10 @@
 <template>
 	<div class="type-bar">
 		<div
-			v-for="item in columns"
-			:key="item.key"
-			@click="choice(item)"
-			:class="{'type-btn-click': item.key === clcikType}">
+			v-for="item in categories"
+			:key="item._id"
+			@click="choice(item._id)"
+			:class="{'type-btn-click': item._id === clickType }">
 			<a class="type-btn">
 				{{item.name}}
 			</a>
@@ -13,6 +13,7 @@
 </template>
 
 <script>
+	import category from '@/apis/category'
 
 	export default {
 		props: [
@@ -20,19 +21,25 @@
 		],
 		data () {
 			return {
-				columns: [
-					{ _id: 1, key: 'all', name: 'All' },
-					{ _id: 2, key: 'frontal', name: 'Frontal' },
-					{ _id: 3, key: 'closure', name: 'Closure' },
-					{ _id: 4, key: 'lace_wigs', name: 'Lace Wigs' },
-					{ _id: 5, key: 'hair_extension', name: 'Hair Extension' }
-				],
-				clcikType: this.activeType
+				categories: [],
+				clickType: this.activeType
 			}
 		},
+		created () {
+			this.listCategory()
+		},
     methods: {
-      choice ({ _id, key, name }) {
-        this.clcikType = key
+			listCategory () {
+				category.list({}).then((resp) => {
+					const categories = resp.data
+					categories.unshift({ _id: '5b8b3ec925890f283385d085', name: 'All' })
+					this.categories = categories
+				}).catch(err => {
+					console.log(err)
+				})
+			},
+      choice (_id) {
+        this.clickType = _id
 			}
 		}
 	}
