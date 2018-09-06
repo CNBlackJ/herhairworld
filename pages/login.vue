@@ -107,8 +107,19 @@
 <script>
 	import user from '@/apis/user'
 
+	import store from '@/store'
+
 	export default {
+		store,
 		layout: 'mainWithoutFooter',
+		computed: {
+      loginUser () { 
+        return this.$store.state.loginUser
+			},
+      isLogin () { 
+        return this.$store.state.isLogin
+      }
+    },
 		data () {
       var validatePass = (rule, value, callback) => {
 					if (value !== this.userInfo.password) {
@@ -181,6 +192,8 @@
 			login () {
 				user.login(this.loginForm).then((resp) => {
 					if (resp.code === 200) {
+						this.$store.dispatch('setLoginUser', { loginUser: resp.data })
+						this.$store.dispatch('setIslogin')
 						this.$router.push({ path: '/user' })
 					} else {
 						alert(resp.error_msg)

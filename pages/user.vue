@@ -86,6 +86,12 @@
 				]
 			}
 		},
+		fetch ({ store }) {
+			store.dispatch('setIslogin')
+		},
+		created () {
+			console.log(this.$store.state)
+		},
 		methods: {
 			menuClick (path) {
 				console.log(path)

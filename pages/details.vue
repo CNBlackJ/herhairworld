@@ -99,12 +99,16 @@
 		methods: {
 			addToCart () {
 				const cartInfo = {
-					userId: '',
+					userId: '5b91368f2bfd7c2fa8124652',
 					productId: this.prod._id,
 					count: this.count
 				}
-				cart.create({ cart: cartInfo }).thne((resp) => {
-					console.log(resp.data)
+				cart.create({ cart: cartInfo }).then((resp) => {
+					if (resp.code === 200) {
+						this.$router.push({ path: '/cart' })
+					} else {
+						alert(resp.error_msg)
+					}
 				}).catch(err => {
 					console.log(err)
 				})

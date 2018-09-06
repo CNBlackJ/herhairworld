@@ -7,7 +7,8 @@ const store = () => new Vuex.Store({
   state: {
     isInquiry: false,
     isLogin: false,
-    fixedFooter: false
+    fixedFooter: false,
+    loginUser: {}
   },
 
   mutations: {
@@ -19,6 +20,9 @@ const store = () => new Vuex.Store({
     },
     setFixedFooter (state) {
       state.fixedFooter = !state.fixedFooter
+    },
+    setLoginUser (state, { loginUser }) {
+      state.loginUser = loginUser
     }
   },
 
@@ -31,6 +35,9 @@ const store = () => new Vuex.Store({
     },
     setFixedFooter ({ commit }) {
       commit('setFixedFooter')
+    },
+    setLoginUser ({ commit }, { loginUser }) {
+      commit('setFixedFooter', { loginUser })
     }
   }
 })
