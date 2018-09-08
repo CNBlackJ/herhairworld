@@ -1,7 +1,7 @@
 <template>
 	<div class="category-container">
 		<el-row>
-			<el-col :span="8">
+			<el-col :lg="12" :xl="8">
 				<el-card>
 					<div slot="header">
 						<span>分类名称</span>

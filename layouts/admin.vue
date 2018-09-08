@@ -55,7 +55,7 @@ a {
 }
 
 .sidebar {
-	width: 10%;
+	width: 15%;
 }
 
 .main {

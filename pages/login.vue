@@ -1,107 +1,108 @@
 <template>
 	<div class="user-container">
-	<div class="user-btns">
-		<div
-			class="user-signin"
-			:class="{'user-btn-unselected': !isSigninTab}"
-			@click="signinTab">
-			Sign In</div>
-		<div
-			class="user-join"
-			:class="{'user-btn-unselected': isSigninTab}"
-			@click="signupTab">
-			Join Fress</div>
-		</div>
+		<div class="user-btns">
+			<div
+				class="user-signin"
+				:class="{'user-btn-unselected': !isSigninTab}"
+				@click="signinTab">
+				Sign In
+			</div>
+			<div
+				class="user-join"
+				:class="{'user-btn-unselected': isSigninTab}"
+				@click="signupTab">
+				Join Fress</div>
+			</div>
 
-		<div
-			class="signin-form"
-			v-if="isSigninTab">
+			<div
+				class="signin-form"
+				v-if="isSigninTab">
 
-			<el-form
-				ref="loginForm"
-				size="small"
-				:model="loginForm">
-				<el-form-item>
-					<div class="email-input-con">
-						<i class="el-icon-message"></i>
-						<el-input
-							class="email-input"
-							type="email"
-							v-model="loginForm.email"
-							placeholder="Enter Your Email">
-						</el-input>
+				<el-form
+					ref="loginForm"
+					size="small"
+					:model="loginForm">
+					<el-form-item>
+						<div class="email-input-con">
+							<i class="el-icon-message"></i>
+							<el-input
+								class="email-input"
+								type="email"
+								v-model="loginForm.email"
+								placeholder="Enter Your Email">
+							</el-input>
+						</div>
+					</el-form-item>
+
+					<el-form-item>
+						<div class="password-input-con">
+							<i class="el-icon-news"></i>
+							<el-input
+								class="password-input"
+								type="password"
+								v-model="loginForm.password"
+								placeholder="Enter Your Password">
+							</el-input>
+						</div>
+					</el-form-item>
+				</el-form>
+
+				<div
+					class="signin-btn-con"
+					@click="login">
+					<div class="signin-btn">
+						Sign In
 					</div>
-				</el-form-item>
+				</div>
 
-				<el-form-item>
-					<div class="password-input-con">
-						<i class="el-icon-news"></i>
-						<el-input
-							class="password-input"
-							type="password"
-							v-model="loginForm.password"
-							placeholder="Enter Your Password">
-						</el-input>
+				<div
+					class="forgot-pw-con"
+					@click="forgotPassword">
+					<div class="forgot-btn">
+						Forgot your password?
 					</div>
-				</el-form-item>
-			</el-form>
+				</div>
 
-			<div
-				class="signin-btn-con"
-				@click="login">
-				<div class="signin-btn">
-					Sign In
+				<div class="others-login-con">
+					<div class="others-login-desc">
+						Or Join with
+					</div>
+					<div class="fb-login">
+						<img class="fb-login-img" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/facebook.png">
+					</div>
 				</div>
 			</div>
 
 			<div
-				class="forgot-pw-con"
-				@click="forgotPassword">
-				<div class="forgot-btn">
-					Forgot your password?
-				</div>
-			</div>
+				class="join-form-group"
+				v-if="!isSigninTab">
+				<el-form
+					:model="userInfo"
+					:rules="joinFormRules"
+					ref="userInfo"
+					size="small">
+					<el-form-item
+						v-for="joinForm in joinFormGroups"
+						:key="joinForm.id"
+						:prop="joinForm.tag">
+						<span class="join-form-label">{{joinForm.label}}</span>
+						<el-input
+							:type="joinForm.type"
+							v-model="userInfo[joinForm.tag]"
+							:placeholder="joinForm.placeholder">
+						</el-input>
+					</el-form-item>
+				</el-form>
 
-			<div class="others-login-con">
-				<div class="others-login-desc">
-					Or Join with
-				</div>
-				<div class="fb-login">
-					<img class="fb-login-img" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/facebook.png">
+				<div
+					class="sign-up-btn"
+					@click="join('userInfo')">
+					<div class="sign-up-text">
+						Sign Up
+					</div>
 				</div>
 			</div>
 		</div>
-
-		<div
-			class="join-form-group"
-			v-if="!isSigninTab">
-			<el-form
-				:model="userInfo"
-				:rules="joinFormRules"
-				ref="userInfo"
-				size="small">
-				<el-form-item
-					v-for="joinForm in joinFormGroups"
-					:key="joinForm.id"
-					:prop="joinForm.tag">
-					<span class="join-form-label">{{joinForm.label}}</span>
-					<el-input
-						:type="joinForm.type"
-						v-model="userInfo[joinForm.tag]"
-						:placeholder="joinForm.placeholder">
-					</el-input>
-				</el-form-item>
-			</el-form>
-
-			<div
-				class="sign-up-btn"
-				@click="join('userInfo')">
-				<div class="sign-up-text">
-					Sign Up
-				</div>
-			</div>
-		</div>
-	</div>
 </template>
 
 <script>
@@ -162,7 +163,7 @@
 							{ min: 6, max: 16, message: 'max length 16 characters', trigger: 'change' }
 					],
 					pwConfirm: [
-							{ required: true, message: '请再次输入密码', trigger: 'blur' },
+							{ required: true, message: 'Please confirm your password', trigger: 'blur' },
 							{ validator: validatePass, trigger: 'change' }
 					],
 					mobile: [
@@ -255,7 +256,6 @@
 	.signin-form {
 		display: flex;
 		flex-direction: column;
-		align-items: left;
 		width: 100%;
 		padding: 10px 0;
 	}

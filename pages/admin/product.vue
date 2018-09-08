@@ -1,8 +1,8 @@
 <template>
 	<div class="admin-inquiry-con">
 		<div class="prod-sub-menu">
-			<el-row>
-				<el-col :span="2">
+			<el-row style="margin-bottom: 20px;">
+				<el-col :xl="2" :lg="3">
 					<el-button
 						type="success" 
 						plain
@@ -11,7 +11,7 @@
 						添加产品
 					</el-button>
 				</el-col>
-				<el-col :span="3">
+				<el-col :xl="3" :lg="3">
 					<el-button
 						type="primary" 
 						plain
@@ -20,7 +20,10 @@
 						产品数据导入
 					</el-button>
 				</el-col>
-				<el-col :span="19">
+			</el-row>
+
+			<el-row>
+				<el-col :xl="24" :lg="24">
 					<el-form :inline="true" :model="searchCondition" class="demo-form-inline">
 						<el-form-item label="产品名称">
 							<el-input v-model="searchCondition.name" placeholder="产品名称"></el-input>
@@ -65,7 +68,7 @@
 			title="导入产品数据"
 			:visible.sync="uploadDialogVisible"
 			:before-close="handleClose"
-			width="21%">
+			width="30%">
 			<el-upload
 				class="upload-demo"
 				drag
