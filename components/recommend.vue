@@ -1,7 +1,7 @@
 <template>
 	<div class="recommend-container">
 		<div class="recommend-title">
-			<strong>You may also like</strong>
+			MAY BE YOU LIKE
 		</div>
 
 		<el-row>

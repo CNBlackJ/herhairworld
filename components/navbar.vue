@@ -6,7 +6,7 @@
 		</div>
 
 		<div class="navbar-logo">
-			<img class="img-logo" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/logo.png">
+			<img @click="goHome" class="img-logo" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/logo.png">
 		</div>
 
 		<div class="navbar-right">
@@ -24,6 +24,9 @@
 			},
 			goUser () {
 				this.$router.push({ path: '/login' })
+			},
+			goHome () {
+				this.$router.push({ path: '/' })
 			}
 		}
 	}
