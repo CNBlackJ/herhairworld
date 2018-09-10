@@ -14,4 +14,13 @@ export default class user {
     const resp = await request.post('/api/users/login', { email, password: md5(password) })
     return resp.data
   }
+
+  static async autoCreate (mobile) {
+    const user = {
+      username: mobile,
+      mobile,
+      password: md5(mobile)
+    }
+    return this.create({ user })
+  }
 }

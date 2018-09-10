@@ -30,7 +30,21 @@
 						</el-input>
 					</el-form-item>
 					<el-form-item
-						prop="businessType">
+						prop="country">
+						<div>
+							<span class="required-span">*</span>Country :
+						</div>
+						<el-select v-model="inquiryInfo.country" filterable placeholder="please choose">
+							<el-option
+								v-for="country in countries"
+								:key="country.value"
+								:label="country.label"
+								:value="country.value">
+							</el-option>
+						</el-select>
+					</el-form-item>
+					<el-form-item
+						prop="businessTypes">
 						<div>
 							<span class="required-span">*</span>Business Type :
 						</div>
@@ -39,11 +53,13 @@
 								:span="12"
 								v-for="businessType in businessTypes"
 								:key="businessType.id">
-								<el-radio
-									v-model="inquiryInfo.businessType"
-									:label="businessType.tag">
-									{{businessType.text}}
-								</el-radio>
+								<el-checkbox-group
+									v-model="inquiryInfo.businessTypes">
+									<el-checkbox
+										:label="businessType.tag">
+										{{businessType.text}}
+									</el-checkbox>
+								</el-checkbox-group>
 							</el-col>
 						</el-row>
 					</el-form-item>
@@ -63,7 +79,7 @@
 					<el-form-item>
 						<div
 							class="wi-btn"
-							@click="createInquiry">
+							@click="createInquiry('inquiryInfo')">
 							Submit
 						</div>
 					</el-form-item>
@@ -101,19 +117,36 @@
 		data () {
 			return {
 				inquirySuccess: false,
+				countries: [
+					{
+						value: 'china',
+						label: 'China'
+					}, {
+						value: 'canada',
+						label: 'Canada'
+					}, {
+						value: 'russia',
+						label: 'Russia'
+					}, {
+						value: 'usa',
+						label: 'United States of America'
+					}, {
+						value: 'india',
+						label: 'India'
+					}
+				],
 				inquiryInfo: {
 					name: '',
 					mobile: '',
 					email: '',
 					country: '',
-					businessType: '',
+					businessTypes: [],
 					comment: ''
 				},
 				inquiryFormGroup: [
 					{ id: 1, text: 'Name :', tag: 'name' },
 					{ id: 2, text: 'Phone :', tag: 'mobile' },
-					{ id: 3, text: 'Email :', tag: 'email' },
-					{ id: 4, text: 'Country :', tag: 'country' }
+					{ id: 3, text: 'Email :', tag: 'email' }
 				],
 				businessTypes: [
 					{ id: 1, text: 'Boutique or Shop', tag: 'boutiqueOrShop' },
@@ -127,16 +160,17 @@
 						{ required: true, message: 'Please enter your name', trigger: 'blur' }
 					],
 					mobile: [
-						{ required: true, message: 'Please enter your phone', trigger: 'blur' }
+						{ required: true, message: 'Please enter your phone', trigger: 'blur' },
+						{ type: 'number', message: 'It must be number', trigger: 'blur' }
 					],
 					email: [
 						{ required: true, message: 'Please enter your email', trigger: 'blur' }
 					],
 					country: [
-						{ required: true, message: 'Please enter your country', trigger: 'blur' }
+						{ required: true, message: 'Please choose your country', trigger: 'blur' }
 					],
-					businessType: [
-						{ required: true, message: 'Please chooce your business type', trigger: 'blur' }
+					businessTypes: [
+						{ type: 'array', required: true, message: 'Please chooce your business type', trigger: 'blur' }
 					],
 					comment: [
 						{ required: true, message: 'Please enter your comment', trigger: 'blur' }
@@ -145,9 +179,22 @@
 			}
 		},
 		methods: {
-			createInquiry () {
-				inquiry.create({ inquiry: this.inquiryInfo }).then(() => {
-					this.inquirySuccess = true
+			createInquiry (formName) {
+				this.$refs[formName].validate((valid) => {
+					if (valid) {
+						inquiry.create({ inquiry: this.inquiryInfo }).then((resp) => {
+							if (!resp.error_code) {
+								this.inquirySuccess = true
+							} else {
+								alert(resp.error_msg)
+							}
+						}).catch((err) => {
+							alert(err)
+						})
+					} else {
+						console.log('error submit!!');
+						return false;
+					}
 				})
 			},
 			goHome () {
