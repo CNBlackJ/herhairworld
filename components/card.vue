@@ -38,6 +38,8 @@
 <script>
 	import favorite from '@/apis/favorite'
 
+	import LS from '@/apis/localStorage'
+
 	export default {
 		props: [
 			'prod'
@@ -71,7 +73,7 @@
 					})
 				} else {
 					// save into localstorage
-					localStorage.productId = id
+					LS.createFavorite(id)
 				}
 			}
 		}
