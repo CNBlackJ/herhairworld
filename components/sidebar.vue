@@ -57,8 +57,9 @@
 				this.$router.push({ path:'/' })
 				this.closeSidebar()
 			},
-			goList (activeType) {
-				this.$router.push({ path: `/list?type=${activeType}` })
+			goList (categoryId) {
+				this.$store.dispatch('setSelectedCat', { categoryId })
+				this.$router.push({ path: '/list' })
 			}
 		}
 	}

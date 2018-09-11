@@ -1,20 +1,20 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import product from '@/apis/product'
+
 Vue.use(Vuex)
 
 const store = () => new Vuex.Store({
   state: {
-    isInquiry: false,
     isLogin: false,
     fixedFooter: false,
-    loginUser: {}
+    loginUser: {},
+    selectedCat: '',
+    productList: []
   },
 
   mutations: {
-    setIsInquiry (state) {
-      state.isInquiry = !state.isInquiry
-    },
     setIslogin (state) {
       state.isLogin = !state.isLogin
     },
@@ -23,13 +23,16 @@ const store = () => new Vuex.Store({
     },
     setLoginUser (state, { loginUser }) {
       state.loginUser = loginUser
+    },
+    setSelectedCat (state, { categoryId }) {
+      state.selectedCat = categoryId
+    },
+    setProductList (state, { productList }) {
+      state.productList = productList
     }
   },
 
   actions: {
-    setIsInquiry ({ commit }) {
-      commit('setIsInquiry')
-    },
     setIslogin ({ commit }) {
       commit('setIslogin')
     },
@@ -38,6 +41,14 @@ const store = () => new Vuex.Store({
     },
     setLoginUser ({ commit }, { loginUser }) {
       commit('setLoginUser', { loginUser })
+    },
+    setSelectedCat ({ commit, dispatch }, { categoryId }) {
+      commit('setSelectedCat', { categoryId })
+      dispatch('setProductList')
+    },
+    async setProductList ({ state, commit }) {
+      const resp = await product.list({ categoryId: state.selectedCat })
+      if (!resp.error_code) commit('setProductList', { productList: resp.data })
     }
   }
 })

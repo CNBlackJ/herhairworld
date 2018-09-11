@@ -39,7 +39,7 @@
 				})
 			},
 			goList (activeType) {
-				this.$router.push({ path: `/list?type=${activeType}` })
+				this.$router.push({ path: '/list' })
 			}
 		}
 	}

@@ -1,6 +1,5 @@
 <template>
   <div class="index-container">
-    <inquiry v-if="isInquiry" v-on:updateInquiry="cancelInquiry"></inquiry>
     <indexCarousel></indexCarousel>
     <indexContent title="featured categories"></indexContent>
     <category></category>
@@ -85,7 +84,6 @@
   import category from '@/components/category'
   import indexBtn from '@/components/indexBtn'
   import social from '@/components/social'
-  import inquiry from '@/components/inquiry'
   import floatBtns from '@/components/floatBtns'
 
   export default {
@@ -96,7 +94,6 @@
       category,
       indexBtn,
       social,
-      inquiry,
       floatBtns
     },
     data () {
@@ -112,9 +109,6 @@
     methods: {
       getInquiry () {
         this.$router.push({ path: '/inquiry' })
-      },
-      cancelInquiry () {
-        this.$store.commit('setIsInquiry')
       }
     }
   }
