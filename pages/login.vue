@@ -108,19 +108,8 @@
 <script>
 	import user from '@/apis/user'
 
-	import store from '@/store'
-
 	export default {
-		store,
 		layout: 'mainWithoutFooter',
-		computed: {
-      loginUser () { 
-        return this.$store.state.loginUser
-			},
-      isLogin () { 
-        return this.$store.state.isLogin
-      }
-    },
 		data () {
       var validatePass = (rule, value, callback) => {
 					if (value !== this.userInfo.password) {

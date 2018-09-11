@@ -86,9 +86,6 @@
 				]
 			}
 		},
-		fetch ({ store }) {
-			store.dispatch('setIslogin')
-		},
 		created () {
 			console.log(this.$store.state)
 		},

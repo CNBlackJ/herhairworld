@@ -44,8 +44,7 @@
 		],
 		data () {
 			return {
-				price: 53,
-				sales: 999
+				desc: ''
 			}
 		},
 		methods: {
@@ -56,17 +55,24 @@
 				console.log(id)
 			},
 			addToFav (id) {
-				const favoriteInfo = {
-					productId: id,
-					userId: ''
-				}
-				favorite.create({ favorite: favoriteInfo }).then((resp) => {
-					if (!resp.error_code) {
-						console.log('fav success')
+				if (this.$store.state.isLogin) {
+					const favoriteInfo = {
+						productId: id,
+						userId: this.$store.state.loginUser._id
 					}
-				}).catch(err => {
-					console.log(err)
-				})
+					favorite.create({ favorite: favoriteInfo }).then((resp) => {
+						if (!resp.error_code) {
+							console.log('fav success')
+						} else {
+							console.log(resp.error_msg)
+						}
+					}).catch(err => {
+						console.log(err)
+					})
+				} else {
+					// save into localstorage
+					localStorage.productId = id
+				}
 			}
 		}
 	}

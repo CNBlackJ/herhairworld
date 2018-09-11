@@ -1,8 +1,8 @@
 import request from './request'
 
 export default class favorite {
-  static async create ({ category }) {
-    const resp = await request.post('/api/favorites', category)
+  static async create ({ favorite }) {
+    const resp = await request.post('/api/favorites', favorite)
     return resp.data
   }
 

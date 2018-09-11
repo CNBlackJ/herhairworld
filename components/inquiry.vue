@@ -108,10 +108,8 @@
 <script>
 	import inquiry from '@/apis'
 
-	import store from '@/store'
 
 	export default {
-		store,
 		data () {
 			return {
 				inquiryInfo: {

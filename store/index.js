@@ -37,7 +37,7 @@ const store = () => new Vuex.Store({
       commit('setFixedFooter')
     },
     setLoginUser ({ commit }, { loginUser }) {
-      commit('setFixedFooter', { loginUser })
+      commit('setLoginUser', { loginUser })
     }
   }
 })

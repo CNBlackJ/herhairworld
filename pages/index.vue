@@ -88,10 +88,7 @@
   import inquiry from '@/components/inquiry'
   import floatBtns from '@/components/floatBtns'
 
-  import store from '@/store'
-
   export default {
-    store,
     layout: 'mainWithInquiry',
     components: {
       indexCarousel,
@@ -101,11 +98,6 @@
       social,
       inquiry,
       floatBtns
-    },
-    computed: {
-      isInquiry () { 
-        return this.$store.state.isInquiry
-      }
     },
     data () {
       return {
