@@ -36,4 +36,8 @@ export default class LS {
     }
     window.localStorage.carts = JSON.stringify(newCarts)
   }
+
+  static saveAuthToken (authToken) {
+    window.localStorage['auth_token'] = authToken
+  }
 }

@@ -54,5 +54,9 @@ module.exports = {
   */
   plugins: [
     '@/plugins/element-ui'
+  ],
+  modules: [
+    // Simple usage
+    'cookie-universal-nuxt'
   ]
 }

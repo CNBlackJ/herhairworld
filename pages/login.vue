@@ -107,6 +107,8 @@
 
 <script>
 	import user from '@/apis/user'
+	import auth from '@/apis/auth'
+	import LS from '@/apis/localStorage'
 
 	export default {
 		layout: 'mainWithoutFooter',
@@ -180,10 +182,11 @@
 				});
 			},
 			login () {
-				user.login(this.loginForm).then((resp) => {
+				auth.login(this.loginForm).then((resp) => {
 					if (resp.code === 200) {
 						this.$store.dispatch('setLoginUser', { loginUser: resp.data })
 						this.$store.dispatch('setIslogin')
+						LS.saveAuthToken(resp.data)
 						this.$router.push({ path: '/user' })
 					} else {
 						alert(resp.error_msg)

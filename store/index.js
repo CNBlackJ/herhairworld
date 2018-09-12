@@ -67,7 +67,7 @@ const store = () => new Vuex.Store({
         const resp = await favorite.list({ userId: state.loginUser._id })
         if (!resp.error_code) favoriteList = resp.data.map(ele => ele._id)
       } else {
-        favoriteList = LS.getLocalStorage('favorites')
+        favoriteList = JSON.parse(LS.getLocalStorage('favorites')) || []
       }
       commit('setFavoriteList', { favoriteList })
     },
@@ -77,7 +77,7 @@ const store = () => new Vuex.Store({
         const resp = await cart.list({ userId: state.loginUser._id })
         if (!resp.error_code) cartList = resp.data.map(ele => ele._id)
       } else {
-        cartList = LS.getLocalStorage('carts')
+        cartList = JSON.parse(LS.getLocalStorage('carts')) || []
       }
       commit('setCartList', { cartList })
     }

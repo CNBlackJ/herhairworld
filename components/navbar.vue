@@ -2,7 +2,7 @@
 	<div class="navbar-container">
 		<div class="navbar-left">
 			<img @click="openMenu" class="navbar-icon icon-menu" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/menu.png">
-			<img @click="goPage('/login')" class="navbar-icon icon-user" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/user.png">
+			<img @click="goPage($store.state.isLogin ? '/user' : '/login')" class="navbar-icon icon-user" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/user.png">
 		</div>
 
 		<div class="navbar-logo">
@@ -11,13 +11,16 @@
 
 		<div class="navbar-right">
 			<img @click="goPage('/search')" class="navbar-icon icon-search" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/search.png">
-			<img @click="goPage('/cart')" class="navbar-icon icon-cart" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/cart.png">
+			<img @click="goPage('/cart')" class="navbar-icon icon-cart" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/uncart.png">
 		</div>
 	</div>
 </template>
 
 <script>
 	export default {
+		created () {
+			console.log('aa')
+		},
 		methods: {
 			openMenu () {
 				this.$emit('clickBtn', { btn: 'menu' })

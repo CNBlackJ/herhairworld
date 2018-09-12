@@ -13,6 +13,11 @@ export default class product {
     return resp.data
   }
 
+  static async getByIds ({ productIds }) {
+    const resp = await request.post('/api/products/getByIds', { productIds })
+    return resp.data
+  }
+
   static async getById ({ id }) {
     const resp = await request.get(`/api/products/${id}`)
     return resp.data

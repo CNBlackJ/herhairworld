@@ -26,7 +26,7 @@
 							<img
 								@click="addToCart(prod._id)"
 								class="prod-fav-icon"
-								:src="'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/' + ($store.state.cartList.indexOf(prod._id) > -1 ? 'user.png' : 'cart.png')">
+								:src="'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/' + ($store.state.cartList.indexOf(prod._id) > -1 ? 'cart.png' : 'uncart.png')">
 						</div>
 					</div>
 				</div>
@@ -37,7 +37,7 @@
 
 <script>
 	import favorite from '@/apis/favorite'
-
+	import cart from '@/apis/cart'
 	import LS from '@/apis/localStorage'
 
 	export default {
@@ -57,12 +57,9 @@
 			showDetail (id) {
 				this.$router.push({ path: `/details?_id=${id}` })
 			},
-			addToCart (id) {
+			addToCart (productId) {
 				if (this.$store.state.isLogin) {
-					const cartInfo = {
-						productId: id,
-						userId: this.$store.state.loginUser._id
-					}
+					const cartInfo = { productId }
 					cart.create({ cart: cartInfo }).then((resp) => {
 						if (!resp.error_code) {
 							console.log('create cart success')
@@ -71,7 +68,7 @@
 						}
 					})
 				} else {
-					LS.createCart(id)
+					LS.createCart(productId)
 				}
 				this.$store.dispatch('setCartList')
 			},
