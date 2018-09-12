@@ -11,4 +11,15 @@ export default class cart {
     const resp = await request.get(`/api/carts${queryStr}`)
     return resp.data
   }
+
+  static async update ({ cart }) {
+    const id = cart._id
+    delete cart._id
+    delete cart.createdAt
+    delete cart.updatedAt
+    delete cart.isDeleted
+    delete cart.__v
+    const resp = await request.put(`/api/carts/${id}`, cart)
+    return resp.data
+  }
 }

@@ -21,20 +21,31 @@ export default class LS {
     window.localStorage.favorites = JSON.stringify(favs)
   }
 
-  static createCart (prodId) {
+  static createCart ({ prodId, count }) {
     const carts = window.localStorage.carts
     let newCarts = []
     if (!carts) {
-      newCarts.push(prodId)
+      newCarts.push({ prodId, count })
     } else {
       newCarts = JSON.parse(carts)
-      if (newCarts.indexOf(prodId) > -1) {
-        _.remove(newCarts, ele => ele === prodId)
+      if (newCarts.map(e => e.prodId).indexOf(prodId) > -1) {
+        _.remove(newCarts, ele => ele.prodId === prodId)
       } else {
-        newCarts.push(prodId)
+        newCarts.push({ prodId, count })
       }
     }
     window.localStorage.carts = JSON.stringify(newCarts)
+  }
+
+  static addCartCount ({ prodId, count }) {
+    if (window.localStorage.carts) {
+      const carts = JSON.parse(window.localStorage.carts)
+      carts.map(cart => {
+        if (cart.prodId === prodId) cart.count = count
+        return cart
+      })
+      window.localStorage.carts = JSON.stringify(carts)
+    }
   }
 
   static saveAuthToken (authToken) {

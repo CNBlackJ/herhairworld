@@ -28,7 +28,7 @@
 						<div>
 							<el-input-number
 								v-model="counter"
-								@change="handleChange"
+								@change="addCount"
 								size="mini"
 								:min="1" 
 								:max="10">
@@ -45,18 +45,35 @@
 </template>
 
 <script>
+	import cart from '@/apis/cart'
+	import LS from '@/apis/localStorage'
+
 	export default {
 		props: [
 			'cartProd'
 		],
 		data () {
 			return {
-				counter: 1
+				counter: this.cartProd.count
 			}
 		},
     methods: {
-      handleChange(value) {
-        console.log(value);
+      addCount () {
+				if (this.$store.state.isLogin) {
+					const cartInfo = {
+						productId: cartProd._id,
+						count: this.counter
+					}
+					cart.update({ cart: cartInfo }).then((resp) => {
+						if (!resp.error_code) {
+							console.log('success to add to cart')
+						} else {
+							console.log(resp.error_msg)
+						}
+					})
+				} else {
+					LS.addCartCount({ prodId: this.cartProd._id, count: this.counter })
+				}
       }
     }
 	}	

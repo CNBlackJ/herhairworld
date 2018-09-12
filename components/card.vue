@@ -26,7 +26,7 @@
 							<img
 								@click="addToCart(prod._id)"
 								class="prod-fav-icon"
-								:src="'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/' + ($store.state.cartList.indexOf(prod._id) > -1 ? 'cart.png' : 'uncart.png')">
+								:src="'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/' + ($store.state.cartList.map(e => e.prodId).indexOf(prod._id) > -1 ? 'cart.png' : 'uncart.png')">
 						</div>
 					</div>
 				</div>
@@ -68,7 +68,7 @@
 						}
 					})
 				} else {
-					LS.createCart(productId)
+					LS.createCart({ prodId: productId, count: 1 })
 				}
 				this.$store.dispatch('setCartList')
 			},
