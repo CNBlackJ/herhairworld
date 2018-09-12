@@ -38,11 +38,6 @@
 		},
 		created () {
 			this.$store.dispatch('setProductList')
-		},
-		data () {
-			return {
-				prodList: []
-			}
 		}
 	}
 </script>

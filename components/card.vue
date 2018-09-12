@@ -20,13 +20,13 @@
 							<img
 								@click="addToFav(prod._id)"
 								class="prod-fav-icon"
-								src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/unfavorite.png">
+								:src="'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/' + ($store.state.favoriteList.indexOf(prod._id) > -1 ? 'favorite.png' : 'unfavorite.png')">
 						</div>
 						<div>
 							<img
 								@click="addToCart(prod._id)"
 								class="prod-fav-icon"
-								src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/cart.png">
+								:src="'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/' + ($store.state.cartList.indexOf(prod._id) > -1 ? 'user.png' : 'cart.png')">
 						</div>
 					</div>
 				</div>
@@ -49,12 +49,31 @@
 				desc: ''
 			}
 		},
+		created () {
+			this.$store.dispatch('setFavoriteList')
+			this.$store.dispatch('setCartList')
+		},
 		methods: {
 			showDetail (id) {
 				this.$router.push({ path: `/details?_id=${id}` })
 			},
 			addToCart (id) {
-				console.log(id)
+				if (this.$store.state.isLogin) {
+					const cartInfo = {
+						productId: id,
+						userId: this.$store.state.loginUser._id
+					}
+					cart.create({ cart: cartInfo }).then((resp) => {
+						if (!resp.error_code) {
+							console.log('create cart success')
+						} else {
+							console.log(resp.error_msg)
+						}
+					})
+				} else {
+					LS.createCart(id)
+				}
+				this.$store.dispatch('setCartList')
 			},
 			addToFav (id) {
 				if (this.$store.state.isLogin) {
@@ -64,17 +83,16 @@
 					}
 					favorite.create({ favorite: favoriteInfo }).then((resp) => {
 						if (!resp.error_code) {
-							console.log('fav success')
+							console.log('create fav success')
 						} else {
 							console.log(resp.error_msg)
 						}
-					}).catch(err => {
-						console.log(err)
 					})
 				} else {
 					// save into localstorage
 					LS.createFavorite(id)
 				}
+				this.$store.dispatch('setFavoriteList')
 			}
 		}
 	}
