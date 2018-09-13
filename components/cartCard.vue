@@ -3,7 +3,7 @@
 		<el-row>
 			<el-col :xs="2">
 				<div class="cc-checkbox-con">
-					<el-checkbox @change="checkCartProd" v-model="checkedProdId"></el-checkbox>
+					<el-checkbox @change="checkCartProd" v-model="cartProd.isChecked"></el-checkbox>
 				</div>
 			</el-col>
 			<el-col :xs="6">
@@ -56,7 +56,7 @@
 		],
 		data () {
 			return {
-				checkedProdId: '',
+				isChecked: this.$store.state.cartCheckedProds.indexOf(this.cartProd._id) > -1,
 				counter: this.$store.state.cartList.find(e => e.prodId === this.cartProd._id).count
 			}
 		},
@@ -81,6 +81,7 @@
 			},
 			removeFromCart (prodId) {
 				LS.removeFromCart({ prodId })
+				this.$store.dispatch('setCartCheckedProds', { checkedProdId: this.cartProd._id })
 				this.$store.dispatch('setCartList')
 				this.$store.dispatch('setCartProdsDetail')
 				this.$store.dispatch('setCartTotalPrice')

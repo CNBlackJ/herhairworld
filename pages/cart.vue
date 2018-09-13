@@ -11,7 +11,7 @@
 		<div class="cart-counter-con">
 			<div class="cart-counter">
 				<div class="cart-checkall">
-					<input type="checkbox">
+					<el-checkbox @change="checkAll" v-model="isCheckedAll"></el-checkbox>
 					<div class="select-all-text">all</div>
 				</div>
 
@@ -39,12 +39,20 @@
 		},
 		data () {
 			return {
-				cartProdList: []
+				cartProdList: [],
+				isCheckedAll: false
 			}
 		},
 		created () {
 			this.$store.dispatch('setCartList')
 			this.$store.dispatch('setCartProdsDetail')
+		},
+		methods: {
+			checkAll () {
+				this.$store.dispatch('checkAllCartProd', { isCheckedAll: this.isCheckedAll })
+				this.$store.dispatch('setCartProdsDetail')
+				this.$store.dispatch('setCartTotalPrice')
+			}
 		}
 	}
 </script>

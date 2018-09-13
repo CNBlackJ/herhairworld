@@ -92,8 +92,10 @@ const store = () => new Vuex.Store({
     async setCartTotalPrice ({ state, commit }) {
       let cartTotalPrice = 0
       state.cartCheckedProds.forEach(checkedProdId => {
-        const price = _.find(state.cartProdsDetail, e => e._id === checkedProdId).price
-        const count = _.find(state.cartList, e => e.prodId === checkedProdId).count
+        const prodInProdDetail = _.find(state.cartProdsDetail, e => e._id === checkedProdId)
+        const prodInCartList = _.find(state.cartList, e => e.prodId === checkedProdId)
+        const price = prodInProdDetail ? prodInProdDetail.price : 0
+        const count = prodInCartList ? prodInCartList.count : 0
         cartTotalPrice += (price * count)
       })
       commit('setCartTotalPrice', { cartTotalPrice })
@@ -102,9 +104,14 @@ const store = () => new Vuex.Store({
       const productIds = state.cartList.map(ele => ele.prodId)
       const resp = await product.getByIds({ productIds })
       if (!resp.error_code) {
-        commit('setCartProdsDetail', { cartProdsDetail: resp.data })
+        const cartProdsDetail = resp.data.map(ele => {
+          ele.isChecked = Boolean(_.find(state.cartCheckedProds, e => e === ele._id))
+          return ele
+        })
+        commit('setCartProdsDetail', { cartProdsDetail })
       } else {
         console.log(resp.error_msg)
+        commit('setCartProdsDetail', { cartProdsDetail: [] })
       }
     },
     async setCartCheckedProds ({ state, commit }, { checkedProdId }) {
@@ -114,6 +121,10 @@ const store = () => new Vuex.Store({
       } else {
         cartCheckedProds.push(checkedProdId)
       }
+      commit('setCartCheckedProds', { cartCheckedProds })
+    },
+    async checkAllCartProd ({ state, commit }, { isCheckedAll }) {
+      const cartCheckedProds = isCheckedAll ? state.cartList.map(ele => ele.prodId) : []
       commit('setCartCheckedProds', { cartCheckedProds })
     }
   }

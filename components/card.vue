@@ -71,6 +71,7 @@
 					LS.createCart({ prodId: productId, count: 1 })
 				}
 				this.$store.dispatch('setCartList')
+				this.$store.dispatch('setCartCheckedProds', { checkedProdId: productId })
 			},
 			addToFav (id) {
 				if (this.$store.state.isLogin) {
