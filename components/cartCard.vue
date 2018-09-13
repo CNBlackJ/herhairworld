@@ -22,7 +22,7 @@
 						</div>
 					</div>
 					<div class="cc-price">
-						${{cartProd.price}}
+						${{cartProd.price.toFixed(2)}}
 					</div>
 					<div class="cc-counter">
 						<div>
@@ -35,7 +35,9 @@
 							</el-input-number>
 						</div>
 						<div>
-							<i class="el-icon-close"></i>
+							<i
+								class="el-icon-close"
+								@click="removeFromCart(cartProd._id)"></i>
 						</div>
 					</div>
 				</div>
@@ -74,7 +76,14 @@
 				} else {
 					LS.addCartCount({ prodId: this.cartProd._id, count: this.counter })
 				}
-      }
+				this.$store.dispatch('setCartList')
+				this.$emit('refrashCartProdList')
+			},
+			removeFromCart (prodId) {
+				LS.removeFromCart({ prodId })
+				this.$store.dispatch('setCartList')
+				this.$emit('refrashCartProdList')
+			}
     }
 	}	
 </script>

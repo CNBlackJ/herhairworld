@@ -48,6 +48,14 @@ export default class LS {
     }
   }
 
+  static removeFromCart ({ prodId }) {
+    if (window.localStorage.carts) {
+      const carts = JSON.parse(window.localStorage.carts)
+      _.remove(carts, ele => ele.prodId === prodId)
+      window.localStorage.carts = JSON.stringify(carts)
+    }
+  }
+
   static saveAuthToken (authToken) {
     window.localStorage['auth_token'] = authToken
   }
