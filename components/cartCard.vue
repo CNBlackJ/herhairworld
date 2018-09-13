@@ -3,7 +3,7 @@
 		<el-row>
 			<el-col :xs="2">
 				<div class="cc-checkbox-con">
-					<input type="checkbox">
+					<el-checkbox @change="checkCartProd" v-model="checkedProdId"></el-checkbox>
 				</div>
 			</el-col>
 			<el-col :xs="6">
@@ -56,16 +56,14 @@
 		],
 		data () {
 			return {
-				counter: this.cartProd.count
+				checkedProdId: '',
+				counter: this.$store.state.cartList.find(e => e.prodId === this.cartProd._id).count
 			}
 		},
     methods: {
       updateCount () {
 				if (this.$store.state.isLogin) {
-					const cartInfo = {
-						productId: cartProd._id,
-						count: this.counter
-					}
+					const cartInfo = { productId: cartProd._id, count: this.counter }
 					cart.update({ cart: cartInfo }).then((resp) => {
 						if (!resp.error_code) {
 							console.log('success to add to cart')
@@ -77,12 +75,19 @@
 					LS.addCartCount({ prodId: this.cartProd._id, count: this.counter })
 				}
 				this.$store.dispatch('setCartList')
-				this.$emit('refrashCartProdList')
+				if (_.find(this.$store.state.cartCheckedProds, e => this.cartProd._id)) {
+					this.$store.dispatch('setCartTotalPrice')
+				}
 			},
 			removeFromCart (prodId) {
 				LS.removeFromCart({ prodId })
 				this.$store.dispatch('setCartList')
-				this.$emit('refrashCartProdList')
+				this.$store.dispatch('setCartProdsDetail')
+				this.$store.dispatch('setCartTotalPrice')
+			},
+			checkCartProd () {
+				this.$store.dispatch('setCartCheckedProds', { checkedProdId: this.cartProd._id })
+				this.$store.dispatch('setCartTotalPrice')
 			}
     }
 	}	

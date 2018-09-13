@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import _ from 'lodash'
 
 import product from '@/apis/product'
 import favorite from '@/apis/favorite'
@@ -16,7 +17,10 @@ const store = () => new Vuex.Store({
     selectedCat: '',
     productList: [],
     favoriteList: [],
-    cartList: []
+    cartList: [],
+    cartProdsDetail: [],
+    cartTotalPrice: 0,
+    cartCheckedProds: []
   },
 
   mutations: {
@@ -38,6 +42,15 @@ const store = () => new Vuex.Store({
     },
     setCartList (state, { cartList }) {
       state.cartList = cartList
+    },
+    setCartTotalPrice (state, { cartTotalPrice }) {
+      state.cartTotalPrice = cartTotalPrice
+    },
+    setCartProdsDetail (state, { cartProdsDetail }) {
+      state.cartProdsDetail = cartProdsDetail
+    },
+    setCartCheckedProds (state, { cartCheckedProds }) {
+      state.cartCheckedProds = cartCheckedProds
     }
   },
 
@@ -75,6 +88,33 @@ const store = () => new Vuex.Store({
         cartList = LS.getLocalStorage('carts') ? JSON.parse(LS.getLocalStorage('carts')) : []
       }
       commit('setCartList', { cartList })
+    },
+    async setCartTotalPrice ({ state, commit }) {
+      let cartTotalPrice = 0
+      state.cartCheckedProds.forEach(checkedProdId => {
+        const price = _.find(state.cartProdsDetail, e => e._id === checkedProdId).price
+        const count = _.find(state.cartList, e => e.prodId === checkedProdId).count
+        cartTotalPrice += (price * count)
+      })
+      commit('setCartTotalPrice', { cartTotalPrice })
+    },
+    async setCartProdsDetail ({ state, commit }) {
+      const productIds = state.cartList.map(ele => ele.prodId)
+      const resp = await product.getByIds({ productIds })
+      if (!resp.error_code) {
+        commit('setCartProdsDetail', { cartProdsDetail: resp.data })
+      } else {
+        console.log(resp.error_msg)
+      }
+    },
+    async setCartCheckedProds ({ state, commit }, { checkedProdId }) {
+      const cartCheckedProds = state.cartCheckedProds
+      if (_.find(cartCheckedProds, e => e === checkedProdId)) {
+        _.remove(cartCheckedProds, e => e === checkedProdId)
+      } else {
+        cartCheckedProds.push(checkedProdId)
+      }
+      commit('setCartCheckedProds', { cartCheckedProds })
     }
   }
 })

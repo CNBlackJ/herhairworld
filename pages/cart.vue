@@ -1,12 +1,12 @@
 <template>
 	<div class="cart-container">
 		<div
-			v-for="cartProd in cartProdList"
+			v-for="cartProd in $store.state.cartProdsDetail"
 			:key="cartProd._id"
 			class="cart-card-con">
 			<cartCard
-				:cartProd="cartProd"
-				v-on:refrashCartProdList="getCartProds"></cartCard>
+				:cartProd="cartProd">
+			</cartCard>
 		</div>
 		<div class="cart-counter-con">
 			<div class="cart-counter">
@@ -17,9 +17,9 @@
 
 				<div class="price-counter">
 					<div class="cart-subtotal">Subtotal:</div>
-					<div class="cart-price-counter">$ {{totalPrice.toFixed(2)}}</div>
+					<div class="cart-price-counter">$ {{$store.state.cartTotalPrice.toFixed(2)}}</div>
 					<div class="cart-checkout-btn">
-						CHECKOUT ( {{cartProdList.length}} )
+						CHECKOUT ( {{$store.state.cartCheckedProds.length}} )
 					</div>
 				</div>
 			</div>
@@ -39,42 +39,12 @@
 		},
 		data () {
 			return {
-				cartProdList: [],
-				totalPrice: 0
+				cartProdList: []
 			}
 		},
 		created () {
 			this.$store.dispatch('setCartList')
-			this.getCartProds()
-		},
-		methods: {
-			getCartProds () {
-				const cartList = this.$store.state.cartList
-				const productIds = cartList.map(ele => ele.prodId)
-				if (productIds.length) {
-					product.getByIds({ productIds }).then((resp) => {
-						if (!resp.error_code) { 
-							this.cartProdList = resp.data.map(ele => {
-								const existCart = cartList.find(e => e.prodId === ele._id)
-								ele.count = existCart ? existCart.count : 1
-								return ele
-							})
-							this.getTotalPrice()
-						}
-						else { console.log(resp.error_msg) }
-					})
-				} else {
-					this.cartProdList = []
-					this.totalPrice = 0
-				}
-			},
-			getTotalPrice () {
-				let totalPrice = 0
-				this.cartProdList.forEach(cartProd => {
-					totalPrice += (cartProd.price * cartProd.count )
-				})
-				this.totalPrice = totalPrice
-			}
+			this.$store.dispatch('setCartProdsDetail')
 		}
 	}
 </script>
@@ -122,6 +92,7 @@
 	}
 
 	.cart-subtotal {
+		font-size: 10px;
 		padding-right: 10px;
 	}
 
