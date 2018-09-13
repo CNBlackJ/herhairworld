@@ -20,14 +20,12 @@ const store = () => new Vuex.Store({
   },
 
   mutations: {
-    setIslogin (state) {
-      state.isLogin = !state.isLogin
-    },
     setFixedFooter (state) {
       state.fixedFooter = !state.fixedFooter
     },
     setLoginUser (state, { loginUser }) {
       state.loginUser = loginUser
+      state.isLogin = true
     },
     setSelectedCat (state, { categoryId }) {
       state.selectedCat = categoryId
@@ -44,9 +42,6 @@ const store = () => new Vuex.Store({
   },
 
   actions: {
-    setIslogin ({ commit }) {
-      commit('setIslogin')
-    },
     setFixedFooter ({ commit }) {
       commit('setFixedFooter')
     },

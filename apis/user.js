@@ -3,6 +3,11 @@ import md5 from 'md5'
 import request from './request'
 
 export default class user {
+  static async getUser () {
+    const resp = await request.get('/api/user')
+    return resp.data
+  }
+
   static async create ({ user }) {
     delete user.pwConfirm
     user.password = md5(user.password)

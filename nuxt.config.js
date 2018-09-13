@@ -3,7 +3,8 @@ module.exports = {
     // 页面加载后 定位在顶部
     scrollBehavior: function (to, from, savedPosition) {
       return { x: 0, y: 0 }
-    }
+    },
+    middleware: 'checkAuth'
   },
   /*
   ** Headers of the page

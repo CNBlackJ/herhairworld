@@ -28,7 +28,7 @@
 						<div>
 							<el-input-number
 								v-model="counter"
-								@change="addCount"
+								@change="updateCount"
 								size="mini"
 								:min="1" 
 								:max="10">
@@ -58,7 +58,7 @@
 			}
 		},
     methods: {
-      addCount () {
+      updateCount () {
 				if (this.$store.state.isLogin) {
 					const cartInfo = {
 						productId: cartProd._id,

@@ -18,9 +18,6 @@
 
 <script>
 	export default {
-		created () {
-			console.log('aa')
-		},
 		methods: {
 			openMenu () {
 				this.$emit('clickBtn', { btn: 'menu' })

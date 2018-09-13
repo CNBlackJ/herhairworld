@@ -15,9 +15,9 @@
 
 				<div class="price-counter">
 					<div class="cart-subtotal">Subtotal:</div>
-					<div class="cart-price-counter">$ 0</div>
+					<div class="cart-price-counter">$ {{totalPrice}}</div>
 					<div class="cart-checkout-btn">
-						CHECKOUT ( 0 )
+						CHECKOUT ( {{cartProdList.length}} )
 					</div>
 				</div>
 			</div>
@@ -37,23 +37,37 @@
 		},
 		data () {
 			return {
-				cartProdList: []
+				cartProdList: [],
+				totalPrice: 0
 			}
 		},
 		created () {
 			this.$store.dispatch('setCartList')
-			const cartList = this.$store.state.cartList
-			const productIds = cartList.map(ele => ele.prodId)
-			product.getByIds({ productIds }).then((resp) => {
-				if (!resp.error_code) { 
-					this.cartProdList = resp.data.map(ele => {
-						const existCart = cartList.find(e => e.prodId === ele._id)
-						ele.count = existCart ? existCart.count : 1
-						return ele
-					})
-				}
-				else { console.log(resp.error_msg) }
-			})
+			this.getCartProds()
+		},
+		methods: {
+			getCartProds () {
+				const cartList = this.$store.state.cartList
+				const productIds = cartList.map(ele => ele.prodId)
+				product.getByIds({ productIds }).then((resp) => {
+					if (!resp.error_code) { 
+						this.cartProdList = resp.data.map(ele => {
+							const existCart = cartList.find(e => e.prodId === ele._id)
+							ele.count = existCart ? existCart.count : 1
+							return ele
+						})
+						this.getTotalPrice()
+					}
+					else { console.log(resp.error_msg) }
+				})
+			},
+			getTotalPrice () {
+				let totalPrice = 0
+				this.cartProdList.forEach(cartProd => {
+					totalPrice += (cartProd.price * cartProd.count )
+				})
+				this.totalPrice = totalPrice
+			}
 		}
 	}
 </script>

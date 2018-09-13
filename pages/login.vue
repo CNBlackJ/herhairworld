@@ -184,8 +184,6 @@
 			login () {
 				auth.login(this.loginForm).then((resp) => {
 					if (resp.code === 200) {
-						this.$store.dispatch('setLoginUser', { loginUser: resp.data })
-						this.$store.dispatch('setIslogin')
 						LS.saveAuthToken(resp.data)
 						this.$router.push({ path: '/user' })
 					} else {
