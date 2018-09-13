@@ -18,7 +18,9 @@
 				<div class="price-counter">
 					<div class="cart-subtotal">Subtotal:</div>
 					<div class="cart-price-counter">$ {{$store.state.cartTotalPrice.toFixed(2)}}</div>
-					<div class="cart-checkout-btn">
+					<div
+						@click="goToPurchase"
+						class="cart-checkout-btn">
 						CHECKOUT ( {{$store.state.cartCheckedProds.length}} )
 					</div>
 				</div>
@@ -52,6 +54,9 @@
 				this.$store.dispatch('checkAllCartProd', { isCheckedAll: this.isCheckedAll })
 				this.$store.dispatch('setCartProdsDetail')
 				this.$store.dispatch('setCartTotalPrice')
+			},
+			goToPurchase () {
+				this.$router.push({ path: '/purchase' })
 			}
 		}
 	}
