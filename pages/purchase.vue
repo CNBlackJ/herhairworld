@@ -16,7 +16,10 @@
 				class="purchase-address-con">
 				<div slot="header">
 					<span class="purchase-card-title">Shipping Address</span>
-					<el-button style="float: right; padding: 3px 0" type="text">
+					<el-button
+						@click="$router.push({ path: '/address' })"
+						style="float: right; padding: 3px 0"
+						type="text">
 						<i class="el-icon-plus"></i>
 						Add Address
 					</el-button>

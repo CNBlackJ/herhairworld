@@ -12,7 +12,7 @@
 		<div class="user-middle">
 			<div class="user-middle-left">
 				<div class="user-middle-img">
-					<img class="middle-img" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/cart.png">
+					<img class="middle-img" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/uncart.png">
 				</div>
 				<div class="user-middle-content">
 					<div class="user-middle-count">
@@ -93,6 +93,7 @@
 		methods: {
 			menuClick (path) {
 				console.log(path)
+				if (['/address'].indexOf(path) > -1) this.$router.push({ path })
 			},
 			signOut () {
 				console.log('signOut')

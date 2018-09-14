@@ -72,9 +72,6 @@
     </div>
 
     <social></social>
-
-    <floatBtns
-      v-on:getInquiry="getInquiry"></floatBtns>
   </div>
 </template>
 
@@ -84,7 +81,6 @@
   import category from '@/components/category'
   import indexBtn from '@/components/indexBtn'
   import social from '@/components/social'
-  import floatBtns from '@/components/floatBtns'
 
   export default {
     layout: 'mainWithInquiry',
@@ -93,8 +89,7 @@
       indexContent,
       category,
       indexBtn,
-      social,
-      floatBtns
+      social
     },
     data () {
       return {

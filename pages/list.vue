@@ -12,13 +12,10 @@
 					</card>
 				</el-col>
 			</el-row>
-			<div class="pagination">
-				<el-pagination
-					background
-					small
-					layout="prev, pager, next"
-					:total="100">
-				</el-pagination>
+		</div>
+		<div class="list-nomore">
+			<div class="list-nomore-text">
+				no mores～
 			</div>
 		</div>
 	</div>
@@ -31,7 +28,7 @@
 	import product from '@/apis/product'
 
 	export default {
-		layout: 'main',
+		layout: 'mainWithInquiry',
 		components: {
 			types,
 			card
@@ -46,6 +43,7 @@
 	.list-container {
 		padding-top: 50px;
 		background-color: #efefef;
+		min-height: 450px;
 	}
 
 	.prod-cards {
@@ -56,8 +54,12 @@
     padding: 6px;
 	}
 
-	.pagination {
+	.list-nomore {
+		padding: 20px;
+	}
+
+	.list-nomore-text {
 		text-align: center;
-		padding: 10px 0;
+		font-size: 14px;
 	}
 </style>

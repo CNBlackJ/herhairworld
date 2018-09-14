@@ -3,7 +3,7 @@
 		<div
 			class="wi-form-group"
 			v-if="!inquirySuccess">
-			<div class="wi-header" @click="goHome">
+			<div class="wi-header" @click="goBack">
 				<i class="el-icon-arrow-left"></i>
 				wholesale inquiry
 			</div>
@@ -197,8 +197,8 @@
 					}
 				})
 			},
-			goHome () {
-				this.$router.push({ path: '/' })
+			goBack () {
+				this.$router.back(-1)
 			}
 		}
 	}

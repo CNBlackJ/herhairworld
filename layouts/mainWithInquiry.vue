@@ -9,6 +9,8 @@
 		<div class="withinquiry-footer">
 			<cusFooter></cusFooter>
 		</div>
+		<floatBtns
+		v-on:getInquiry="getInquiry"></floatBtns>
 	</div>
 </template>
 
@@ -16,12 +18,14 @@
 	import navbar from '@/components/navbar'
 	import sidebar from '@/components/sidebar'
 	import footer from '@/components/footer'
+	import floatBtns from '@/components/floatBtns'
 
 	export default {
 		components: {
 			navbar,
 			sidebar,
-			cusFooter: footer
+			cusFooter: footer,
+			floatBtns
 		},
 		data () {
 			return {
@@ -34,7 +38,10 @@
 			},
 			closeSidebar () {
 				this.isCloseMenu = true
-			}
+			},
+			getInquiry () {
+        this.$router.push({ path: '/inquiry' })
+      }
 		}
 	}
 </script>
