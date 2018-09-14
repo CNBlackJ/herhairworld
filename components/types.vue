@@ -4,7 +4,7 @@
 			v-for="item in categories"
 			:key="item._id"
 			@click="choice(item._id)"
-			:class="{'type-btn-click': item._id === ($store.state.selectedCat || '5b8b3ec925890f283385d085') }">
+			:class="{'type-btn-click': item._id === ($store.state.selectedCart || '5b8b3ec925890f283385d085') }">
 			<a class="type-btn">
 				{{item.name}}
 			</a>
@@ -35,7 +35,7 @@
 				})
 			},
       choice (categoryId) {
-				this.$store.dispatch('setSelectedCat', { categoryId })
+				this.$store.dispatch('setselectedCart', { categoryId })
 			}
 		}
 	}

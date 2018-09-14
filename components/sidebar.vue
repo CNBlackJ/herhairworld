@@ -58,7 +58,7 @@
 				this.closeSidebar()
 			},
 			goList (categoryId) {
-				this.$store.dispatch('setSelectedCat', { categoryId })
+				this.$store.dispatch('setselectedCart', { categoryId })
 				this.$router.push({ path: '/list' })
 			}
 		}

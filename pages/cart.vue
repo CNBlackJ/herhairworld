@@ -46,8 +46,9 @@
 			}
 		},
 		created () {
-			this.$store.dispatch('setCartList')
-			this.$store.dispatch('setCartProdsDetail')
+			this.$store.dispatch('setCartList').then(() => {
+				this.$store.dispatch('setCartProdsDetail')
+			})
 		},
 		methods: {
 			checkAll () {

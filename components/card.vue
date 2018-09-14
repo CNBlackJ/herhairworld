@@ -59,7 +59,7 @@
 			},
 			addToCart (productId) {
 				if (this.$store.state.isLogin) {
-					const cartInfo = { productId }
+					const cartInfo = { productId, count: 1 }
 					cart.create({ cart: cartInfo }).then((resp) => {
 						if (!resp.error_code) {
 							console.log('create cart success')

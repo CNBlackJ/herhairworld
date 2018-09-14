@@ -22,4 +22,11 @@ export default class cart {
     const resp = await request.put(`/api/carts/${id}`, cart)
     return resp.data
   }
+
+  static async updateByProdId ({ cart }) {
+    const productId = cart.productId
+    delete cart.productId
+    const resp = await request.put(`/api/carts/productId/${productId}`, cart)
+    return resp.data
+  }
 }

@@ -14,7 +14,7 @@ const store = () => new Vuex.Store({
     isLogin: false,
     fixedFooter: false,
     loginUser: {},
-    selectedCat: '',
+    selectedCart: '',
     productList: [],
     favoriteList: [],
     cartList: [],
@@ -29,10 +29,10 @@ const store = () => new Vuex.Store({
     },
     setLoginUser (state, { loginUser }) {
       state.loginUser = loginUser
-      state.isLogin = true
+      state.isLogin = !state.isLogin
     },
-    setSelectedCat (state, { categoryId }) {
-      state.selectedCat = categoryId
+    setselectedCart (state, { categoryId }) {
+      state.selectedCart = categoryId
     },
     setProductList (state, { productList }) {
       state.productList = productList
@@ -61,12 +61,12 @@ const store = () => new Vuex.Store({
     setLoginUser ({ commit }, { loginUser }) {
       commit('setLoginUser', { loginUser })
     },
-    setSelectedCat ({ commit, dispatch }, { categoryId }) {
-      commit('setSelectedCat', { categoryId })
+    setselectedCart ({ commit, dispatch }, { categoryId }) {
+      commit('setselectedCart', { categoryId })
       dispatch('setProductList')
     },
     async setProductList ({ state, commit }) {
-      const resp = await product.list({ categoryId: state.selectedCat })
+      const resp = await product.list({ categoryId: state.selectedCart })
       if (!resp.error_code) commit('setProductList', { productList: resp.data })
     },
     async setFavoriteList ({ state, commit }) {
@@ -82,11 +82,16 @@ const store = () => new Vuex.Store({
     async setCartList ({ state, commit }) {
       let cartList = []
       if (state.isLogin) {
-        const resp = await cart.list({ userId: state.loginUser._id })
-        if (!resp.error_code) cartList = resp.data.map(ele => ele._id)
+        const resp = await cart.list({})
+        if (!resp.error_code) {
+          cartList = resp.data.map(ele => {
+            return { prodId: ele.productId, count: ele.count }
+          })
+        }
       } else {
         cartList = LS.getLocalStorage('carts') ? JSON.parse(LS.getLocalStorage('carts')) : []
       }
+      console.log(cartList)
       commit('setCartList', { cartList })
     },
     async setCartTotalPrice ({ state, commit }) {
@@ -102,17 +107,17 @@ const store = () => new Vuex.Store({
     },
     async setCartProdsDetail ({ state, commit }) {
       const productIds = state.cartList.map(ele => ele.prodId)
-      const resp = await product.getByIds({ productIds })
-      if (!resp.error_code) {
-        const cartProdsDetail = resp.data.map(ele => {
-          ele.isChecked = Boolean(_.find(state.cartCheckedProds, e => e === ele._id))
-          return ele
-        })
-        commit('setCartProdsDetail', { cartProdsDetail })
-      } else {
-        console.log(resp.error_msg)
-        commit('setCartProdsDetail', { cartProdsDetail: [] })
+      let cartProdsDetail = []
+      if (productIds.length) {
+        const resp = await product.getByIds({ productIds })
+        if (!resp.error_code) {
+          cartProdsDetail = resp.data.map(ele => {
+            ele.isChecked = Boolean(_.find(state.cartCheckedProds, e => e === ele._id))
+            return ele
+          })
+        }
       }
+      commit('setCartProdsDetail', { cartProdsDetail })
     },
     async setCartCheckedProds ({ state, commit }, { checkedProdId }) {
       const cartCheckedProds = state.cartCheckedProds

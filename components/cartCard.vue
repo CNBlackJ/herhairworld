@@ -63,8 +63,8 @@
     methods: {
       updateCount () {
 				if (this.$store.state.isLogin) {
-					const cartInfo = { productId: cartProd._id, count: this.counter }
-					cart.update({ cart: cartInfo }).then((resp) => {
+					const cartInfo = { productId: this.cartProd._id, count: this.counter }
+					cart.updateByProdId({ cart: cartInfo }).then((resp) => {
 						if (!resp.error_code) {
 							console.log('success to add to cart')
 						} else {

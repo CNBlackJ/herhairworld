@@ -62,7 +62,9 @@
 		</div>
 
 		<div class="user-btn-group">
-			<div class="user-signout">
+			<div
+				@click="signOut"
+				class="user-signout">
 				<div class="signout-text">
 					Sign Out
 				</div>
@@ -72,6 +74,8 @@
 </template>
 
 <script>
+	import LS from '@/apis/localStorage'
+
 	export default {
 		layout: 'main',
 		data () {
@@ -89,6 +93,12 @@
 		methods: {
 			menuClick (path) {
 				console.log(path)
+			},
+			signOut () {
+				console.log('signOut')
+				LS.removeLocalStorage('auth_token')
+				this.$store.dispatch('setLoginUser', { loginUser: {} })
+				this.$router.push({ path: '/login' })
 			}
 		}
 	}

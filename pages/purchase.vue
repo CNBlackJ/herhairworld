@@ -45,7 +45,7 @@
 				</div>
 				<div>
 					<el-select
-						v-model="payment"
+						v-model="orderInfo.payment"
 						placeholder="Choose your payment method"
 						class="payment-selector">
 						<el-option
@@ -69,13 +69,15 @@
 					</el-button>
 				</div>
 				<div>
-					<el-input v-model="couponCode" placeholder="$3 off with coupon code"></el-input>
+					<el-input v-model="orderInfo.couponCode" placeholder="$3 off with coupon code"></el-input>
 				</div>
 			</el-card>
 		</div>
 
 		<div class="purchase-submit">
-			<div class="purchase-submit-text">
+			<div
+				@click="createOrder"
+				class="purchase-submit-text">
 				Submit
 			</div>
 		</div>
@@ -87,13 +89,22 @@
 		layout: 'main',
 		data () {
 			return {
-				couponCode: '',
-				payment: '',
 				payments: [
 					{ id: 1, name: 'Paypal', value: 'paypal' },
 					{ id: 2, name: 'AliPay', value: 'alipay' },
 					{ id: 3, name: 'ApplePay', value: 'applepay' }
-				]
+				],
+				orderInfo: {
+					addressId: '',
+					userId: '',
+					payment: '',
+					couponCode: ''
+				}
+			}
+		},
+		methods: {
+			createOrder () {
+				console.log(this.orderInfo)
 			}
 		}
 	}
