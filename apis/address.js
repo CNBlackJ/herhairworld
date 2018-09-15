@@ -32,4 +32,10 @@ export default class address {
     const resp = await request.post(`/api/addresses/setDefault/${id}`)
     return resp.data
   }
+
+  static async getDefault () {
+    const queryStr = `?limit=1&sort=-isDefault`
+    const resp = await request.get(`/api/addresses${queryStr}`)
+    return resp.data
+  }
 }

@@ -30,11 +30,11 @@
 					</div>
 					<div class="purchase-address-info">
 						<div class="pa-userinfo">
-							<div class="pa-userinfo-text"><strong>Name:</strong> VinliCheung</div>
-							<div class="pa-userinfo-text">13631146428</div>
+							<div class="pa-userinfo-text"><strong>Name:</strong> {{defaultAddress.firstName}} {{defaultAddress.lastName}}</div>
+							<div class="pa-userinfo-text">{{defaultAddress.mobile}}</div>
 						</div>
 						<div class="pa-address">
-							<strong>Address:</strong> 10600 North Tantau AvenueCupertino, CA 95014
+							<strong>Address:</strong> {{defaultAddress.addressLine1}} {{defaultAddress.addressLine2}}
 						</div>
 					</div>
 				</div>
@@ -88,8 +88,18 @@
 </template>
 
 <script>
+	import address from '@/apis/address'
+
+	import addressCard from '@/components/addressCard'
+
 	export default {
 		layout: 'main',
+		components: {
+			addressCard
+		},
+		created () {
+			this.getAddress()
+		},
 		data () {
 			return {
 				payments: [
@@ -102,12 +112,18 @@
 					userId: '',
 					payment: '',
 					couponCode: ''
-				}
+				},
+				defaultAddress: {}
 			}
 		},
 		methods: {
 			createOrder () {
 				console.log(this.orderInfo)
+			},
+			getAddress () {
+				address.getDefault().then((resp) => {
+					this.defaultAddress = resp.data[0]
+				})
 			}
 		}
 	}
@@ -158,6 +174,7 @@
 	.purchase-address-info {
 		display: flex;
 		flex-direction: column;
+		width: 100%;
 	}
 
 	.pa-userinfo {
@@ -165,6 +182,7 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
+		width: 100%;
 	}
 
 	.pa-userinfo-text {
