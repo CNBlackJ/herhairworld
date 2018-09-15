@@ -7,30 +7,66 @@
 				</div>
 				<div class="address-card-info">
 					<div class="pa-userinfo">
-						<div class="pa-userinfo-text"><strong>Name:</strong> VinliCheung</div>
-						<div class="pa-userinfo-text">13631146428</div>
+						<div class="pa-userinfo-text"><strong>Name:</strong> {{address.firstName}} {{address.lastName}}</div>
+						<div class="pa-userinfo-text">{{address.mobile}}</div>
 					</div>
 					<div class="pa-address">
-						<strong>Address:</strong> 10600 North Tantau AvenueCupertino, CA 95014
+						<strong>Address:</strong> {{address.addressLine1}} {{address.addressLine2}}
 					</div>
 				</div>
 			</div>
 			<div class="address-card-operation">
 				<div class="default-address">
-					<el-checkbox>Default</el-checkbox>
+					<el-checkbox
+						v-model="address.isDefault"
+						@change="setDefault(address._id)">Default</el-checkbox>
 				</div>
 				<div class="address-edit">
 					<div class="address-edit-text">
 						<el-button type="text" icon="el-icon-edit">Edit</el-button>
 					</div>
 					<div class="address-edit-text">
-						<el-button type="text" icon="el-icon-delete">Delete</el-button>
+						<el-button
+							@click="deleteAddress(address._id)"
+							type="text"
+							icon="el-icon-delete">
+							Delete</el-button>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </template>
+
+<script>
+	import address from '@/apis/address'
+
+	export default {
+		props: [
+			'address'
+		],
+		methods: {
+			deleteAddress (id) {
+				address.delete({ id }).then((resp) => {
+					if (!resp.error_code) {
+						this.$emit('listAddress')
+					} else {
+						console.log(resp.error_msg)
+					}
+				})
+			},
+			setDefault (id) {
+				address.setDefault({ id }).then((resp) => {
+					if (!resp.error_code) {
+						this.$emit('listAddress')
+					} else {
+						console.log(resp.error_msg)
+					}
+				})
+			}
+		}
+	}
+</script>
 
 <style>
 	.address-card-container {
@@ -62,6 +98,7 @@
 	.address-card-info {
 		display: flex;
 		flex-direction: column;
+		width: 100%;
 	}
 
 	.pa-userinfo {
@@ -69,6 +106,7 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
+		width: 100%;
 	}
 
 	.pa-userinfo-text {

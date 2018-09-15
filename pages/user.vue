@@ -5,7 +5,7 @@
 				<img class="user-avatar" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/user.png">
 			</div>
 			<div class="user-name">
-				123@gmail.com
+				{{$store.state.loginUser.email}}
 			</div>
 		</div>
 
@@ -16,7 +16,7 @@
 				</div>
 				<div class="user-middle-content">
 					<div class="user-middle-count">
-						0
+						{{$store.state.cartList.lengths}}
 					</div>
 					<div class="user-middle-text">
 						Shoopping Cart

@@ -14,7 +14,11 @@
 			</div>
 			<div class="address-group">
 				<addressCard
-					v-for="item in 5" :key="item.id"></addressCard>
+					v-on:listAddress="listAddress"
+					v-for="address in addressList"
+					:key="address._id" 
+					:address="address">
+				</addressCard>
 			</div>
 		</el-card>
 
@@ -27,31 +31,42 @@
 			:before-close="handleClose">
 			<div class="address-form">
 				<el-form
+					:rules="addressRule"
 					size="small"
 					ref="addressForm"
 					:model="addressForm">
 					<el-row>
 						<el-col :span="11">
-							<el-form-item label="FirstName *">
+							<el-form-item
+								label="FirstName"
+								prop="firstName">
 								<el-input v-model="addressForm.firstName"></el-input>
 							</el-form-item>
 						</el-col>
 						<el-col :span="11" :offset="2">
-							<el-form-item label="LastName *">
+							<el-form-item
+								label="LastName"
+								prop="lastName">
 								<el-input v-model="addressForm.lastName"></el-input>
 							</el-form-item>
 						</el-col>
 					</el-row>
-					<el-form-item label="Address Line 1 *">
+					<el-form-item
+						label="Address Line 1"
+						prop="addressLine1">
 						<el-input v-model="addressForm.addressLine1"></el-input>
 					</el-form-item>
 					<el-form-item label="Address Line 2">
 						<el-input v-model="addressForm.addressLine2"></el-input>
 					</el-form-item>
-					<el-form-item label="City *">
+					<el-form-item 
+						label="City"
+						prop="city">
 						<el-input v-model="addressForm.city"></el-input>
 					</el-form-item>
-					<el-form-item label="Destination Country/Region *">
+					<el-form-item
+						label="Destination Country/Region"
+						prop="country">
 						<el-select 
 							v-model="addressForm.country"
 							style="width: 100%">
@@ -75,23 +90,38 @@
 							</el-option>
 						</el-select>
 					</el-form-item>
-					<el-form-item label="API / Postal Code *">
+					<el-form-item
+						label="ZIP / Postal Code"
+						prop="zipCode">
 						<el-input v-model="addressForm.zipCode"></el-input>
 					</el-form-item>
-					<el-form-item label="Phone Number *">
-						<el-input v-model="addressForm.mobile">
-							<el-select v-model="addressForm.mobilePrefix" slot="prepend" placeholder="请选择">
-								<el-option label="+1" value="1"></el-option>
-								<el-option label="+86" value="86"></el-option>
-								<el-option label="+020" value="020"></el-option>
-							</el-select>
-						</el-input>
-					</el-form-item>
+					<el-row>
+						<el-col :span="6">
+							<el-form-item
+								label="Phone"
+								prop="mobilePrefix">
+								<el-select
+									v-model="addressForm.mobilePrefix">
+									<el-option label="+1" value="1"></el-option>
+									<el-option label="+86" value="86"></el-option>
+									<el-option label="+020" value="020"></el-option>
+								</el-select>
+							</el-form-item>
+						</el-col>
+						<el-col :span="18">
+							<el-form-item
+								class="phone-number"
+								prop="mobile"
+								label="number">
+								<el-input v-model="addressForm.mobile"></el-input>
+							</el-form-item>
+						</el-col>
+					</el-row>
 				</el-form>
 			</div>
 			<span slot="footer" class="dialog-footer">
 				<el-button @click="addressFormVisible = false">Back</el-button>
-				<el-button class="address-save-btn" type="primary" @click="saveAddress">Save</el-button>
+				<el-button class="address-save-btn" type="primary" @click="createAddress('addressForm')">Save</el-button>
 			</span>
 		</el-dialog>
 	
@@ -100,6 +130,8 @@
 
 <script>
 	import addressCard from '@/components/addressCard'
+	
+	import address from '@/apis/address'
 
 	export default {
 		layout: 'main',
@@ -108,6 +140,7 @@
 		},
 		data () {
 			return {
+				addressList: [],
 				addressFormVisible: false,
 				countries: [ 
 					{ id: 1, value: 'United State', value: 'unitedState' },
@@ -131,8 +164,37 @@
 					zipCode: '',
 					mobile: '',
 					mobilePrefix: '+1'
+				},
+				addressRule: {
+					firstName: [
+						{ required: true, message: 'Please enter your first name', trigger: 'blur' }
+					],
+					lastName: [
+						{ required: true, message: 'Please enter your last name', trigger: 'blur' }
+					],
+					addressLine1: [
+						{ required: true, message: 'Please enter your address', trigger: 'blur' }
+					],
+					city: [
+						{ required: true, message: 'Please enter your city', trigger: 'blur' }
+					],
+					country: [
+						{ required: true, message: 'Please choose your country', trigger: 'change' }
+					],
+					zipCode: [
+						{ required: true, message: 'Please enter your zip code', trigger: 'blur' }
+					],
+					mobile: [
+						{ required: true, message: 'Please enter your phone number', trigger: 'blur' }
+					],
+					mobilePrefix: [
+						{ required: true, message: 'Please choose your mobile prefix', trigger: 'change' }
+					]
 				}
 			}
+		},
+		created () {
+			this.listAddress()
 		},
 		methods: {
 			addAddress () {
@@ -141,9 +203,32 @@
       handleClose(done) {
 				this.addressFormVisible = false
 			},
-			saveAddress () {
+			createAddress (formName) {
 				this.addressFormVisible = false
-				console.log(this.addressForm)
+				this.$refs[formName].validate((valid) => {
+					if (valid) {
+						address.create({ address: this.addressForm }).then((resp) => {
+							if (!resp.error_code) {
+								console.log('success to create address')
+								this.listAddress()
+							} else {
+								console.log(resp.error_msg)
+							}
+						})
+					} else {
+						console.log('submit error')
+						return false
+					}
+				})
+			},
+			listAddress () {
+				address.list({ sort: '-isDefault' }).then((resp) => {
+					if (!resp.error_code) {
+						this.addressList = resp.data
+					} else {
+						console.log(resp.error_msg)
+					}
+				})
 			}
 		}
 	}
@@ -165,5 +250,9 @@
 	.address-save-btn {
 		background-color: #dd127d;
 		border: 1px solid #dd127d;
+	}
+
+	.phone-number label {
+		color: white;
 	}
 </style>
