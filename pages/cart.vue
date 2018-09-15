@@ -48,6 +48,7 @@
 		created () {
 			this.$store.dispatch('setCartList').then(() => {
 				this.$store.dispatch('setCartProdsDetail')
+				this.$store.dispatch('setCartTotalPrice')
 			})
 		},
 		methods: {

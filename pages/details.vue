@@ -42,7 +42,7 @@
 			</div>
 
 			<purchase
-				v-on:addToCart="addToCart"
+				v-on:addToCart="addToCart(prod._id)"
 				v-on:buyNow="buyNow"></purchase>
 		</div>
 
@@ -58,6 +58,7 @@
 
 	import product from '@/apis/product'
 	import cart from '@/apis/cart'
+	import LS from '@/apis/localStorage'
 
 	export default {
 		layout: 'main',
@@ -97,21 +98,21 @@
 			this.getProd(_id)
 		},
 		methods: {
-			addToCart () {
-				const cartInfo = {
-					userId: '5b91368f2bfd7c2fa8124652',
-					productId: this.prod._id,
-					count: this.count
+			addToCart (productId) {
+				if (this.$store.state.isLogin) {
+					const cartInfo = { productId, count: 1 }
+					cart.create({ cart: cartInfo }).then((resp) => {
+						if (!resp.error_code) {
+							console.log('create cart success')
+						} else {
+							console.log(resp.error_msg)
+						}
+					})
+				} else {
+					LS.createCart({ prodId: productId, count: 1 })
 				}
-				cart.create({ cart: cartInfo }).then((resp) => {
-					if (resp.code === 200) {
-						this.$router.push({ path: '/cart' })
-					} else {
-						alert(resp.error_msg)
-					}
-				}).catch(err => {
-					console.log(err)
-				})
+				this.$store.dispatch('setCartList')
+				this.$store.dispatch('setCartCheckedProds', { checkedProdId: productId })
 			},
 			buyNow () {
 				console.log('buy now')
@@ -127,7 +128,7 @@
       },
       minus (prodId) {
         this.isMax = false
-        if (this.count <= 0) {
+        if (this.count <= 1) {
 					this.isMinimum = true
 				} else {
 					this.count --

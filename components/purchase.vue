@@ -12,14 +12,6 @@
 				buy now
 			</div>
 		</div>
-		<div class="payment">
-			<div class="payment-img">
-				<img src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/checkout-logo-medium.png">
-			</div>
-			<div class="payment-img">
-				<img src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/paypal-visa.jpg">
-			</div>
-		</div>
 	</div>
 </template>
 
@@ -64,17 +56,5 @@
 
 	.buynow {
 		background-color: #dd127b;
-	}
-
-	.payment {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: space-around;
-		width: 100%;
-	}
-
-	.payment-img {
-		padding: 10px 0;
 	}
 </style>

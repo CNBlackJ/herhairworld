@@ -63,15 +63,15 @@
 					cart.create({ cart: cartInfo }).then((resp) => {
 						if (!resp.error_code) {
 							console.log('create cart success')
+							this.$store.dispatch('setCartList')
 						} else {
 							console.log(resp.error_msg)
 						}
 					})
 				} else {
 					LS.createCart({ prodId: productId, count: 1 })
+					this.$store.dispatch('setCartList')
 				}
-				this.$store.dispatch('setCartList')
-				this.$store.dispatch('setCartCheckedProds', { checkedProdId: productId })
 			},
 			addToFav (id) {
 				if (this.$store.state.isLogin) {

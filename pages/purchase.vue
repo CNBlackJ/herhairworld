@@ -108,8 +108,6 @@
 					{ id: 3, name: 'ApplePay', value: 'applepay' }
 				],
 				orderInfo: {
-					addressId: '',
-					userId: '',
 					payment: '',
 					couponCode: ''
 				},
@@ -118,7 +116,9 @@
 		},
 		methods: {
 			createOrder () {
-				console.log(this.orderInfo)
+				const payload = this.orderInfo
+				payload.addressId = this.defaultAddress._id
+				console.log(payload)
 			},
 			getAddress () {
 				address.getDefault().then((resp) => {

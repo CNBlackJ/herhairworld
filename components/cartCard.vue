@@ -57,7 +57,7 @@
 		data () {
 			return {
 				isChecked: this.$store.state.cartCheckedProds.indexOf(this.cartProd._id) > -1,
-				counter: this.$store.state.cartList.find(e => e.prodId === this.cartProd._id).count
+				counter: this.$store.state.cartList.find(e => e.prodId === this.cartProd._id) ? this.$store.state.cartList.find(e => e.prodId === this.cartProd._id).count : 0
 			}
 		},
     methods: {
@@ -80,11 +80,24 @@
 				}
 			},
 			removeFromCart (prodId) {
-				LS.removeFromCart({ prodId })
-				this.$store.dispatch('setCartCheckedProds', { checkedProdId: this.cartProd._id })
-				this.$store.dispatch('setCartList')
-				this.$store.dispatch('setCartProdsDetail')
-				this.$store.dispatch('setCartTotalPrice')
+				if (this.$store.state.isLogin) {
+					cart.deleteByProdId({ productId: this.cartProd._id }).then((resp) => {
+						if (!resp.error_code) {
+							this.$store.dispatch('setCartCheckedProds', { checkedProdId: this.cartProd._id })
+							this.$store.dispatch('setCartList').then((res) => {
+								this.$store.dispatch('setCartProdsDetail')
+								this.$store.dispatch('setCartTotalPrice')
+							})
+						} else {
+							console.log(resp.error_msg)
+						}
+					})
+				} else {
+					LS.removeFromCart({ prodId })
+					this.$store.dispatch('setCartList')
+					this.$store.dispatch('setCartProdsDetail')
+					this.$store.dispatch('setCartTotalPrice')
+				}
 			},
 			checkCartProd () {
 				this.$store.dispatch('setCartCheckedProds', { checkedProdId: this.cartProd._id })

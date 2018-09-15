@@ -29,4 +29,9 @@ export default class cart {
     const resp = await request.put(`/api/carts/productId/${productId}`, cart)
     return resp.data
   }
+
+  static async deleteByProdId ({ productId }) {
+    const resp = await request.delete(`/api/carts/productId/${productId}`)
+    return resp.data
+  }
 }
