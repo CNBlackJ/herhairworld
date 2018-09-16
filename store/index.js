@@ -55,6 +55,9 @@ const store = () => new Vuex.Store({
   },
 
   actions: {
+    nuxtServerInit ({ commit }, { req }) {
+      // console.log(req.headers.cookie)
+    },
     setFixedFooter ({ commit }) {
       commit('setFixedFooter')
     },

@@ -8,6 +8,8 @@ export default function ({ store, req }) {
   const authToken = isServer ? getTokenFromCookie(req) : getTokenFromLocalStorage()
   if (authToken && !store.state.isLogin) {
     user.getUser().then((resp) => {
+      console.log('===')
+      console.log(resp)
       if (!resp.error_code) {
         store.dispatch('setLoginUser', { loginUser: resp.data })
       } else {

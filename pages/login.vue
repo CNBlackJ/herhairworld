@@ -106,6 +106,8 @@
 </template>
 
 <script>
+	const Cookie = process.browser ? require('js-cookie') : undefined
+
 	import user from '@/apis/user'
 	import auth from '@/apis/auth'
 	import LS from '@/apis/localStorage'
@@ -174,7 +176,7 @@
 				this.$refs[submitForm].validate((valid) => {
 					if (valid) {
 						user.create({ user: this.userInfo })
-						alert('submit!');
+						this.$router.push({ path: '/' })
 					} else {
 						console.log('error submit!!');
 						return false;
@@ -185,6 +187,7 @@
 				auth.login(this.loginForm).then((resp) => {
 					if (resp.code === 200) {
 						LS.saveAuthToken(resp.data)
+						Cookie.set('auth_token', resp.data)
 						this.$router.push({ path: '/user' })
 					} else {
 						alert(resp.error_msg)

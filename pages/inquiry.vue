@@ -9,7 +9,7 @@
 			</div>
 			<div class="wi-form">
 				<div class="wi-description">
-					Join us! Accessiong <strong>factory direct prices</strong> and <strong>exciting business solution</strong>.
+					Join us! Accessing <strong>factory direct prices</strong> and <strong>exciting business solution</strong>.
 				</div>
 	
 				<el-form

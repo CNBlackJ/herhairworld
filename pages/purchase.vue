@@ -17,11 +17,11 @@
 				<div slot="header">
 					<span class="purchase-card-title">Shipping Address</span>
 					<el-button
-						@click="$router.push({ path: '/address' })"
+						@click="addAddress"
 						style="float: right; padding: 3px 0"
 						type="text">
 						<i class="el-icon-plus"></i>
-						Add Address
+						{{Object.keys(defaultAddress).length ? 'Change' : 'Add' }} Address
 					</el-button>
 				</div>
 				<div class="purchase-address-content">
@@ -124,6 +124,9 @@
 				address.getDefault().then((resp) => {
 					this.defaultAddress = resp.data[0]
 				})
+			},
+			addAddress () {
+				this.$router.push({ path: '/address' })
 			}
 		}
 	}
