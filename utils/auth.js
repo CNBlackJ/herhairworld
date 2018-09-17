@@ -1,3 +1,5 @@
+import LS from '@/apis/localStorage'
+
 export const getTokenFromCookie = (req) => {
   if (!req.headers.cookie) return
   const jwtCookie = req.headers.cookie.split(';').find(c => c.trim().startsWith('auth_token='))
@@ -7,6 +9,6 @@ export const getTokenFromCookie = (req) => {
 }
 
 export const getTokenFromLocalStorage = () => {
-  const jwtToken = window.localStorage['auth_token']
+  const jwtToken = LS.getVal('auth_token')
   return jwtToken
 }

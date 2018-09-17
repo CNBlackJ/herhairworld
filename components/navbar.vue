@@ -2,7 +2,7 @@
 	<div class="navbar-container">
 		<div class="navbar-left">
 			<img @click="openMenu" class="navbar-icon icon-menu" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/menu.png">
-			<img @click="goPage($store.state.isLogin ? '/user' : '/login')" class="navbar-icon icon-user" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/user.png">
+			<img @click="goUser" class="navbar-icon icon-user" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/user.png">
 		</div>
 
 		<div class="navbar-logo">
@@ -23,6 +23,10 @@
 				this.$emit('clickBtn', { btn: 'menu' })
 			},
 			goPage (path) {
+				this.$router.push({ path })
+			},
+			goUser () {
+				const path = this.$store.state.isLogin ? '/user' : '/login'
 				this.$router.push({ path })
 			}
 		}

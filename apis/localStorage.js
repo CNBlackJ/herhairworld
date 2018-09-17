@@ -1,9 +1,15 @@
 import _ from 'lodash'
 
 export default class LS {
-  static getLocalStorage (key) {
+  static getVal (key) {
     if (process.browser) {
       return window.localStorage[key]
+    }
+  }
+
+  static setVal (key, val) {
+    if (process.browser) {
+      window.localStorage[key] = val
     }
   }
 
@@ -66,9 +72,5 @@ export default class LS {
       _.remove(carts, ele => ele.prodId === prodId)
       window.localStorage.carts = JSON.stringify(carts)
     }
-  }
-
-  static saveAuthToken (authToken) {
-    window.localStorage['auth_token'] = authToken
   }
 }

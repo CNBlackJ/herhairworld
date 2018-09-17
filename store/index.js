@@ -13,6 +13,7 @@ const store = () => new Vuex.Store({
   state: {
     isLogin: false,
     fixedFooter: false,
+    authToken: '',
     loginUser: {},
     selectedCart: '',
     productList: [],
@@ -24,12 +25,15 @@ const store = () => new Vuex.Store({
   },
 
   mutations: {
+    setAuthToken (state, { authToken }) {
+      state.authToken = authToken
+    },
     setFixedFooter (state) {
       state.fixedFooter = !state.fixedFooter
     },
     setLoginUser (state, { loginUser }) {
       state.loginUser = loginUser
-      state.isLogin = !state.isLogin
+      state.isLogin = true
     },
     setselectedCart (state, { categoryId }) {
       state.selectedCart = categoryId
@@ -78,7 +82,7 @@ const store = () => new Vuex.Store({
         const resp = await favorite.list({ userId: state.loginUser._id })
         if (!resp.error_code) favoriteList = resp.data.map(ele => ele._id)
       } else {
-        favoriteList = LS.getLocalStorage('favorites') ? JSON.parse(LS.getLocalStorage('favorites')) : []
+        favoriteList = LS.getVal('favorites') ? JSON.parse(LS.getVal('favorites')) : []
       }
       commit('setFavoriteList', { favoriteList })
     },
@@ -92,9 +96,8 @@ const store = () => new Vuex.Store({
           })
         }
       } else {
-        cartList = LS.getLocalStorage('carts') ? JSON.parse(LS.getLocalStorage('carts')) : []
+        cartList = LS.getVal('carts') ? JSON.parse(LS.getVal('carts')) : []
       }
-      console.log(cartList)
       commit('setCartList', { cartList })
     },
     async setCartTotalPrice ({ state, commit }) {

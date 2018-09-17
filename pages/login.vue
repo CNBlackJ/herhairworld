@@ -184,10 +184,11 @@
 				});
 			},
 			login () {
-				auth.login(this.loginForm).then((resp) => {
+				auth.getToken(this.loginForm).then((resp) => {
 					if (resp.code === 200) {
-						LS.saveAuthToken(resp.data)
-						Cookie.set('auth_token', resp.data)
+						const authToken = resp.data
+						this.$store.commit('setAuthToken', { authToken })
+						Cookie.set('auth_token', authToken, { expires: 1 })
 						this.$router.push({ path: '/user' })
 					} else {
 						alert(resp.error_msg)
