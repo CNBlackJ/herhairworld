@@ -212,7 +212,7 @@
 								console.log('success to create address')
 								this.listAddress()
 							} else {
-								console.log(resp.error_msg)
+								console.log(`createAddress: ${JSON.stringify(resp.error_msg)}`)
 							}
 						})
 					} else {
@@ -226,7 +226,7 @@
 					if (!resp.error_code) {
 						this.addressList = resp.data
 					} else {
-						console.log(resp.error_msg)
+						console.log(`listAddress: ${resp.error_msg}`)
 					}
 				})
 			}

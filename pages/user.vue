@@ -92,11 +92,9 @@
 		},
 		methods: {
 			menuClick (path) {
-				console.log(path)
 				if (['/address'].indexOf(path) > -1) this.$router.push({ path })
 			},
 			signOut () {
-				console.log('signOut')
 				LS.removeLocalStorage('auth_token')
 				this.$store.dispatch('setLoginUser', { loginUser: {} })
 				this.$router.push({ path: '/login' })

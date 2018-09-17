@@ -118,7 +118,7 @@
 			createOrder () {
 				const payload = this.orderInfo
 				payload.addressId = this.defaultAddress._id
-				console.log(payload)
+				console.log(`createOrder: ${JSON.stringify(payload)}`)
 			},
 			getAddress () {
 				address.getDefault().then((resp) => {

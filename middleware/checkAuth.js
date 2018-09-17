@@ -23,7 +23,7 @@ export default async function ({ route, req, res, redirect, store }) {
         store.dispatch('setLoginUser', { loginUser })
         if (path === '/login') redirect('/user')
       } else {
-        console.log(resp.error_msg)
+        console.log(`isServer: ${JSON.stringify(resp.error_msg)}`)
       }
     }
 
@@ -43,7 +43,7 @@ export default async function ({ route, req, res, redirect, store }) {
         store.dispatch('setLoginUser', { loginUser })
         if (path === '/login') redirect('/user')
       } else {
-        console.log(resp.error_msg)
+        console.log(`isClient: ${JSON.stringify(resp.error_msg)}`)
       }
     }
   }

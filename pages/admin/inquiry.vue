@@ -80,11 +80,11 @@
 				inquiry.delete({ id: inquiryInfo._id }).then(() => {
 					this.listInquiries()
 				}).catch(err => {
-					console.log(err)
+					console.log(`deleteInquiryUser: ${JSON.stringify(err)}`)
 				})
 			},
 			tagInquiryUser (inquiryInfo) {
-				console.log(inquiryInfo)
+				console.log(`tagInquiryUser: ${JSON.stringify(inquiryInfo)}`)
 			}
 		}
 	}

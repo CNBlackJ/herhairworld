@@ -35,7 +35,7 @@
 				category.list({}).then((resp) => {
 					this.categories = resp.data
 				}).catch(err => {
-					console.log()
+					console.log(`listCategory: ${JSON.stringify(err)}`)
 				})
 			},
 			goList (activeType) {

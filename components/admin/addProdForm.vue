@@ -266,7 +266,7 @@
 				category.list({}).then(resp => {
 					this.categories = resp.data
 				}).catch(err => {
-					console.log(err)
+					console.log(`listCategory: ${JSON.stringify(err)}`)
 				})
 			},
 			getProd () {
@@ -274,7 +274,7 @@
 					const catNames = resp.data.categories.map(cat => cat.name)
 					this.prod = Object.assign({}, resp.data, { categories: catNames })
 				}).catch((err) => {
-					console.log(err)
+					console.log(`getProd: ${JSON.stringify(err)}`)
 				})
 			},
 			createProd(formName) {
@@ -289,10 +289,10 @@
 						})
 						this.prod.categories = objIdCat
 						product.create(this.prod).then((resp) => {
-							console.log(resp)
+							console.log(`createProd: ${JSON.stringify(resp)}`)
 							alert('submit!');
 						}).catch((err) => {
-							console.log(err)
+							console.log(`createProd - err: ${JSON.stringify(err)}`)
 						})
 					} else {
 						console.log('error submit!!');
@@ -309,7 +309,7 @@
             product.deleteById({ id: this.prod._id }).then(() => {
 							console.log('success to delete')
 						}).catch((err) => {
-							console.log(err)
+							console.log(`deleteProd: ${JSON.stringify(err)}`)
 						})
           })
           .catch(_ => {});

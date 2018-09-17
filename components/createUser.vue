@@ -20,7 +20,6 @@
 			'isCreate'
 		],
 		created() {
-			console.log(this.isCreate)
 			this.dialogVisible = Boolean(this.isCreate)
 		},
 		data () {

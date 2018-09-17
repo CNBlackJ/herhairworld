@@ -110,7 +110,7 @@
 							alert(resp.error_msg)
 						}
 					}).catch(err => {
-						console.log(err)
+						console.log(`addToCart: ${JSON.stringify(err)}`)
 					})
 				},
 				buyNow () {

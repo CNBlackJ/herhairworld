@@ -105,7 +105,7 @@
 						if (!resp.error_code) {
 							console.log('create cart success')
 						} else {
-							console.log(resp.error_msg)
+							console.log(`addToCart: ${JSON.stringify(resp.error_msg)}`)
 						}
 					})
 				} else {
@@ -140,7 +140,7 @@
 					this.prod = resp.data
 					this.calculatePrice()
 				}).catch(err => {
-					console.log(err)
+					console.log(`getProd: ${JSON.stringify(err)}`)
 				})
 			},
 			calculatePrice () {

@@ -31,7 +31,7 @@
 					categories.unshift({ _id: '5b8b3ec925890f283385d085', name: 'All' })
 					this.categories = categories
 				}).catch(err => {
-					console.log(err)
+					console.log(`listCategory: ${JSON.stringify(err)}`)
 				})
 			},
       choice (categoryId) {

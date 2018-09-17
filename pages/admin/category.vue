@@ -89,7 +89,7 @@
 				category.list({}).then(resp => {
 					this.categories = resp.data
 				}).catch(err => {
-					console.log(err)
+					console.log(`listCategory: ${JSON.stringify(err)}`)
 				})
 			},
 			createCategory () {
@@ -97,7 +97,7 @@
 					this.addCategoryVisible = false
 					await this.listCategory()
 				}).catch(err => {
-					console.log(err)
+					console.log(`createCategory: ${JSON.stringify(err)}`)
 				})
 			},
 			updateCategory () {
@@ -106,14 +106,14 @@
 					this.isEdit = false
 					await this.listCategory()
 				}).catch(err => {
-					console.log(err)
+					console.log(`updateCategory: ${JSON.stringify(err)}`)
 				})
 			},
 			deleteCategory (row) {
 				category.delete({ category: row }).then(async resp => {
 					await this.listCategory()
 				}).catch(err => {
-					console.log(err)
+					console.log(`deleteCategory: ${JSON.stringify(err)}`)
 				})
 			},
 			editCategory (row) {

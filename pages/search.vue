@@ -55,14 +55,13 @@
     },
 		methods: {
 			handleSelect (item) {
-				console.log(item)
         this.listProd()
 			},
 			listProd () {
 				product.list({}).then((resp) => {
 					this.prodList = resp.data
 				}).catch(err => {
-					console.log(err)
+					console.log(`listProd: ${JSON.stringify(err)}`)
 				})
 			},
       querySearch(queryString, cb) {

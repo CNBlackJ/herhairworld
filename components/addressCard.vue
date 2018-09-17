@@ -51,7 +51,7 @@
 					if (!resp.error_code) {
 						this.$emit('listAddress')
 					} else {
-						console.log(resp.error_msg)
+						console.log(`deleteAddress: ${JSON.stringify(resp.error_msg)}`)
 					}
 				})
 			},
@@ -60,7 +60,7 @@
 					if (!resp.error_code) {
 						this.$emit('listAddress')
 					} else {
-						console.log(resp.error_msg)
+						console.log(`setDefault: ${JSON.stringify(resp.error_msg)}`)
 					}
 				})
 			}

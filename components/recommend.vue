@@ -39,7 +39,7 @@
 				product.list({ limit: 2 }).then((resp) => {
 					this.recommendProds = resp.data
 				}).catch(err => {
-					console.log(err)
+					console.log(`listProd: ${JSON.stringify(err)}`)
 				})
 			}
 		}
