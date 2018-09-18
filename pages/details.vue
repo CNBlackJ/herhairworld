@@ -185,7 +185,7 @@
 	}
 
 	.detail-conten-con {
-		padding: 0;
+		padding-bottom: 50px;
 	}
 
 	.detail-prod-name {
