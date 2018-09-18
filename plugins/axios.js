@@ -10,7 +10,12 @@ function getCookieInClient (name) {
   }
 }
 
-export default ({ app, store, redirect }) => {
+export default ({ $axios, app, store, redirect }) => {
+  $axios.onRequest(config => {
+    config.headers['Content-Type'] = 'application/json'
+    config.headers['Access-Control-Allow-Origin'] = '*'
+  })
+
   if (process.SERVER_BUILD) {
     console.log('it is server build')
   }

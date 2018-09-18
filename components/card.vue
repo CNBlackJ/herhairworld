@@ -20,13 +20,13 @@
 							<img
 								@click="addToFav(prod._id)"
 								class="prod-fav-icon"
-								:src="'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/' + ($store.state.favoriteList.indexOf(prod._id) > -1 ? 'favorite.png' : 'unfavorite.png')">
+								:src="'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/' + cartImg">
 						</div>
 						<div>
 							<img
 								@click="addToCart(prod._id)"
 								class="prod-fav-icon"
-								:src="'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/' + ($store.state.cartList.map(e => e.prodId).indexOf(prod._id) > -1 ? 'cart.png' : 'uncart.png')">
+								:src="'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/' + favImg">
 						</div>
 					</div>
 				</div>
@@ -44,6 +44,14 @@
 		props: [
 			'prod'
 		],
+		computed: {
+			favImg () {
+				return (this.$store.state.cartList.map(e => e.prodId).indexOf(this.prod._id) > -1 ? 'cart.png' : 'uncart.png')
+			},
+			cartImg () {
+				return (this.$store.state.favoriteList.indexOf(this.prod._id) > -1 ? 'favorite.png' : 'unfavorite.png')
+			}
+		},
 		data () {
 			return {
 				desc: ''
