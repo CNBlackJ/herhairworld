@@ -55,7 +55,8 @@ module.exports = {
   */
   plugins: [
     '@/plugins/element-ui',
-    '@/plugins/axios'
+    '@/plugins/axios',
+    { src: '~/plugins/paypal.js', ssr: false }
   ],
   modules: [
     // Simple usage
