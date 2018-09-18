@@ -14,7 +14,7 @@ export default ({ app, store, redirect }) => {
   if (process.SERVER_BUILD) {
     console.log('it is server build')
   }
-  axios.defaults.baseURL = 'http://192.168.0.24:3010'
+  axios.defaults.baseURL = 'http://127.0.0.1:3010'
 
   axios.interceptors.request.use(req => {
     let authToken = ''
