@@ -1,7 +1,7 @@
 import LS from '@/apis/localStorage'
 import user from '@/apis/user'
 
-import { getTokenFromCookie } from '@/utils/auth'
+import { getTokenFromCookie } from '@/utils/authV1'
 
 const needAuth = [
   '/user'

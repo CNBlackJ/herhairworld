@@ -4,7 +4,7 @@ module.exports = {
     scrollBehavior: function (to, from, savedPosition) {
       return { x: 0, y: 0 }
     },
-    middleware: 'checkAuth'
+    middleware: 'check-auth'
   },
   /*
   ** Headers of the page
