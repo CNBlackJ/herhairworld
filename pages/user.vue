@@ -2,10 +2,12 @@
 	<div class="user-container">
 		<div class="user-header">
 			<div class="user-avatar-con">
-				<img class="user-avatar" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/user.png">
+				<img
+					class="user-avatar"
+					:src="loggedUser.picture">
 			</div>
 			<div class="user-name">
-				{{$store.state.loginUser.email}}
+				{{loggedUser.name}}
 			</div>
 		</div>
 
@@ -74,10 +76,14 @@
 </template>
 
 <script>
+	import { mapGetters } from 'vuex'
 	import LS from '@/apis/localStorage'
 
 	export default {
 		layout: 'main',
+		computed: mapGetters([
+			'loggedUser'
+		]),
 		data () {
 			return {
 				user: '',
@@ -95,9 +101,7 @@
 				if (['/address'].indexOf(path) > -1) this.$router.push({ path })
 			},
 			signOut () {
-				LS.removeLocalStorage('auth_token')
-				this.$store.dispatch('setLoginUser', { loginUser: {} })
-				this.$router.push({ path: '/login' })
+				this.$router.push({ path: '/auth/sign-out' })
 			}
 		}
 	}
@@ -117,21 +121,22 @@
 	}
 
 	.user-avatar {
-		width: 36px;
-		height: 36px;
+		width: 56px;
+		height: 56px;
+		border-radius: 50%;
 	}
 
 	.user-avatar-con {
 		background-color: #efefef;
 		border-radius: 50%;
-		padding: 10px;
-		width: 36px;
-		height: 36px;
+		width: 56px;
+		height: 56px;
 	}
 
 	.user-name {
 		color: white;
 		font-size: 14px;
+		padding-top: 5px;
 	}
 
 	.user-middle {

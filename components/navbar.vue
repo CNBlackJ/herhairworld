@@ -17,7 +17,10 @@
 </template>
 
 <script>
+	import { mapGetters } from 'vuex'
+	
 	export default {
+		computed: mapGetters(['isAuthenticated']),
 		methods: {
 			openMenu () {
 				this.$emit('clickBtn', { btn: 'menu' })
@@ -26,7 +29,7 @@
 				this.$router.push({ path })
 			},
 			goUser () {
-				const path = this.$store.state.isLogin ? '/user' : '/login'
+				const path = this.isAuthenticated ? '/user' : '/auth/sign-in'
 				this.$router.push({ path })
 			}
 		}

@@ -11,6 +11,7 @@ Vue.use(Vuex)
 
 const store = () => new Vuex.Store({
   state: {
+    user: null,
     isLogin: false,
     fixedFooter: false,
     authToken: '',
@@ -25,6 +26,9 @@ const store = () => new Vuex.Store({
   },
 
   mutations: {
+    SET_USER (state, user) {
+      state.user = user || null
+    },
     setAuthToken (state, { authToken }) {
       state.authToken = authToken
     },
@@ -59,8 +63,11 @@ const store = () => new Vuex.Store({
   },
 
   actions: {
-    nuxtServerInit ({ commit }, { req }) {
-      // console.log(req.headers.cookie)
+    isAuthenticated (state) {
+      return !!state.user
+    },
+    loggedUser (state) {
+      return state.user
     },
     setFixedFooter ({ commit }) {
       commit('setFixedFooter')
@@ -137,6 +144,14 @@ const store = () => new Vuex.Store({
     async checkAllCartProd ({ state, commit }, { isCheckedAll }) {
       const cartCheckedProds = isCheckedAll ? state.cartList.map(ele => ele.prodId) : []
       commit('setCartCheckedProds', { cartCheckedProds })
+    }
+  },
+  getters: {
+    isAuthenticated (state) {
+      return !!state.user
+    },
+    loggedUser (state) {
+      return state.user
     }
   }
 })
