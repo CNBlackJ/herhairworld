@@ -38,9 +38,7 @@
 		}),
 		created () {
 			this.$store.dispatch('list/setProductList')
-			this.$store.dispatch('home/setCategories')
 			this.$store.dispatch('cart/setLocalFavList')
-			this.$store.dispatch('cart/setLocalCartList')
 		}
 	}
 </script>

@@ -66,8 +66,10 @@
 						</el-input-number>
 					</el-col>
 					<el-col :span="9">
-						<div class="detail-fav-btn">
-							<img src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/favorite.png">
+						<div
+							@click="addToFav(product._id)"
+							class="detail-fav-btn">
+							<img :src="favImg">
 							<span>Add to my wishlist</span>
 						</div>
 					</el-col>
@@ -107,7 +109,9 @@
 		</div>
 
 		<div class="detail-bottom-btns">
-			<div class="detail-bottom-left">
+			<div
+				@click="getInquiry"
+				class="detail-bottom-left">
 				<img src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/chat.png">
 				<span>whosale inquiry</span>
 			</div>
@@ -134,10 +138,23 @@
 	export default {
 		layout: 'mainWithoutFooter',
 		computed: {
-			...mapGetters(['isAuthenticated'])
+			...mapGetters(['isAuthenticated']),
+			...mapState({
+				product: state => state.details.product,
+				cartList: state => {
+					if (state.isAuthenticated) return state.cart.cartList
+					return state.cart.localCartList
+				},
+				favList: state => {
+					if (state.isAuthenticated) return state.cart.favList
+					return state.cart.localFavList
+				}
+			})
 		},
 		data () {
 			return {
+				cartImg: '',
+				favImg: this.$store.state.imgBaseUrl + 'unfavorite.png',
 				quantity: 1,
 				selectedLength: '',
 				activateTab: 1,
@@ -172,14 +189,14 @@
 				]
 			}
 		},
-		computed: mapState({
-			product: state => state.details.product
-		}),
 		beforeCreate () {
 			const { productId } = this.$nuxt.$route.query
 			if (_.isEmpty(this.product) && productId) {
 				this.$store.dispatch('details/setProduct', productId)
 			}
+		},
+		created () {
+			this.getCartFavImg()
 		},
 		methods: {
 			changeQty () {
@@ -188,6 +205,23 @@
 			clickTab (tab, event) {
 				console.log(tab, event)
 			},
+			getCartFavImg () {
+				const cartIdList = this.cartList.map(ele => ele.prodId)
+				const favList = this.favList
+				const cartImgName = _.find(cartIdList, ele => ele === this.product._id) ? 'cart.png' : 'uncart.png'
+				const favImgName = _.find(favList, ele => ele === this.product._id) ? 'favorite.png' : 'unfavorite.png'
+				this.cartImg = this.$store.state.imgBaseUrl + cartImgName
+				this.favImg = this.$store.state.imgBaseUrl + favImgName
+			},
+			addToFav (productId) {
+				if (this.isAuthenticated) {
+					this.$store.dispatch('list/createFav', productId)
+				} else {
+					LS.createFavorite(productId)
+					this.$store.dispatch('cart/setLocalFavList')
+				}
+				this.getCartFavImg()
+			},
 			addToCart (productId) {
 				if (this.isAuthenticated) {
 					this.$store.dispatch('list/createCart', productId)
@@ -195,7 +229,11 @@
 					LS.createCart({ prodId: productId, count: 1 })
 					this.$store.dispatch('cart/setLocalCartList')
 				}
+				this.getCartFavImg()
 			},
+			getInquiry () {
+				this.$router.push({ path: '/inquiry' })
+			}
 		}
 	}
 </script>
