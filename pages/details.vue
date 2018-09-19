@@ -2,8 +2,8 @@
 	<div class="detail-container">
 		<div class="detail-slide">
 			<el-carousel height="375px">
-				<el-carousel-item v-for="img in imgs" :key="img.id">
-					<img class="img" :src="'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/' + img.name">
+				<el-carousel-item v-for="img in product.imgs" :key="img.id">
+					<img class="img" :src="img.url">
 				</el-carousel-item>
 			</el-carousel>
 		</div>
@@ -11,7 +11,7 @@
 		<div class="detail-conten-con">
 			<div class="detail-prod-name">
 				<div class="">
-					Superior Grade 1 bundle Brazilian straight Virgin Human hair extensions
+					{{product.name}}
 				</div>
 			</div>
 
@@ -24,7 +24,7 @@
 					</el-col>
 					<el-col :span="19">
 						<span class="detail-price">
-							$38.0 - $114.00
+							$ {{product.price.toFixed(2)}}
 						</span>
 					</el-col>
 				</el-row>
@@ -61,7 +61,7 @@
 							v-model="quantity"
 							@change="changeQty"
 							:min="1" 
-							:max="10"
+							:max="product.quantity"
 							label="quantity">
 						</el-input-number>
 					</el-col>
@@ -112,7 +112,9 @@
 				<span>whosale inquiry</span>
 			</div>
 			<div class="detail-bottom-right">
-				<div class="detail-bottom-cart">
+				<div
+					@click="addToCart(product._id)"
+					class="detail-bottom-cart">
 					Add to Cart
 				</div>
 				<div class="detail-bottom-buy">
@@ -124,8 +126,16 @@
 </template>
 
 <script>
+	import { mapGetters, mapState } from 'vuex'
+	import _ from 'lodash'
+
+	import LS from '@/apis/localStorage'
+
 	export default {
 		layout: 'mainWithoutFooter',
+		computed: {
+			...mapGetters(['isAuthenticated'])
+		},
 		data () {
 			return {
 				quantity: 1,
@@ -162,13 +172,30 @@
 				]
 			}
 		},
+		computed: mapState({
+			product: state => state.details.product
+		}),
+		beforeCreate () {
+			const { productId } = this.$nuxt.$route.query
+			if (_.isEmpty(this.product) && productId) {
+				this.$store.dispatch('details/setProduct', productId)
+			}
+		},
 		methods: {
 			changeQty () {
 				console.log('change qty...')
 			},
 			clickTab (tab, event) {
 				console.log(tab, event)
-			}
+			},
+			addToCart (productId) {
+				if (this.isAuthenticated) {
+					this.$store.dispatch('list/createCart', productId)
+				} else {
+					LS.createCart({ prodId: productId, count: 1 })
+					this.$store.dispatch('cart/setLocalCartList')
+				}
+			},
 		}
 	}
 </script>

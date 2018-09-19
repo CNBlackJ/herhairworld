@@ -5,10 +5,10 @@
 			<el-row>
 				<el-col 
 					class="prod-card" 
-					v-for="prod in $store.state.productList" 
-					:key="prod._id" 
+					v-for="product in productList" 
+					:key="product._id" 
 					:span="12">
-					<card :prod="prod">
+					<card :product="product">
 					</card>
 				</el-col>
 			</el-row>
@@ -22,10 +22,10 @@
 </template>
 
 <script>
+	import { mapState } from 'vuex'
+
 	import types from '@/components/types'
 	import card from '@/components/card'
-
-	import product from '@/apis/product'
 
 	export default {
 		layout: 'mainWithInquiry',
@@ -33,8 +33,14 @@
 			types,
 			card
 		},
+		computed: mapState({
+			productList: state => state.list.productList
+		}),
 		created () {
-			this.$store.dispatch('setProductList')
+			this.$store.dispatch('list/setProductList')
+			this.$store.dispatch('home/setCategories')
+			this.$store.dispatch('cart/setLocalFavList')
+			this.$store.dispatch('cart/setLocalCartList')
 		}
 	}
 </script>

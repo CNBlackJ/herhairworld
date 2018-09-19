@@ -1,41 +1,38 @@
 <template>
 	<div class="type-bar">
 		<div
-			v-for="item in categories"
-			:key="item._id"
-			@click="choice(item._id)"
-			:class="{'type-btn-click': item._id === ($store.state.selectedCart || '5b8b3ec925890f283385d085') }">
+			@click="choice()"
+			:class="{'type-btn-click': !activateCat }">
 			<a class="type-btn">
-				{{item.name}}
+				All
+			</a>
+		</div>
+		<div
+			v-for="cat in categories"
+			:key="cat._id"
+			@click="choice(cat._id)"
+			:class="{'type-btn-click': cat._id === activateCat}">
+			<a class="type-btn">
+				{{cat.name}}
 			</a>
 		</div>
 	</div>
 </template>
 
 <script>
+	import { mapState } from 'vuex'
+
 	import category from '@/apis/category'
 
 	export default {
-		data () {
-			return {
-				categories: [],
-			}
-		},
-		created () {
-			this.listCategory()
-		},
+		computed: mapState({
+			categories: state => state.home.categories,
+			activateCat: state => state.home.activateCat
+		}),
     methods: {
-			listCategory () {
-				category.list({}).then((resp) => {
-					const categories = resp.data
-					categories.unshift({ _id: '5b8b3ec925890f283385d085', name: 'All' })
-					this.categories = categories
-				}).catch(err => {
-					console.log(`listCategory: ${JSON.stringify(err)}`)
-				})
-			},
       choice (categoryId) {
-				this.$store.dispatch('setselectedCart', { categoryId })
+				this.$store.commit('home/SET_ACTIVATE_CAT', categoryId)
+				this.$store.dispatch('list/setProductList')
 			}
 		}
 	}

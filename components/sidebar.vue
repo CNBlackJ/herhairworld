@@ -25,12 +25,12 @@
 </template>
 
 <script>
+	import { mapState } from 'vuex'
 	import category from '@/apis/category'
 
 	export default {
 		data () {
 			return {
-				categories: [],
 				sidebars: [
 					{ id: 0, text: 'frontal', key:'frontal', url: '/list?type=frontal' },
 					{ id: 1, text: 'closure', key:'closure', url: '/list?type=closure' },
@@ -39,17 +39,10 @@
 				]
 			}
 		},
-		created () {
-			this.listCategory()
-		},
+		computed: mapState({
+			categories: state => state.home.categories
+		}),
 		methods: {
-			listCategory () {
-				category.list({}).then((resp) => {
-					this.categories = resp.data
-				}).catch(err => {
-					console.log(`listCategory: ${JSON.stringify(err)}`)
-				})
-			},
 			closeSidebar () {
 				this.$emit('closeSidebar')
 			},
@@ -57,8 +50,8 @@
 				this.$router.push({ path:'/' })
 				this.closeSidebar()
 			},
-			goList (categoryId) {
-				this.$store.dispatch('setselectedCart', { categoryId })
+			goList (activateCat) {
+				this.$store.commit('home/SET_ACTIVATE_CAT', activateCat)
 				this.$router.push({ path: '/list' })
 			}
 		}

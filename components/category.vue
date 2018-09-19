@@ -19,26 +19,19 @@
 </template>
 
 <script>
+	import { mapState } from 'vuex'
 	import category from '@/apis/category'
 
 	export default {
-		data () {
-			return {
-				categories: []
-			}
-		},
+		computed: mapState({
+			categories: state => state.home.categories
+		}),
 		created () {
-			this.listCategory()
+			this.$store.dispatch('home/setCategories')
 		},
 		methods: {
-			listCategory () {
-				category.list({}).then((resp) => {
-					this.categories = resp.data
-				}).catch(err => {
-					console.log(`listCategory: ${JSON.stringify(err)}`)
-				})
-			},
-			goList (activeType) {
+			goList (activateCat) {
+				this.$store.commit('home/SET_ACTIVATE_CAT', activateCat)
 				this.$router.push({ path: '/list' })
 			}
 		}
