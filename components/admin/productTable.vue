@@ -25,11 +25,6 @@
 			</el-table-column>
 			<el-table-column
 			  sortable
-        prop="originPrice"
-        label="原价 ($)">
-			</el-table-column>
-			<el-table-column
-			  sortable
         prop="price"
         label="价格 ($)">
 			</el-table-column>
@@ -41,10 +36,6 @@
 			<el-table-column
 			  :formatter="formatLen"
         label="长度 (cm)">
-			</el-table-column>
-			<el-table-column
-				:formatter="formatWeight"
-				label="重量 (g)">
 			</el-table-column>
       <el-table-column
         :formatter="formatCategory"
@@ -77,10 +68,8 @@
 				productList: []
 			}
 		},
-		created () {
-			product.list({}).then((resp) => {
-				this.productList = resp.data
-			})
+		async created () {
+			this.productList = await product.list({})
 		},
 		methods: {
 			formatWeight (row, column) {

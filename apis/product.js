@@ -34,6 +34,7 @@ export default class product {
     delete prod.updatedAt
     delete prod.isDeleted
     delete prod.__v
+    delete prod.sales
     const resp = await request.put(`/api/products/${id}`, prod)
     return resp.data
   }
