@@ -37,7 +37,7 @@
 				window.location.href = `sms:${this.mobile}`
 			},
 			inquiry () {
-				this.$emit('getInquiry')
+				this.$router.push({ path: '/inquiry' })
 			}
 		}
 	}

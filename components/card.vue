@@ -2,31 +2,31 @@
 	<div>
 		<el-card :body-style="{ padding: '0px' }">
 			<img
-				src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/product_img_1.jpg"
+				:src="imgBaseUrl + 'product_img_1.jpg'"
 				class="image"
-				@click="showDetail(prod._id)">
+				@click="showDetail(product._id)">
 			<div class="prod-detail">
 				<span
 					class="prod-name"
-					@click="showDetail(prod._id)">
-					{{prod.name}}
+					@click="showDetail(product._id)">
+					{{product.name}}
 				</span>
 				<div class="prod-bottom">
 					<div class="price">
-						$ {{prod.price.toFixed(2)}}
+						$ {{product.price.toFixed(2)}}
 					</div>
 					<div class="prod-fav-cart">
 						<div>
 							<img
-								@click="addToFav(prod._id)"
+								@click="addToFav(product._id)"
 								class="prod-fav-icon"
-								:src="'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/' + ($store.state.favoriteList.indexOf(prod._id) > -1 ? 'favorite.png' : 'unfavorite.png')">
+								:src="favImg">
 						</div>
 						<div>
 							<img
-								@click="addToCart(prod._id)"
+								@click="addToCart(product._id)"
 								class="prod-fav-icon"
-								:src="'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/' + ($store.state.cartList.map(e => e.prodId).indexOf(prod._id) > -1 ? 'cart.png' : 'uncart.png')">
+								:src="cartImg">
 						</div>
 					</div>
 				</div>
@@ -36,61 +36,70 @@
 </template>
 
 <script>
+	import { mapState, mapGetters } from 'vuex'
+	import _ from 'lodash'
+
 	import favorite from '@/apis/favorite'
 	import cart from '@/apis/cart'
 	import LS from '@/apis/localStorage'
 
 	export default {
 		props: [
-			'prod'
+			'product'
 		],
+		computed: {
+			...mapGetters(['isAuthenticated']),
+			...mapState({
+				cartList: state => {
+					if (state.isAuthenticated) return state.cart.cartList
+					return state.cart.localCartList
+				},
+				favList: state => {
+					if (state.isAuthenticated) return state.cart.favList
+					return state.cart.localFavList
+				},
+				imgBaseUrl: state => state.imgBaseUrl
+			})
+		},
 		data () {
 			return {
-				desc: ''
+				cartImg: '',
+				favImg: ''
 			}
 		},
 		created () {
-			this.$store.dispatch('setFavoriteList')
-			this.$store.dispatch('setCartList')
+			this.getCartFavImg()
 		},
 		methods: {
-			showDetail (id) {
-				this.$router.push({ path: `/details?_id=${id}` })
+			getCartFavImg () {
+				const cartIdList = this.cartList.map(ele => ele.prodId)
+				const favList = this.favList
+				const cartImgName = _.find(cartIdList, ele => ele === this.product._id) ? 'cart.png' : 'uncart.png'
+				const favImgName = _.find(favList, ele => ele === this.product._id) ? 'favorite.png' : 'unfavorite.png'
+				this.cartImg = this.$store.state.imgBaseUrl + cartImgName
+				this.favImg = this.$store.state.imgBaseUrl + favImgName
+			},
+			showDetail (productId) {
+				this.$store.dispatch('details/setProduct', productId)
+				this.$router.push({ path: `/details?productId=${productId}` })
 			},
 			addToCart (productId) {
-				if (this.$store.state.isLogin) {
-					const cartInfo = { productId, count: 1 }
-					cart.create({ cart: cartInfo }).then((resp) => {
-						if (!resp.error_code) {
-							console.log('create cart success')
-							this.$store.dispatch('setCartList')
-						} else {
-							console.log(resp.error_msg)
-						}
-					})
+				if (this.isAuthenticated) {
+					this.$store.dispatch('list/createCart', productId)
 				} else {
 					LS.createCart({ prodId: productId, count: 1 })
-					this.$store.dispatch('setCartList')
+					this.$store.dispatch('cart/setLocalCartList')
+					this.getCartFavImg()
 				}
 			},
-			addToFav (id) {
-				if (this.$store.state.isLogin) {
-					const favoriteInfo = {
-						productId: id,
-						userId: this.$store.state.loginUser._id
-					}
-					favorite.create({ favorite: favoriteInfo }).then((resp) => {
-						if (!resp.error_code) {
-							console.log('create fav success')
-						} else {
-							console.log(resp.error_msg)
-						}
-					})
+			addToFav (productId) {
+				if (this.isAuthenticated) {
+					this.$store.dispatch('list/createFav', productId)
 				} else {
-					// save into localstorage
-					LS.createFavorite(id)
+					LS.createFavorite(productId)
+					this.$store.dispatch('cart/setLocalFavList')
+					this.getCartFavImg()
 				}
-				this.$store.dispatch('setFavoriteList')
 			}
 		}
 	}

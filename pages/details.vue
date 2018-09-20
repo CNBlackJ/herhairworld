@@ -2,8 +2,8 @@
 	<div class="detail-container">
 		<div class="detail-slide">
 			<el-carousel height="375px">
-				<el-carousel-item v-for="img in imgs" :key="img.id">
-					<img class="img" :src="'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/' + img.name">
+				<el-carousel-item v-for="img in product.imgs" :key="img.id">
+					<img class="img" :src="img.url">
 				</el-carousel-item>
 			</el-carousel>
 		</div>
@@ -11,7 +11,7 @@
 		<div class="detail-conten-con">
 			<div class="detail-prod-name">
 				<div class="">
-					Superior Grade 1 bundle Brazilian straight Virgin Human hair extensions
+					{{product.name}}
 				</div>
 			</div>
 
@@ -24,7 +24,7 @@
 					</el-col>
 					<el-col :span="19">
 						<span class="detail-price">
-							$38.0 - $114.00
+							$ {{product.price.toFixed(2)}}
 						</span>
 					</el-col>
 				</el-row>
@@ -61,13 +61,15 @@
 							v-model="quantity"
 							@change="changeQty"
 							:min="1" 
-							:max="10"
+							:max="product.quantity"
 							label="quantity">
 						</el-input-number>
 					</el-col>
 					<el-col :span="9">
-						<div class="detail-fav-btn">
-							<img src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/favorite.png">
+						<div
+							@click="addToFav(product._id)"
+							class="detail-fav-btn">
+							<img :src="favImg">
 							<span>Add to my wishlist</span>
 						</div>
 					</el-col>
@@ -107,12 +109,16 @@
 		</div>
 
 		<div class="detail-bottom-btns">
-			<div class="detail-bottom-left">
+			<div
+				@click="getInquiry"
+				class="detail-bottom-left">
 				<img src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/chat.png">
 				<span>whosale inquiry</span>
 			</div>
 			<div class="detail-bottom-right">
-				<div class="detail-bottom-cart">
+				<div
+					@click="addToCart(product._id)"
+					class="detail-bottom-cart">
 					Add to Cart
 				</div>
 				<div class="detail-bottom-buy">
@@ -124,10 +130,31 @@
 </template>
 
 <script>
+	import { mapGetters, mapState } from 'vuex'
+	import _ from 'lodash'
+
+	import LS from '@/apis/localStorage'
+
 	export default {
 		layout: 'mainWithoutFooter',
+		computed: {
+			...mapGetters(['isAuthenticated']),
+			...mapState({
+				product: state => state.details.product,
+				cartList: state => {
+					if (state.isAuthenticated) return state.cart.cartList
+					return state.cart.localCartList
+				},
+				favList: state => {
+					if (state.isAuthenticated) return state.cart.favList
+					return state.cart.localFavList
+				}
+			})
+		},
 		data () {
 			return {
+				cartImg: '',
+				favImg: this.$store.state.imgBaseUrl + 'unfavorite.png',
 				quantity: 1,
 				selectedLength: '',
 				activateTab: 1,
@@ -162,12 +189,50 @@
 				]
 			}
 		},
+		beforeCreate () {
+			const { productId } = this.$nuxt.$route.query
+			if (_.isEmpty(this.product) && productId) {
+				this.$store.dispatch('details/setProduct', productId)
+			}
+		},
+		created () {
+			this.getCartFavImg()
+		},
 		methods: {
 			changeQty () {
 				console.log('change qty...')
 			},
 			clickTab (tab, event) {
 				console.log(tab, event)
+			},
+			getCartFavImg () {
+				const cartIdList = this.cartList.map(ele => ele.prodId)
+				const favList = this.favList
+				const cartImgName = _.find(cartIdList, ele => ele === this.product._id) ? 'cart.png' : 'uncart.png'
+				const favImgName = _.find(favList, ele => ele === this.product._id) ? 'favorite.png' : 'unfavorite.png'
+				this.cartImg = this.$store.state.imgBaseUrl + cartImgName
+				this.favImg = this.$store.state.imgBaseUrl + favImgName
+			},
+			addToFav (productId) {
+				if (this.isAuthenticated) {
+					this.$store.dispatch('list/createFav', productId)
+				} else {
+					LS.createFavorite(productId)
+					this.$store.dispatch('cart/setLocalFavList')
+				}
+				this.getCartFavImg()
+			},
+			addToCart (productId) {
+				if (this.isAuthenticated) {
+					this.$store.dispatch('list/createCart', productId)
+				} else {
+					LS.createCart({ prodId: productId, count: 1 })
+					this.$store.dispatch('cart/setLocalCartList')
+				}
+				this.getCartFavImg()
+			},
+			getInquiry () {
+				this.$router.push({ path: '/inquiry' })
 			}
 		}
 	}

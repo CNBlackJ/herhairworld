@@ -1,11 +1,11 @@
 <template>
 	<div class="cart-container">
 		<div
-			v-for="cartProd in $store.state.cartProdsDetail"
-			:key="cartProd._id"
+			v-for="cart in cartList"
+			:key="cart._id"
 			class="cart-card-con">
 			<cartCard
-				:cartProd="cartProd">
+				:cartProd="cart">
 			</cartCard>
 		</div>
 		<div class="cart-counter-con">
@@ -17,11 +17,11 @@
 
 				<div class="price-counter">
 					<div class="cart-subtotal">Subtotal:</div>
-					<div class="cart-price-counter">$ {{$store.state.cartTotalPrice.toFixed(2)}}</div>
+					<div class="cart-price-counter">$ {{$store.state.cartTotalPrice}}</div>
 					<div
 						@click="goToPurchase"
 						class="cart-checkout-btn">
-						CHECKOUT ( {{$store.state.cartCheckedProds.length}} )
+						CHECKOUT ( {{$store.state.cartCheckedProds}} )
 					</div>
 				</div>
 			</div>
@@ -30,6 +30,8 @@
 </template>
 
 <script>
+	import { mapState } from 'vuex'
+
 	import product from '@/apis/product'
 
 	import cartCard from '@/components/cartCard'
@@ -39,6 +41,10 @@
 		components: {
 			cartCard
 		},
+		computed: mapState({
+			cartList: state => state.cart.cartList,
+			localCartList: state => state.cart.localCartList
+		}),
 		data () {
 			return {
 				cartProdList: [],
@@ -46,10 +52,10 @@
 			}
 		},
 		created () {
-			this.$store.dispatch('setCartList').then(() => {
-				this.$store.dispatch('setCartProdsDetail')
-				this.$store.dispatch('setCartTotalPrice')
-			})
+			// this.$store.dispatch('setCartList').then(() => {
+			// 	this.$store.dispatch('setCartProdsDetail')
+			// 	this.$store.dispatch('setCartTotalPrice')
+			// })
 		},
 		methods: {
 			checkAll () {

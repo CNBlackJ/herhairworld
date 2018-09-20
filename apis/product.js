@@ -9,8 +9,10 @@ export default class product {
   static async list ({ limit, skip, sort, categoryId }) {
     const categoryIdStr = categoryId ? `&categoryId=${categoryId}` : ''
     const queryStr = `?limit=${limit || 20}&skip=${skip || 0}&sort=${sort || '-createdAt'}${categoryIdStr}`
-    const resp = await request.get(`/api/products${queryStr}`)
-    return resp.data
+    const resp = (await request.get(`/api/products${queryStr}`)).data
+    let results = []
+    if (!resp.error_code) results = resp.data
+    return results
   }
 
   static async getByIds ({ productIds }) {
@@ -18,9 +20,11 @@ export default class product {
     return resp.data
   }
 
-  static async getById ({ id }) {
-    const resp = await request.get(`/api/products/${id}`)
-    return resp.data
+  static async getById (productId) {
+    const resp = (await request.get(`/api/products/${productId}`)).data
+    let results = []
+    if (!resp.error_code) results = resp.data
+    return results
   }
 
   static async update ({ prod }) {

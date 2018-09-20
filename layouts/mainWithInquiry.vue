@@ -9,8 +9,7 @@
 		<div class="withinquiry-footer">
 			<cusFooter></cusFooter>
 		</div>
-		<floatBtns
-		v-on:getInquiry="getInquiry"></floatBtns>
+		<floatBtns></floatBtns>
 	</div>
 </template>
 
@@ -38,10 +37,7 @@
 			},
 			closeSidebar () {
 				this.isCloseMenu = true
-			},
-			getInquiry () {
-        this.$router.push({ path: '/inquiry' })
-      }
+			}
 		}
 	}
 </script>

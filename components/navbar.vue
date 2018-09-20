@@ -11,16 +11,30 @@
 
 		<div class="navbar-right">
 			<img @click="goPage('/search')" class="navbar-icon icon-search" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/search.png">
-			<img @click="goPage('/cart')" class="navbar-icon icon-cart" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/uncart.png">
+			<el-badge :value="cartCount">
+				<img @click="goPage('/cart')" class="navbar-icon icon-cart" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/uncart.png">
+			</el-badge>
 		</div>
 	</div>
 </template>
 
 <script>
-	import { mapGetters } from 'vuex'
+	import { mapGetters, mapState } from 'vuex'
 	
 	export default {
-		computed: mapGetters(['isAuthenticated']),
+		computed: {
+			...mapGetters(['isAuthenticated']),
+			...mapState({
+				cartCount: state => {
+					if (state.isAuthenticated) return state.cart.cartList.length
+					return state.cart.localCartList.length
+				},
+			})
+		},
+		created () {
+			this.$store.dispatch('home/setCategories')
+			this.$store.dispatch('cart/setLocalCartList')
+		},
 		methods: {
 			openMenu () {
 				this.$emit('clickBtn', { btn: 'menu' })
@@ -70,7 +84,7 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		justify-content: flex-end;
+		justify-content: center;
 		width: 100%;
 	}
 
