@@ -3,7 +3,7 @@
 		<el-row>
 			<el-col :xs="2">
 				<div class="cc-checkbox-con">
-					<el-checkbox @change="checkCartProd" v-model="cartProd.isChecked"></el-checkbox>
+					<el-checkbox :checked="isChecked" @change="checkCartProd(cartProd.productId)"></el-checkbox>
 				</div>
 			</el-col>
 			<el-col :xs="6">
@@ -65,30 +65,16 @@
 			}
 		},
 		async created () {
-			await this.getProduct()
+			const productId = this.cartProd.productId
+			await this.getProduct(productId)
+			this.isChecked = _.includes(this.$store.state.cart.checkedProducts, productId)
 		},
     methods: {
 			async getProduct (productId) {
-				const prod = await product.getById(this.cartProd.productId)
-				this.product = prod
+				this.product = await product.getById(productId)
 			},
       updateCount () {
-				if (this.$store.state.isLogin) {
-					const cartInfo = { productId: this.cartProd._id, count: this.counter }
-					cart.updateByProdId({ cart: cartInfo }).then((resp) => {
-						if (!resp.error_code) {
-							console.log('success to add to cart')
-						} else {
-							console.log(resp.error_msg)
-						}
-					})
-				} else {
-					LS.addCartCount({ prodId: this.cartProd._id, count: this.counter })
-				}
-				this.$store.dispatch('setCartList')
-				if (_.find(this.$store.state.cartCheckedProds, e => this.cartProd._id)) {
-					this.$store.dispatch('setCartTotalPrice')
-				}
+				console.log(this.counter)
 			},
 			removeFromCart (prodId) {
 				if (this.$store.state.isLogin) {
@@ -110,9 +96,8 @@
 					this.$store.dispatch('setCartTotalPrice')
 				}
 			},
-			checkCartProd () {
-				this.$store.dispatch('setCartCheckedProds', { checkedProdId: this.cartProd._id })
-				this.$store.dispatch('setCartTotalPrice')
+			checkCartProd (productId) {
+				this.$store.dispatch('cart/setCheckedProducts', productId)
 			}
     }
 	}	

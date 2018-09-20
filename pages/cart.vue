@@ -2,7 +2,7 @@
 	<no-ssr>
 		<div class="cart-container">
 			<div
-				v-for="cart in cartList"
+				v-for="cart in carts"
 				:key="cart._id"
 				class="cart-card-con">
 				<cartCard
@@ -12,15 +12,18 @@
 			<div class="cart-counter-con">
 				<div class="cart-counter">
 					<div class="cart-checkall">
-						<el-checkbox @change="checkAll" v-model="isCheckedAll"></el-checkbox>
+						<el-checkbox
+							@change="checkAll"
+							:checked="isCheckedAll">
+						</el-checkbox>
 						<div class="select-all-text">all</div>
 					</div>
 	
 					<div class="price-counter">
 						<div class="cart-subtotal">Subtotal:</div>
-						<div class="cart-price-counter">$ 0</div>
+						<div class="cart-price-counter">$ {{$store.state.cart.subtotal}}</div>
 						<div @click="goToPurchase" class="cart-checkout-btn">
-							CHECKOUT ( 0 )
+							CHECKOUT ( {{$store.state.cart.checkedProducts.length}} )
 						</div>
 					</div>
 				</div>
@@ -44,17 +47,15 @@
 		computed: {
 			...mapGetters(['isAuthenticated']),
 			...mapState({
-				cartList: state => {
-						if (state.isAuthenticated) return state.cart.cartList
-						return state.cart.localCartList
-					},
+				isCheckedAll: state => state.cart.isCheckedAll,
+				carts: state => state.cart.carts,
 				localCartList: state => state.cart.localCartList
 			})
 		},
 		data () {
 			return {
 				cartProdList: [],
-				isCheckedAll: false
+				checkedCount: 0
 			}
 		},
 		created () {
@@ -62,12 +63,11 @@
 			// 	this.$store.dispatch('setCartProdsDetail')
 			// 	this.$store.dispatch('setCartTotalPrice')
 			// })
+			this.$store.dispatch('cart/setCarts')
 		},
 		methods: {
 			checkAll () {
-				this.$store.dispatch('checkAllCartProd', { isCheckedAll: this.isCheckedAll })
-				this.$store.dispatch('setCartProdsDetail')
-				this.$store.dispatch('setCartTotalPrice')
+				console.log('check all')
 			},
 			goToPurchase () {
 				this.$router.push({ path: '/purchase' })

@@ -143,10 +143,7 @@
 			...mapGetters(['isAuthenticated']),
 			...mapState({
 				product: state => state.details.product,
-				cartList: state => {
-					if (state.isAuthenticated) return state.cart.cartList
-					return state.cart.localCartList
-				},
+				carts: state => state.cart.carts,
 				favList: state => {
 					if (state.isAuthenticated) return state.cart.favList
 					return state.cart.localFavList
@@ -210,7 +207,7 @@
 				console.log(tab, event)
 			},
 			getCartFavImg () {
-				const cartIdList = this.cartList.map(ele => ele.prodId)
+				const cartIdList = this.carts.map(ele => ele.productId)
 				const favList = this.favList
 				const cartImgName = _.find(cartIdList, ele => ele === this.product._id) ? 'cart.png' : 'uncart.png'
 				const favImgName = _.find(favList, ele => ele === this.product._id) ? 'favorite.png' : 'unfavorite.png'
