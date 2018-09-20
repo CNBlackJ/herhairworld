@@ -72,7 +72,7 @@
 		},
 		methods: {
 			getCartFavImg () {
-				const cartIdList = this.cartList.map(ele => ele.prodId)
+				const cartIdList = this.cartList.map(ele => ele.productId)
 				const favList = this.favList
 				const cartImgName = _.find(cartIdList, ele => ele === this.product._id) ? 'cart.png' : 'uncart.png'
 				const favImgName = _.find(favList, ele => ele === this.product._id) ? 'favorite.png' : 'unfavorite.png'
@@ -87,7 +87,7 @@
 				if (this.isAuthenticated) {
 					this.$store.dispatch('list/createCart', productId)
 				} else {
-					LS.createCart({ prodId: productId, count: 1 })
+					LS.createCart({ productId, count: 1 })
 					this.$store.dispatch('cart/setLocalCartList')
 					this.getCartFavImg()
 				}
