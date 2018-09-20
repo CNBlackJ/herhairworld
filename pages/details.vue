@@ -38,7 +38,7 @@
 						<el-select
 							size="small"
 							style="width: 100%"
-							v-model="selectedLength"
+							v-model="detailForm.length"
 							placeholder="Selecte Length">
 							<el-option
 								v-for="len in length"
@@ -58,7 +58,7 @@
 					<el-col :span="10">
 						<el-input-number
 							size="small"
-							v-model="quantity"
+							v-model="detailForm.count"
 							@change="changeQty"
 							:min="1" 
 							:max="product.quantity"
@@ -121,7 +121,9 @@
 					class="detail-bottom-cart">
 					Add to Cart
 				</div>
-				<div class="detail-bottom-buy">
+				<div
+					@click="buyNow(product._id)"
+					class="detail-bottom-buy">
 					Buy Now
 				</div>
 			</div>
@@ -155,8 +157,6 @@
 			return {
 				cartImg: '',
 				favImg: this.$store.state.imgBaseUrl + 'unfavorite.png',
-				quantity: 1,
-				selectedLength: '',
 				activateTab: 1,
 				detailTabs: [
 					{ _id: 1, name: 'Product', icon: 'el-icon-location', scrollTo: '#detail-product-imgs' },
@@ -186,7 +186,11 @@
 				],
 				length: [
 					10, 12, 14, 16, 18, 20, 22
-				]
+				],
+				detailForm: {
+					length: '',
+					count: 1
+				}
 			}
 		},
 		beforeCreate () {
@@ -223,16 +227,21 @@
 				this.getCartFavImg()
 			},
 			addToCart (productId) {
+				const form = {...this.detailForm, ...{ productId }}
 				if (this.isAuthenticated) {
 					this.$store.dispatch('list/createCart', productId)
 				} else {
-					LS.createCart({ prodId: productId, count: 1 })
+					LS.createCart(form)
 					this.$store.dispatch('cart/setLocalCartList')
 				}
 				this.getCartFavImg()
 			},
 			getInquiry () {
 				this.$router.push({ path: '/inquiry' })
+			},
+			buyNow (productId) {
+				const form = {...this.detailForm, ...{ productId }}
+				console.log(form)
 			}
 		}
 	}

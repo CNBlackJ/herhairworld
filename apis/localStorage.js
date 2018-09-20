@@ -37,18 +37,19 @@ export default class LS {
     }
   }
 
-  static createCart ({ prodId, count }) {
+  static createCart (cart) {
     if (process.browser) {
       const carts = window.localStorage.carts
       let newCarts = []
       if (!carts) {
-        newCarts.push({ prodId, count })
+        newCarts.push(cart)
       } else {
         newCarts = JSON.parse(carts)
-        if (newCarts.map(e => e.prodId).indexOf(prodId) > -1) {
-          _.remove(newCarts, ele => ele.prodId === prodId)
+        const { productId } = cart
+        if (newCarts.map(e => e.productId).indexOf(productId) > -1) {
+          _.remove(newCarts, ele => ele.productId === productId)
         } else {
-          newCarts.push({ prodId, count })
+          newCarts.push(cart)
         }
       }
       window.localStorage.carts = JSON.stringify(newCarts)

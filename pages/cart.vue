@@ -1,36 +1,36 @@
 <template>
-	<div class="cart-container">
-		<div
-			v-for="cart in cartList"
-			:key="cart._id"
-			class="cart-card-con">
-			<cartCard
-				:cartProd="cart">
-			</cartCard>
-		</div>
-		<div class="cart-counter-con">
-			<div class="cart-counter">
-				<div class="cart-checkall">
-					<el-checkbox @change="checkAll" v-model="isCheckedAll"></el-checkbox>
-					<div class="select-all-text">all</div>
-				</div>
-
-				<div class="price-counter">
-					<div class="cart-subtotal">Subtotal:</div>
-					<div class="cart-price-counter">$ {{$store.state.cartTotalPrice}}</div>
-					<div
-						@click="goToPurchase"
-						class="cart-checkout-btn">
-						CHECKOUT ( {{$store.state.cartCheckedProds}} )
+	<no-ssr>
+		<div class="cart-container">
+			<div
+				v-for="cart in cartList"
+				:key="cart._id"
+				class="cart-card-con">
+				<cartCard
+					:cartProd="cart">
+				</cartCard>
+			</div>
+			<div class="cart-counter-con">
+				<div class="cart-counter">
+					<div class="cart-checkall">
+						<el-checkbox @change="checkAll" v-model="isCheckedAll"></el-checkbox>
+						<div class="select-all-text">all</div>
+					</div>
+	
+					<div class="price-counter">
+						<div class="cart-subtotal">Subtotal:</div>
+						<div class="cart-price-counter">$ 0</div>
+						<div @click="goToPurchase" class="cart-checkout-btn">
+							CHECKOUT ( 0 )
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	</no-ssr>
 </template>
 
 <script>
-	import { mapState } from 'vuex'
+	import { mapState, mapGetters } from 'vuex'
 
 	import product from '@/apis/product'
 
@@ -41,10 +41,16 @@
 		components: {
 			cartCard
 		},
-		computed: mapState({
-			cartList: state => state.cart.cartList,
-			localCartList: state => state.cart.localCartList
-		}),
+		computed: {
+			...mapGetters(['isAuthenticated']),
+			...mapState({
+				cartList: state => {
+						if (state.isAuthenticated) return state.cart.cartList
+						return state.cart.localCartList
+					},
+				localCartList: state => state.cart.localCartList
+			})
+		},
 		data () {
 			return {
 				cartProdList: [],

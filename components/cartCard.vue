@@ -8,13 +8,13 @@
 			</el-col>
 			<el-col :xs="6">
 				<div class="cart-card-img-con">
-					<img class="cart-card-img" :src="cartProd.mainImg">
+					<img class="cart-card-img" :src="product.mainImg">
 				</div>
 			</el-col>
 			<el-col :xs="16" style="padding-left: 10px;">
 				<div class="cc-rigth">
 					<div class="cc-name">
-						{{cartProd.name}}
+						{{product.name}}
 					</div>
 					<div class="cc-detail">
 						<div class="cc-parameters">
@@ -22,7 +22,7 @@
 						</div>
 					</div>
 					<div class="cc-price">
-						${{cartProd.price.toFixed(2)}}
+						$ {{product.price.toFixed(2)}}
 					</div>
 					<div class="cc-counter">
 						<div>
@@ -37,7 +37,7 @@
 						<div>
 							<i
 								class="el-icon-close"
-								@click="removeFromCart(cartProd._id)"></i>
+								@click="removeFromCart(product._id)"></i>
 						</div>
 					</div>
 				</div>
@@ -47,6 +47,7 @@
 </template>
 
 <script>
+	import product from '@/apis/product'
 	import cart from '@/apis/cart'
 	import LS from '@/apis/localStorage'
 
@@ -56,11 +57,21 @@
 		],
 		data () {
 			return {
-				isChecked: this.$store.state.cartCheckedProds.indexOf(this.cartProd._id) > -1,
-				counter: this.$store.state.cartList.find(e => e.prodId === this.cartProd._id) ? this.$store.state.cartList.find(e => e.prodId === this.cartProd._id).count : 0
+				isChecked: false,
+				counter: 0,
+				product: {
+					price: 0
+				}
 			}
 		},
+		async created () {
+			await this.getProduct()
+		},
     methods: {
+			async getProduct (productId) {
+				const prod = await product.getById(this.cartProd.productId)
+				this.product = prod
+			},
       updateCount () {
 				if (this.$store.state.isLogin) {
 					const cartInfo = { productId: this.cartProd._id, count: this.counter }
