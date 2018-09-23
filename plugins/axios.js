@@ -11,9 +11,6 @@ function getCookieInClient (name) {
 }
 
 export default ({ app, store, redirect }) => {
-  if (process.SERVER_BUILD) {
-    console.log('it is server build')
-  }
   axios.defaults.baseURL = 'http://127.0.0.1:3010'
 
   axios.interceptors.request.use(req => {

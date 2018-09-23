@@ -78,11 +78,21 @@
 		</div>
 
 		<div class="purchase-submit">
-			<div
+			<!-- <div
 				@click="createOrder"
 				class="purchase-submit-text">
 				Submit
-			</div>
+			</div> -->
+			<no-ssr>
+				<paypal-checkout
+					env="sandbox"
+					amount="10000"
+					currency="USD"
+					locale="fr_FR"
+					:client="paypal"
+					:invoice-number="'201705051001'">
+				</paypal-checkout>
+			</no-ssr>
 		</div>
 	</div>
 </template>
@@ -102,6 +112,11 @@
 		},
 		data () {
 			return {
+				paypal: {
+					sandbox: 'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',
+					// sanbox: 'access_token$sandbox$77k65bvyyxs3mcs6$cb80b1fc3d3d4f5ffc7574dc662691c9',
+          production: '<production client id>'
+        },
 				payments: [
 					{ id: 1, name: 'Paypal', value: 'paypal' },
 					{ id: 2, name: 'AliPay', value: 'alipay' },
@@ -202,6 +217,7 @@
 
 	.purchase-submit {
 		padding: 10px 5px;
+		text-align: center;
 	}
 
 	.purchase-submit-text {
