@@ -4,7 +4,7 @@
     <indexContent title="featured categories"></indexContent>
     <category></category>
 
-    <indexContent title="business solution"></indexContent>
+    <indexContent :title="serviceTitles[0]"></indexContent>
     <div class="bs-container">
       <div class="bs-description">
         Growing your business is our target and we provide solutions to make you successful!
@@ -21,7 +21,7 @@
       @click.native="getInquiry"
     ></indexBtn>
 
-    <indexContent title="factory direct price"></indexContent>
+    <indexContent :title="serviceTitles[1]"></indexContent>
     <div class="fc-container">
       <div class="bs-description">
         Lowest factory direct prices with Premuim quality
@@ -35,7 +35,7 @@
       @click.native="getInquiry"
     ></indexBtn>
 
-    <indexContent title="secret of hair market"></indexContent>
+    <indexContent :title="serviceTitles[2]"></indexContent>
     <div class="secret-container">
       <div class="bs-description">
         Are you still buying the hair as Brazilian Hair? 12A
@@ -63,14 +63,13 @@
       @click.native="getInquiry"
     ></indexBtn>
 
-    <indexContent title="why choose us"></indexContent>
+    <indexContent :title="serviceTitles[3]"></indexContent>
     <div class="choose-container">
       <div class="choose-img-container" v-for="c in choices" :key="c.id">
         <img class="choose-img" :src="'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/' + c.img"/>
         <div class="choose-title">{{c.title}}</div>
       </div>
     </div>
-
     <social></social>
   </div>
 </template>
@@ -82,6 +81,8 @@
   import indexBtn from '@/components/indexBtn'
   import social from '@/components/social'
 
+  import { mapState, mapGetters } from 'vuex'
+
   export default {
     layout: 'mainWithInquiry',
     components: {
@@ -90,6 +91,14 @@
       category,
       indexBtn,
       social
+    },
+    computed: {
+      ...mapGetters({
+        serviceTitles: 'home/serviceTitles'
+      }),
+      ...mapState({
+        services: state => state.home.pageConfig.index.services
+      })
     },
     data () {
       return {
@@ -101,6 +110,9 @@
         ]
       }
     },
+		created () {
+      this.$store.dispatch('home/setPageConfig')
+		},
     methods: {
       getInquiry () {
         this.$router.push({ path: '/inquiry' })
