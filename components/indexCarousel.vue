@@ -2,8 +2,11 @@
 	<div class="index-carousel">
 		<div class="block">
 			<el-carousel height="170px">
-				<el-carousel-item v-for="item in 4" :key="item">
-					<img class="imgs" src='https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/banner.jpg'>
+				<el-carousel-item
+					v-for="item in banner"
+					:key="item._id">
+					<img class="carousel-img"
+						:src="item.img">
 				</el-carousel-item>
 			</el-carousel>
 		</div>
@@ -11,9 +14,14 @@
 </template>
 
 <script>
+	import { mapState } from 'vuex'
+
 	export default {
-		data () {
-			return {}
+		computed: mapState({
+			banner: state => state.home.pageConfig.index.banner
+		}),
+		created () {
+			this.$store.dispatch('home/setPageConfig')
 		}
 	}
 </script>
@@ -35,7 +43,7 @@
 		/* background-color: #d3dce6; */
 	}
 
-	.imgs {
+	.carousel-img {
 		width: 100%;
 	}
 </style>

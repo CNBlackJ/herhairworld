@@ -38,7 +38,7 @@
 							<el-col :span="11">
 								<el-input v-model="searchCondition.minPrice" placeholder="输入价格"></el-input>
 							</el-col>
-							<el-col class="line" :span="2">-</el-col>
+							<el-col style="text-align:center" :span="2">-</el-col>
 							<el-col :span="11">
 								<el-input v-model="searchCondition.maxPrice" placeholder="输入价格"></el-input>
 							</el-col>
@@ -60,8 +60,8 @@
 			title="添加产品"
 			:visible.sync="addProdDialogVisible"
 			:before-close="handleClose"
-			width="50%">
-			<addProdForm></addProdForm>
+			width="80%">
+			<addProdForm v-on:closeAddProdForm="addProdDialogVisible = false"></addProdForm>
 		</el-dialog>
 
 		<el-dialog

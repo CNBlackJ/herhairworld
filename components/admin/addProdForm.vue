@@ -1,7 +1,6 @@
 <template>
 	<div class="addprod-con">
 		<el-form :model="prod" :rules="rules" ref="prod" label-width="100px">
-
 			<el-row>
 				<el-col :span="10">
 					<el-form-item label="产品名称" prop="name">
@@ -40,12 +39,7 @@
 			
 			<el-row>
 				<el-col :span="8">
-					<el-form-item label="原价" prop="originPrice">
-						<el-input v-model.number="prod.originPrice"></el-input>
-					</el-form-item>
-				</el-col>
-				<el-col :span="8">
-					<el-form-item label="现价" prop="price">
+					<el-form-item label="价格" prop="price">
 						<el-input v-model.number="prod.price"></el-input>
 					</el-form-item>
 				</el-col>
@@ -54,32 +48,14 @@
 						<el-input v-model.number="prod.quantity"></el-input>
 					</el-form-item>
 				</el-col>
-			</el-row>
-
-			<el-row>
-				<el-col :span="12">
-					<el-form-item label="长度" required>
-						<el-col :span="11">
-							<el-form-item prop="minLen">
-								<el-input v-model.number="prod.minLen"></el-input>
-							</el-form-item>
-						</el-col>
-						<el-col :span="2">-</el-col>
-						<el-col :span="11">
-							<el-form-item prop="maxLen">
-								<el-input v-model.number="prod.maxLen"></el-input>
-							</el-form-item>
-						</el-col>
-					</el-form-item>
-				</el-col>
-				<el-col :span="12">
+				<el-col :span="8">
 					<el-form-item label="重量" required>
 						<el-col :span="11">
 							<el-form-item prop="minWeight">
 								<el-input v-model.number="prod.minWeight"></el-input>
 							</el-form-item>
 						</el-col>
-						<el-col class="line" :span="2">-</el-col>
+						<el-col style="text-align:center" :span="2">-</el-col>
 						<el-col :span="11">
 							<el-form-item prop="maxWeight">
 								<el-input v-model.number="prod.maxWeight"></el-input>
@@ -88,6 +64,7 @@
 					</el-form-item>
 				</el-col>
 			</el-row>
+
 			<el-row>
 				<el-col :span="24">
 					<el-form-item label="类别" prop="categories">
@@ -95,6 +72,7 @@
 							<el-checkbox
 								v-for="category in categories"
 								:key="category._id"
+								:checked="prod.categories.map(e => e._id).indexOf(category._id) > -1"
 								:label="category.name">
 							</el-checkbox>
 						</el-checkbox-group>
@@ -102,10 +80,65 @@
 				</el-col>
 			</el-row>
 
-			<el-form-item label="描述" prop="description">
-				<el-input rows="4" type="textarea" v-model="prod.description"></el-input>
-			</el-form-item>
-
+			<el-row>
+				<el-col :span="24">
+					<el-form-item label="长度 / 价格">
+						<el-card>
+							<el-tag
+								v-for="length in prod.lengths"
+								:key="length._id"
+								closable
+								:disable-transitions="false"
+								@close="removeLenPrice(length._id)">
+								{{length.len}} inch - $ {{length.price}}
+							</el-tag>
+							<div v-if="priceLenVisible">
+								<el-row>
+									<el-col :span="2">
+										Length: 
+									</el-col>
+									<el-col :span="6">
+										<el-input
+											v-model="length"
+											size="small">
+										</el-input>
+									</el-col>
+									<el-col :span="2" :offset="1">
+										Price:
+									</el-col>
+									<el-col :span="6">
+										<el-input
+											v-model="price"
+											size="small">
+										</el-input>
+									</el-col>
+									<el-col :span="2" :offset="1">
+										<el-button
+											@click="lenPriceConfirm"
+											size="small"
+											type="primary">
+										确定</el-button>
+									</el-col>
+									<el-col :span="2">
+										<el-button
+											@click="lenPriceCancle"
+											size="small">
+										取消</el-button>
+									</el-col>
+								</el-row>
+							</div>
+							<el-button
+								style="margin-left: 10px"
+								v-else
+								size="small"
+								@click="showInput">
+								+ 添加尺寸
+							</el-button>
+						</el-card>
+					</el-form-item>
+				</el-col>
+			</el-row>
+	
 			<el-row :gutter="20">
 				<el-col :span="10">
 					<el-form-item label="封面图" prop="description">
@@ -164,6 +197,8 @@
 </template>
 
 <script>
+	import _ from 'lodash'
+
 	import product from '@/apis/product'
 	import category from '@/apis/category'
 	
@@ -174,26 +209,27 @@
 		],
 		data() {
 			return {
+        priceLenVisible: false,
+				price: 0,
+				length: 0,
 				categories: [],
 				prod: {
-					model: '',
-					name: '',
-					description: '',
+					model: `test model name ${new Date()}`,
+					name: `test product name ${new Date()}`,
 					quantity: 999,
 					orderMin: 1,
-					material: '',
-					package: '',
+					material: '100% Human Hair',
+					package: '1pcs/lot(100g)',
 					originPrice: 199,
 					price: 99,
-					color: '',
+					color: 'Natural Color',
 					mainImg: '',
 					categories: [],
 					imgs: [],
-					minLen: 15,
-					maxLen: 55,
 					minWeight: 90,
 					maxWeight: 110,
-					online: true
+					online: true,
+					lengths: []
 				},
 				rules: {
 					name: [
@@ -201,9 +237,6 @@
 					],
 					model: [
 						{ required: true, message: '请输入产品model', trigger: 'blur' }
-					],
-					description: [
-						{ required: true, message: '请填写产品描述', trigger: 'blur' }
 					],
 					quantity: [
 						{ type: 'number', required: true, message: '请输入产品数量', trigger: 'blur' },
@@ -219,24 +252,12 @@
 					package: [
 						{ required: true, message: '请输入包装内容', trigger: 'blur' }
 					],
-					originPrice: [
-						{ type: 'number', required: true, message: '请输入产品原价', trigger: 'blur' },
-						{ type: 'number', message: '产品原价必须为数字', trigger: 'blur' },
-					],
 					price: [
 						{ type: 'number', required: true, message: '请输入产品价格', trigger: 'blur' },
 						{ type: 'number', message: '产品价格必须为数字', trigger: 'blur' },
 					],
 					color: [
 						{ required: true, message: '请输入产品颜色', trigger: 'blur' }
-					],
-					minLen: [
-						{ type: 'number', required: true, message: '请输入产品最小长度', trigger: 'blur' },
-						{ type: 'number', message: '产品长度必须为数字', trigger: 'blur' }
-					],
-					maxLen: [
-						{ type: 'number', required: true, message: '请输入产品最大长度', trigger: 'blur' },
-						{ type: 'number', message: '产品长度必须为数字', trigger: 'blur' }
 					],
 					minWeight: [
 						{ type: 'number', required: true, message: '请输入产品最小重量', trigger: 'blur' },
@@ -255,30 +276,33 @@
 				}
 			};
 		},
-		created () {
-			this.listCategory()
-			if (this.isEdit) { 
-				this.getProd()
-			}
+		async created () {
+			if (this.isEdit) this.prod = await product.getById(this.prodId)
+			this.categories = await category.list({})
 		},
 		methods: {
-			listCategory () {
-				category.list({}).then(resp => {
-					this.categories = resp.data
-				}).catch(err => {
-					console.log(`listCategory: ${JSON.stringify(err)}`)
-				})
+      removeLenPrice(_id) {
+        _.remove(this.prod.lengths, ele => ele._id === _id)
+      },
+      showInput() {
+        this.priceLenVisible = true
+      },
+      lenPriceConfirm() {
+				const len = this.length
+				const price = this.price
+        if (len && price) {
+					const lenPrice = { len, price }
+          this.prod.lengths.push(lenPrice)
+				}
+				this.lenPriceCancle()
 			},
-			getProd () {
-				product.getById({ id: this.prodId }).then((resp) => {
-					const catNames = resp.data.categories.map(cat => cat.name)
-					this.prod = Object.assign({}, resp.data, { categories: catNames })
-				}).catch((err) => {
-					console.log(`getProd: ${JSON.stringify(err)}`)
-				})
+			lenPriceCancle () {
+        this.priceLenVisible = false;
+				this.length = 0
+				this.price = 0
 			},
 			createProd(formName) {
-				this.$refs[formName].validate((valid) => {
+				this.$refs[formName].validate(async (valid) => {
 					if (valid) {
 						// 更新图片字段
 						this.prod.imgs = this.prod.imgs.map(img => { return { name: img.name, url: img.url } })
@@ -288,17 +312,13 @@
 							if (this.prod.categories.indexOf(category.name) > -1) objIdCat.push(category._id)
 						})
 						this.prod.categories = objIdCat
-						product.create(this.prod).then((resp) => {
-							console.log(`createProd: ${JSON.stringify(resp)}`)
-							alert('submit!');
-						}).catch((err) => {
-							console.log(`createProd - err: ${JSON.stringify(err)}`)
-						})
+						await product.create(this.prod)
+						this.$emit('closeAddProdForm')
 					} else {
 						console.log('error submit!!');
 						return false;
 					}
-				});
+				})
 			},
 			resetForm(formName) {
 				this.$refs[formName].resetFields();
@@ -315,7 +335,7 @@
           .catch(_ => {});
 			},
 			updateProd (formName) {
-				this.$refs[formName].validate((valid) => {
+				this.$refs[formName].validate(async (valid) => {
 					if (valid) {
 						this.prod.imgs = this.prod.imgs.map(img => {
 							return { name: img.name, url: img.url }
@@ -326,11 +346,7 @@
 							if (this.prod.categories.indexOf(category.name) > -1) objIdCat.push(category._id)
 						})
 						this.prod.categories = objIdCat
-						product.update({ prod: this.prod }).then((resp) => {
-							alert('updated!');
-						}).catch((err) => {
-							console.log(err)
-						})
+						await product.update({ prod: this.prod })
 					} else {
 						return false;
 					}
@@ -393,5 +409,9 @@
     width: 160px;
     height: 160px;
     display: block;
+  }
+
+	.el-tag + .el-tag {
+    margin-left: 10px;
   }
 </style>

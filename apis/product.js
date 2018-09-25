@@ -16,8 +16,10 @@ export default class product {
   }
 
   static async getByIds ({ productIds }) {
-    const resp = await request.post('/api/products/getByIds', { productIds })
-    return resp.data
+    const resp = (await request.post('/api/products/getByIds', { productIds })).data
+    let results = []
+    if (!resp.error_code) results = resp.data
+    return results
   }
 
   static async getById (productId) {
@@ -34,6 +36,7 @@ export default class product {
     delete prod.updatedAt
     delete prod.isDeleted
     delete prod.__v
+    delete prod.sales
     const resp = await request.put(`/api/products/${id}`, prod)
     return resp.data
   }

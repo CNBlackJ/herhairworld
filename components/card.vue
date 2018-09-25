@@ -2,8 +2,8 @@
 	<div>
 		<el-card :body-style="{ padding: '0px' }">
 			<img
-				:src="imgBaseUrl + 'product_img_1.jpg'"
-				class="image"
+				:src="product.mainImg"
+				class="produc-card-image"
 				@click="showDetail(product._id)">
 			<div class="prod-detail">
 				<span
@@ -50,10 +50,7 @@
 		computed: {
 			...mapGetters(['isAuthenticated']),
 			...mapState({
-				cartList: state => {
-					if (state.isAuthenticated) return state.cart.cartList
-					return state.cart.localCartList
-				},
+				carts: state => state.cart.carts,
 				favList: state => {
 					if (state.isAuthenticated) return state.cart.favList
 					return state.cart.localFavList
@@ -72,7 +69,7 @@
 		},
 		methods: {
 			getCartFavImg () {
-				const cartIdList = this.cartList.map(ele => ele.productId)
+				const cartIdList = this.carts.map(ele => ele.productId)
 				const favList = this.favList
 				const cartImgName = _.find(cartIdList, ele => ele === this.product._id) ? 'cart.png' : 'uncart.png'
 				const favImgName = _.find(favList, ele => ele === this.product._id) ? 'favorite.png' : 'unfavorite.png'
@@ -111,14 +108,16 @@
     float: right;
   }
 
-  .image {
+  .produc-card-image {
     width: 100%;
+		height: 196px;
     display: block;
   }
 
 	.prod-detail {
 		padding: 6px;
 		font-size: 13px;
+		height: 53px;
 	}
 
 	.prod-name {
