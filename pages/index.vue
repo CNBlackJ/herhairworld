@@ -7,7 +7,7 @@
     <indexContent :title="serviceTitles[0]"></indexContent>
     <div class="bs-container">
       <div class="bs-description">
-        Growing your business is our target and we provide solutions to make you successful!
+          {{serviceDescs[0]}}
       </div>
       <div class="bs-imgs">
         <el-col class="bs-img-container" :span="12" v-for="i in 4" :key="i">
@@ -23,11 +23,11 @@
 
     <indexContent :title="serviceTitles[1]"></indexContent>
     <div class="fc-container">
-      <div class="bs-description">
-        Lowest factory direct prices with Premuim quality
-        <br>
-        product help makebig profit
-      </div>
+      <no-ssr>
+        <div class="bs-description">
+          {{serviceDescs[1]}}
+        </div>
+      </no-ssr>
       <img class="fc-img" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/plant.jpg"/>
     </div>
     <indexBtn
@@ -38,9 +38,7 @@
     <indexContent :title="serviceTitles[2]"></indexContent>
     <div class="secret-container">
       <div class="bs-description">
-        Are you still buying the hair as Brazilian Hair? 12A
-        <br/>
-        Grade? More secret of hair market are waiting for you!!
+        {{serviceDescs[2]}}
       </div>
       <img class="fc-img" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/market.jpg"/>
     </div>
@@ -52,9 +50,7 @@
     <indexContent title="hair branding"></indexContent>
     <div class="brand-container">
       <div class="bs-description">
-        Are you still buying the hair as Brazilian Hair? 12A
-        <br/>
-        Grade? More secret of hair market are waiting for you!!
+        {{serviceDescs[3]}}
       </div>
       <img class="fc-img" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/branding.jpg"/>
     </div>
@@ -94,7 +90,8 @@
     },
     computed: {
       ...mapGetters({
-        serviceTitles: 'home/serviceTitles'
+        serviceTitles: 'home/serviceTitles',
+        serviceDescs: 'home/serviceDescriptions'
       }),
       ...mapState({
         services: state => state.home.pageConfig.index.services
