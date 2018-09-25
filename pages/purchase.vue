@@ -10,37 +10,6 @@
 			</el-card>	
 		</div>
 
-		<div class="purchase-address">
-			<el-card
-				body-style="padding:10px;"
-				class="purchase-address-con">
-				<div slot="header">
-					<span class="purchase-card-title">Shipping Address</span>
-					<el-button
-						@click="addAddress"
-						style="float: right; padding: 3px 0"
-						type="text">
-						<i class="el-icon-plus"></i>
-						{{Object.keys(defaultAddress).length ? 'Change' : 'Add' }} Address
-					</el-button>
-				</div>
-				<div class="purchase-address-content">
-					<div class="purchase-address-icon">
-						<i class="el-icon-location-outline"></i>
-					</div>
-					<div class="purchase-address-info">
-						<div class="pa-userinfo">
-							<div class="pa-userinfo-text"><strong>Name:</strong> {{defaultAddress.firstName}} {{defaultAddress.lastName}}</div>
-							<div class="pa-userinfo-text">{{defaultAddress.mobile}}</div>
-						</div>
-						<div class="pa-address">
-							<strong>Address:</strong> {{defaultAddress.addressLine1}} {{defaultAddress.addressLine2}}
-						</div>
-					</div>
-				</div>
-			</el-card>
-		</div>
-
 		<div class="purchase-payment">
 			<el-card>
 				<div slot="header">
@@ -89,6 +58,7 @@
 					amount="10000"
 					currency="USD"
 					locale="fr_FR"
+					payment-completed="showCallback"
 					:client="paypal"
 					:invoice-number="'201705051001'">
 				</paypal-checkout>
@@ -107,9 +77,6 @@
 		components: {
 			addressCard
 		},
-		created () {
-			this.getAddress()
-		},
 		data () {
 			return {
 				paypal: {
@@ -125,23 +92,16 @@
 				orderInfo: {
 					payment: '',
 					couponCode: ''
-				},
-				defaultAddress: {}
+				}
 			}
 		},
 		methods: {
 			createOrder () {
 				const payload = this.orderInfo
-				payload.addressId = this.defaultAddress._id
 				console.log(`createOrder: ${JSON.stringify(payload)}`)
 			},
-			getAddress () {
-				address.getDefault().then((resp) => {
-					this.defaultAddress = resp.data[0]
-				})
-			},
-			addAddress () {
-				this.$router.push({ path: '/address' })
+			showCallback (c) {
+				console.log(c)
 			}
 		}
 	}
@@ -156,43 +116,8 @@
 		padding-bottom: 10px;
 	}
 
-	.purchase-address {
-		padding-bottom: 10px;
-	}
-
-	.purchase-address-con {
-		font-size: 13px;
-	}
-
-	.purchase-address-con .el-card__header {
-		padding: 15px;
-	}
-
-	.purchase-card-header {
-		padding: 15px;
-	}
-
 	.purchase-card-title {
 		font-size: 16px;
-	}
-
-	.purchase-address-content {
-		display: flex;
-		flex-direction: row;
-	}
-
-	.purchase-address-icon {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		font-size: 24px;
-		padding-right: 10px;
-	}
-
-	.purchase-address-info {
-		display: flex;
-		flex-direction: column;
-		width: 100%;
 	}
 
 	.pa-userinfo {

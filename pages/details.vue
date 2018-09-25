@@ -124,7 +124,7 @@
 				<div
 					@click="buyNow(product._id)"
 					class="detail-bottom-buy">
-					Buy Now
+					&nbsp; Buy Now &nbsp;
 				</div>
 			</div>
 		</div>
@@ -338,7 +338,7 @@
 	}
 
 	.detail-bottom-left {
-		width: 50%;
+		width: 45%;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -355,7 +355,7 @@
 	}
 
 	.detail-bottom-right {
-		width: 50%;
+		width: 55%;
 		display: flex;
 		flex-direction: row;
 		align-items: center;

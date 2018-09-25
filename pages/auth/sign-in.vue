@@ -1,5 +1,5 @@
 <template>
-	<div class="auth0-lock" id="auth0-lock"/>
+	<div style="z-index: -1" class="auth0-lock" id="auth0-lock"/>
 </template>
 
 <script>
