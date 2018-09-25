@@ -10,8 +10,14 @@
           {{serviceDescs[0]}}
       </div>
       <div class="bs-imgs">
-        <el-col class="bs-img-container" :span="12" v-for="i in 4" :key="i">
-          <img class="bs-img" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/business_1.jpg"/>
+        <el-col
+          class="bs-img-container"
+          :span="12"
+          v-for="(item, i) in serviceImgs[0]"
+          :key="i">
+          <img
+            class="bs-img"
+            :src="item"/>
           <div class="bs-title">FOR NEW START BUSINESS</div>
         </el-col>
       </div>
@@ -28,7 +34,9 @@
           {{serviceDescs[1]}}
         </div>
       </no-ssr>
-      <img class="fc-img" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/plant.jpg"/>
+      <img
+        class="fc-img"
+        :src="serviceImgs[1]"/>
     </div>
     <indexBtn
       title="get factory price now"
@@ -40,7 +48,9 @@
       <div class="bs-description">
         {{serviceDescs[2]}}
       </div>
-      <img class="fc-img" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/market.jpg"/>
+      <img
+        class="fc-img"
+        :src="serviceImgs[2]"/>
     </div>
     <indexBtn
       title="know more secret now"
@@ -52,7 +62,9 @@
       <div class="bs-description">
         {{serviceDescs[3]}}
       </div>
-      <img class="fc-img" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/branding.jpg"/>
+      <img
+        class="fc-img"
+        :src="serviceImgs[3]"/>
     </div>
     <indexBtn
       title="customize your branding now"
@@ -91,7 +103,8 @@
     computed: {
       ...mapGetters({
         serviceTitles: 'home/serviceTitles',
-        serviceDescs: 'home/serviceDescriptions'
+        serviceDescs: 'home/serviceDescriptions',
+        serviceImgs: 'home/serviceImgs'
       }),
       ...mapState({
         services: state => state.home.pageConfig.index.services

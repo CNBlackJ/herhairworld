@@ -49,5 +49,12 @@ export const getters = {
       descs[ele.index - 1] = ele.description
     })
     return descs
+  },
+  serviceImgs (state) {
+    const imgs = []
+    state.pageConfig.index.services.forEach(ele => {
+      imgs[ele.index - 1] = ele.img
+    })
+    return imgs
   }
 }
