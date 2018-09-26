@@ -10,25 +10,14 @@
 			</el-card>	
 		</div>
 
-		<div class="purchase-payment">
-			<el-card>
-				<div slot="header">
-					<span class="purchase-card-title">Payment Methods</span>
-				</div>
-				<div>
-					<el-select
-						v-model="orderInfo.payment"
-						placeholder="Choose your payment method"
-						class="payment-selector">
-						<el-option
-							v-for="item in payments"
-							:key="item.value"
-							:label="item.name"
-							:value="item.value">
-						</el-option>
-					</el-select>
-				</div>
-			</el-card>
+		<div class="purchase-orders">
+			<div
+				v-for="product in products"
+				:key="product.id">
+				<cartCard
+					:cartProd="product">
+				</cartCard>
+			</div>
 		</div>
 
 		<div class="purchase-coupon">
@@ -68,14 +57,18 @@
 </template>
 
 <script>
-	import address from '@/apis/address'
+	import { mapState } from 'vuex'
+
+	import product from '@/apis/product'
 
 	import addressCard from '@/components/addressCard'
+	import cartCard from '@/components/cartCard'
 
 	export default {
-		layout: 'main',
+		layout: 'mainWithoutFooter',
 		components: {
-			addressCard
+			addressCard,
+			cartCard
 		},
 		data () {
 			return {
@@ -92,10 +85,26 @@
 				orderInfo: {
 					payment: '',
 					couponCode: ''
-				}
+				},
+				products: []
 			}
 		},
+		computed: {
+			...mapState({
+				checkedProducts: state => state.cart.checkedProducts
+			})
+		},
+		async created () {
+			await this.listCheckedProds()
+		},
 		methods: {
+			async listCheckedProds () {
+				const productIds = this.checkedProducts
+				const products = await product.getByIds({ productIds })
+				console.log(productIds)
+				console.log(products)
+				this.products = products
+			},
 			createOrder () {
 				const payload = this.orderInfo
 				console.log(`createOrder: ${JSON.stringify(payload)}`)
@@ -132,13 +141,6 @@
 		padding-bottom: 5px;
 	}
 
-	.purchase-payment {
-		padding-bottom: 5px;
-	}
-
-	.payment-selector {
-		width: 100%;
-	}
 
 	.purchase-submit {
 		padding: 10px 5px;

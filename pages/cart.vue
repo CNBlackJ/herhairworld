@@ -59,10 +59,6 @@
 			}
 		},
 		created () {
-			// this.$store.dispatch('setCartList').then(() => {
-			// 	this.$store.dispatch('setCartProdsDetail')
-			// 	this.$store.dispatch('setCartTotalPrice')
-			// })
 			this.$store.dispatch('cart/setCarts')
 		},
 		methods: {

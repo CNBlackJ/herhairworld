@@ -65,7 +65,7 @@
 			}
 		},
 		async created () {
-			const productId = this.cartProd.productId
+			const productId = this.cartProd.productId || this.cartProd._id
 			await this.getProduct(productId)
 			this.isChecked = _.includes(this.$store.state.cart.checkedProducts, productId)
 		},
