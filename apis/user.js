@@ -15,6 +15,11 @@ export default class user {
     return resp.data
   }
 
+  static async auth0Create ({ auth0User }) {
+    const resp = await request.post('/api/users/auth0', auth0User)
+    return resp.data
+  }
+
   static async login ({ email, password }) {
     const resp = await request.post('/api/users/login', { email, password: md5(password) })
     return resp.data

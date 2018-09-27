@@ -18,7 +18,7 @@
 				</div>
 				<div class="user-middle-content">
 					<div class="user-middle-count">
-						{{$store.state.cartList.lengths}}
+						{{cartList.length}}
 					</div>
 					<div class="user-middle-text">
 						Shoopping Cart
@@ -76,14 +76,19 @@
 </template>
 
 <script>
-	import { mapGetters } from 'vuex'
+	import { mapGetters, mapState } from 'vuex'
 	import LS from '@/apis/localStorage'
 
 	export default {
 		layout: 'main',
-		computed: mapGetters([
-			'loggedUser'
-		]),
+		computed: {
+			...mapGetters([
+				'loggedUser'
+			]),
+			...mapState({
+				cartList: state => state.cart.cartList
+			})
+		},
 		data () {
 			return {
 				user: '',
