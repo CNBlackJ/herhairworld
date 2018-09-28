@@ -224,11 +224,12 @@
 				this.getCartFavImg()
 			},
 			addToCart (productId) {
-				const form = {...this.detailForm, ...{ productId }}
+				const lengthPrice = product.lengths.find(ele => ele.length === this.detailForm.length)
+				const cartInfo = {...lengthPrice, ...{ productId }, ...{ count: this.detailForm.count }}
 				if (this.isAuthenticated) {
-					this.$store.dispatch('list/createCart', productId)
+					this.$store.dispatch('list/createCart', cartInfo)
 				} else {
-					LS.createCart(form)
+					LS.createCart(cartInfo)
 					this.$store.dispatch('cart/setLocalCartList')
 				}
 				this.getCartFavImg()

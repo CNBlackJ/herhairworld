@@ -81,10 +81,14 @@
 				this.$router.push({ path: `/details?productId=${productId}` })
 			},
 			addToCart (productId) {
+				console.log(this.product)
+				const { price, len } = this.product.lengths[0]
+				const cartInfo = { productId, price, len, count: 1 }
+
 				if (this.isAuthenticated) {
-					this.$store.dispatch('list/createCart', productId)
+					this.$store.dispatch('list/createCart', cartInfo)
 				} else {
-					LS.createCart({ productId, count: 1 })
+					LS.createCart(cartInfo)
 					this.$store.dispatch('cart/setLocalCartList')
 					this.getCartFavImg()
 				}

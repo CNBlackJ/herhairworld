@@ -26,8 +26,7 @@
 			...mapGetters(['isAuthenticated']),
 			...mapState({
 				cartCount: state => {
-					if (state.isAuthenticated) return state.cart.cartList.length
-					return state.cart.localCartList.length
+					return state.cart.carts.length
 				},
 			})
 		},
