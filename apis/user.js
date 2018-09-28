@@ -8,11 +8,11 @@ export default class user {
     return resp.data
   }
 
-  static async create ({ user }) {
-    delete user.pwConfirm
-    user.password = md5(user.password)
-    const resp = await request.post('/api/users', user)
-    return resp.data
+  static async auth0Create ({ auth0User }) {
+    const resp = (await request.post('/api/users/auth0', auth0User)).data
+    let userInfo = null
+    if (!resp.error_code) userInfo = resp.data
+    return userInfo
   }
 
   static async login ({ email, password }) {

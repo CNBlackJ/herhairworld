@@ -28,7 +28,7 @@
 						<div>
 							<el-input-number
 								v-model="counter"
-								@change="updateCount"
+								@change="updateCount(product._id)"
 								size="mini"
 								:min="1" 
 								:max="10">
@@ -47,6 +47,8 @@
 </template>
 
 <script>
+	import { mapState } from 'vuex'
+
 	import product from '@/apis/product'
 	import cart from '@/apis/cart'
 	import LS from '@/apis/localStorage'
@@ -73,28 +75,12 @@
 			async getProduct (productId) {
 				this.product = await product.getById(productId)
 			},
-      updateCount () {
-				console.log(this.counter)
+      async updateCount (productId) {
+				const cartInfo = { productId }
+				await cart.updateByProdId({ cart: cartInfo })
 			},
-			removeFromCart (prodId) {
-				if (this.$store.state.isLogin) {
-					cart.deleteByProdId({ productId: this.cartProd._id }).then((resp) => {
-						if (!resp.error_code) {
-							this.$store.dispatch('setCartCheckedProds', { checkedProdId: this.cartProd._id })
-							this.$store.dispatch('setCartList').then((res) => {
-								this.$store.dispatch('setCartProdsDetail')
-								this.$store.dispatch('setCartTotalPrice')
-							})
-						} else {
-							console.log(resp.error_msg)
-						}
-					})
-				} else {
-					LS.removeFromCart({ prodId })
-					this.$store.dispatch('setCartList')
-					this.$store.dispatch('setCartProdsDetail')
-					this.$store.dispatch('setCartTotalPrice')
-				}
+			async removeFromCart (_id) {
+				await cart.deleteByProdId(_id)
 			},
 			checkCartProd (productId) {
 				this.$store.dispatch('cart/setCheckedProducts', productId)

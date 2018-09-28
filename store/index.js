@@ -1,11 +1,15 @@
 export const state = () => ({
   user: null,
-  imgBaseUrl: 'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/'
+  imgBaseUrl: 'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/',
+  authToken: ''
 })
 
 export const mutations = {
   SET_USER (state, user) {
     state.user = user || null
+  },
+  SET_AUTH_TOKEN (state, authToken) {
+    state.authToken = authToken
   },
   SET_IMG_BASE_URL (state, url) {
     state.imgBaseUrl = url || 'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/'

@@ -1,6 +1,8 @@
 import jwtDecode from 'jwt-decode'
 import Cookie from 'js-cookie'
 
+import user from '@/apis/user'
+
 const getQueryParams = () => {
   const params = {}
   window.location.href.replace(/([^(?|#)=&]+)(=([^&]*))?/g, ($0, $1, $2, $3) => {
@@ -18,11 +20,17 @@ export const extractInfoFromHash = () => {
   }
 }
 
-export const setToken = (token) => {
+export const setToken = async (token) => {
   if (process.SERVER_BUILD) return
+  const userInfo = jwtDecode(token)
   window.localStorage.setItem('token', token)
-  window.localStorage.setItem('user', JSON.stringify(jwtDecode(token)))
-  Cookie.set('jwt', token)
+  window.localStorage.setItem('user', JSON.stringify(userInfo))
+  Cookie.set('token', token)
+  // craete auth0 user
+  const auth0User = { auth0Sub: userInfo.sub, auth0User: JSON.stringify(userInfo) }
+  const auth0UserInfo = await user.auth0Create({ auth0User })
+  window.localStorage.setItem('authToken', auth0UserInfo.authToken)
+  Cookie.set('authToken', auth0UserInfo.authToken)
 }
 
 export const unsetToken = () => {
@@ -30,19 +38,31 @@ export const unsetToken = () => {
   window.localStorage.removeItem('token')
   window.localStorage.removeItem('user')
   window.localStorage.removeItem('secret')
-  Cookie.remove('jwt')
+  Cookie.remove('token')
   window.localStorage.setItem('logout', Date.now())
 }
 
 export const getUserFromCookie = (req) => {
   if (!req.headers.cookie) return
-  const jwtCookie = req.headers.cookie.split(';').find(c => c.trim().startsWith('jwt='))
+  const jwtCookie = req.headers.cookie.split(';').find(c => c.trim().startsWith('token='))
   if (!jwtCookie) return
   const jwt = jwtCookie.split('=')[1]
   return jwtDecode(jwt)
 }
 
 export const getUserFromLocalStorage = () => {
+  const authToken = window.localStorage.authToken
+  return authToken
+}
+
+export const getAuthTokenFromCookie = (req) => {
+  if (!req.headers.cookie) return
+  const authToken = req.headers.cookie.split(';').find(c => c.trim().startsWith('authToken='))
+  if (!authToken) return
+  return authToken.split('=')[1]
+}
+
+export const getAuthTokenFromLocalStorage = () => {
   const json = window.localStorage.user
   return json ? JSON.parse(json) : undefined
 }

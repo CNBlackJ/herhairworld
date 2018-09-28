@@ -17,8 +17,8 @@ export const actions = {
     const products = await product.list({ categoryId: rootState.home.activateCat })
     commit('SET_PRODUCT_LIST', products)
   },
-  async createCart ({ state, commit }, productId) {
-    const cartInfo = { productId, count: 1 }
+  async createCart ({ state, commit }, { productId, price, len, count }) {
+    const cartInfo = { productId, price, len, count }
     await cart.create({ cart: cartInfo })
   },
   async createFav ({ state, commit }, productId) {

@@ -2,6 +2,7 @@ import _ from 'lodash'
 
 import cart from '@/apis/cart'
 import product from '@/apis/product'
+import LS from '@/apis/localStorage'
 
 // TODO: add favorite apis
 const favorite = ''
@@ -49,7 +50,7 @@ export const actions = {
     const isAuthenticated = rootGetters.isAuthenticated
     let carts = []
     if (isAuthenticated) {
-      dispatch('setCartList')
+      await dispatch('setCartList')
       carts = state.cartList
     } else {
       dispatch('setLocalCartList')
@@ -61,8 +62,8 @@ export const actions = {
     const carts = await cart.list({})
     commit('SET_CART_LIST', carts)
   },
-  async setLocalCartList ({ commit }) {
-    const localCarts = window.localStorage.getItem('carts')
+  setLocalCartList ({ commit }) {
+    const localCarts = LS.getVal('carts')
     commit('SET_LOCAL_CART_LIST', localCarts ? JSON.parse(localCarts) : [])
   },
   async setFavList ({ commit }) {
@@ -70,7 +71,7 @@ export const actions = {
     commit('SET_FAV_LIST', favs)
   },
   async setLocalFavList ({ commit }) {
-    const localFavs = window.localStorage.getItem('favorites')
+    const localFavs = LS.getVal('favorites')
     commit('SET_LOCAL_FAV_LIST', localFavs ? JSON.parse(localFavs) : [])
   },
   async setCheckedProducts ({ state, commit }, productId) {

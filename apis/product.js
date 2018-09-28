@@ -41,8 +41,8 @@ export default class product {
     return resp.data
   }
 
-  static async deleteById ({ id }) {
-    const resp = await request.delete(`api/products/${id}`)
+  static async deleteById (_id) {
+    const resp = await request.delete(`api/products/${_id}`)
     return resp.data
   }
 }
