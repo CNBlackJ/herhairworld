@@ -51,7 +51,7 @@ export const getUserFromCookie = (req) => {
 }
 
 export const getUserFromLocalStorage = () => {
-  const authToken = window.localStorage.authToken
+  const authToken = window.localStorage.user
   return authToken
 }
 
@@ -63,8 +63,7 @@ export const getAuthTokenFromCookie = (req) => {
 }
 
 export const getAuthTokenFromLocalStorage = () => {
-  const json = window.localStorage.user
-  return json ? JSON.parse(json) : undefined
+  return window.localStorage.authToken || ''
 }
 
 export const setSecret = (secret) => window.localStorage.setItem('secret', secret)

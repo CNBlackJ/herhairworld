@@ -3,6 +3,7 @@ import * as axios from 'axios'
 function getCookieInClient (name) {
   const reg = new RegExp('(^| )' + name + '=([^;]*)(;|$)')
   const arr = document.cookie.match(reg)
+  console.log(document.cookie)
   if (arr) {
     return unescape(arr[2])
   } else {
@@ -14,12 +15,7 @@ export default ({ app, store, redirect }) => {
   axios.defaults.baseURL = 'http://127.0.0.1:3010'
 
   axios.interceptors.request.use(req => {
-    let authToken = ''
-    if (typeof document === 'object') {
-      authToken = getCookieInClient('authToken')
-    } else {
-      authToken = store.state.authToken
-    }
+    const authToken = store.state.authToken
     if (authToken) {
       req.headers.Authorization = `Bearer ${authToken}`
     }
