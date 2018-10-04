@@ -2,7 +2,8 @@ import product from '@/apis/product'
 
 export const state = () => ({
   product: {
-    price: 0
+    minPrice: 0,
+    maxPrice: 0
   }
 })
 
@@ -15,6 +16,10 @@ export const mutations = {
 export const actions = {
   async setProduct ({ commit }, productId) {
     const prod = await product.getById(productId)
+    console.log(prod.lengths)
+    const allPrice = [...prod.lengths].map(ele => ele.price).sort()
+    prod.minPrice = allPrice[0]
+    prod.maxPrice = allPrice.pop()
     commit('SET_PRODUCT', prod)
   }
 }

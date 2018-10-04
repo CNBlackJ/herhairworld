@@ -82,11 +82,9 @@
 	export default {
 		layout: 'main',
 		computed: {
-			...mapGetters([
-				'loggedUser'
-			]),
 			...mapState({
-				cartList: state => state.cart.cartList
+				cartList: state => state.cart.cartList,
+				loggedUser: state => state.user
 			})
 		},
 		data () {

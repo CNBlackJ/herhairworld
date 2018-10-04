@@ -24,7 +24,7 @@
 					</el-col>
 					<el-col :span="19">
 						<span class="detail-price">
-							$ {{product.price.toFixed(2)}}
+							{{price}}
 						</span>
 					</el-col>
 				</el-row>
@@ -36,15 +36,16 @@
 					</el-col>
 					<el-col :span="19">
 						<el-select
+							@change="selecteLength"
 							size="small"
 							style="width: 100%"
 							v-model="detailForm.length"
 							placeholder="Selecte Length">
 							<el-option
-								v-for="len in length"
-								:key="len"
-								:label="len"
-								:value="len">
+								v-for="length in product.lengths"
+								:key="length._id"
+								:label="length.len"
+								:value="length.len">
 							</el-option>
 						</el-select>
 					</el-col>
@@ -136,6 +137,7 @@
 	import _ from 'lodash'
 
 	import LS from '@/apis/localStorage'
+	import order from '@/apis/order'
 
 	export default {
 		layout: 'mainWithoutFooter',
@@ -152,6 +154,7 @@
 		},
 		data () {
 			return {
+				price: '',
 				cartImg: '',
 				favImg: this.$store.state.imgBaseUrl + 'unfavorite.png',
 				activateTab: 1,
@@ -176,30 +179,30 @@
 						'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/productDetail/faq.png'
 					]
 				},
-				imgs: [
-					{ id: 1, name: 'details_img_1.jpg' },
-					{ id: 2, name: 'details_img_2.jpg' },
-					{ id: 3, name: 'details_img_3.jpg' }
-				],
-				length: [
-					10, 12, 14, 16, 18, 20, 22
-				],
 				detailForm: {
 					length: '',
+					price: '',
 					count: 1
 				}
 			}
 		},
-		beforeCreate () {
+		async created () {
 			const { productId } = this.$nuxt.$route.query
-			if (_.isEmpty(this.product) && productId) {
-				this.$store.dispatch('details/setProduct', productId)
-			}
-		},
-		created () {
+			await this.$store.dispatch('details/setProduct', productId)
 			this.getCartFavImg()
+			this.price = `$ ${this.product.minPrice.toFixed(2)} - ${this.product.maxPrice.toFixed(2)}`
 		},
 		methods: {
+			selecteLength (len) {
+				const length = this.product.lengths.find(ele => ele.len === len)
+				if (length) {
+					const price = length.price.toFixed(2)
+					this.price = `$ ${price}`
+					this.detailForm.price = price
+				} else {
+					this.price = ''
+				}
+			},
 			changeQty () {
 				console.log('change qty...')
 			},
@@ -224,7 +227,7 @@
 				this.getCartFavImg()
 			},
 			addToCart (productId) {
-				const lengthPrice = product.lengths.find(ele => ele.length === this.detailForm.length)
+				const lengthPrice = this.product.lengths.find(ele => ele.length === this.detailForm.length)
 				const cartInfo = {...lengthPrice, ...{ productId }, ...{ count: this.detailForm.count }}
 				if (this.isAuthenticated) {
 					this.$store.dispatch('list/createCart', cartInfo)
@@ -237,9 +240,15 @@
 			getInquiry () {
 				this.$router.push({ path: '/inquiry' })
 			},
-			buyNow (productId) {
-				const form = {...this.detailForm, ...{ productId }}
-				console.log(form)
+			async buyNow (productId) {
+				const orderForm = {...this.detailForm, ...{ productId }}
+				const orderPayload = {
+					products: [
+						orderForm
+					],
+					couponCode: ''
+				}
+				await order.create(orderPayload)
 			}
 		}
 	}

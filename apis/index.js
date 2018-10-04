@@ -5,6 +5,7 @@ import cart from './cart'
 import favorite from './favorite'
 import localStorage from './localStorage'
 import address from './address'
+import order from './order'
 
 export default {
   product,
@@ -13,5 +14,6 @@ export default {
   cart,
   favorite,
   localStorage,
-  address
+  address,
+  order
 }

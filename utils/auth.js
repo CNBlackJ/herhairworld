@@ -52,7 +52,7 @@ export const getUserFromCookie = (req) => {
 
 export const getUserFromLocalStorage = () => {
   const authToken = window.localStorage.user
-  return authToken
+  return authToken ? JSON.parse(authToken) : ''
 }
 
 export const getAuthTokenFromCookie = (req) => {
