@@ -198,6 +198,16 @@
 				const scrollPos = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
 				const tabBarPos = document.querySelector('#tabBar').offsetTop
 				this.isFixedTab = scrollPos > (tabBarPos - 48)
+				
+				const productImgs = document.querySelector('#detail-product-imgs').offsetTop
+				const wholesaleImgs = document.querySelector('#detail-wholesale-imgs').offsetTop
+				const shippingImgs = document.querySelector('#detail-shipping-imgs').offsetTop
+				const faqImgs = document.querySelector('#detail-faq-imgs').offsetTop
+				
+				if (scrollPos >= productImgs && scrollPos < wholesaleImgs) this.activateTab = 1
+				if (scrollPos >= wholesaleImgs && scrollPos < shippingImgs) this.activateTab = 2
+				if (scrollPos >= shippingImgs && scrollPos < faqImgs) this.activateTab = 3
+				if (scrollPos >= faqImgs) this.activateTab = 4
 			},
 			selecteLength (len) {
 				const length = this.product.lengths.find(ele => ele.len === len)
