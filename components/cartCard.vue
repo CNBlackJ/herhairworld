@@ -62,7 +62,8 @@
 				isChecked: false,
 				counter: 0,
 				product: {
-					price: 0
+					price: 0,
+					mainImg: ''
 				}
 			}
 		},

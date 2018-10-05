@@ -77,25 +77,22 @@
 				</el-row>
 			</div>
 
-			<div class="detail-menu-tab">
-				<div class="detail-tab-group">
-					<el-row>
-						<el-col
-							v-for="tab in detailTabs"
-							:key="tab._id"
-							:span="6">
-							<div
-								@click="activateTab=tab._id"
-								v-scroll-to="{ el: tab.scrollTo, offset: -50 }"
-								class="tab-title"
-								:class="{'detail-tab-selected': activateTab === tab._id}">
-								<i v-if="activateTab === tab._id" class="el-icon-location"></i>
-								{{tab.name}}
-							</div>
-						</el-col>
-					</el-row>
+			<div class="detail-tab-group" :class="{'fix-tab-group': isFixedTab}">
+				<div
+					v-for="tab in detailTabs"
+					:key="tab._id">
+					<div
+						@click="activateTab=tab._id"
+						v-scroll-to="{ el: tab.scrollTo, offset: -50 }"
+						class="tab-title"
+						:class="{'detail-tab-selected': activateTab === tab._id}">
+						<i v-if="activateTab === tab._id" class="el-icon-location"></i>
+						{{tab.name}}
+					</div>
 				</div>
+			</div>
 
+			<div id="tabBar" class="details-group">
 				<div
 					v-for="tab in detailTabs"
 					:key="tab.id"
@@ -183,7 +180,8 @@
 					length: '',
 					price: '',
 					count: 1
-				}
+				},
+				isFixedTab: false
 			}
 		},
 		async created () {
@@ -192,7 +190,15 @@
 			this.getCartFavImg()
 			this.price = `$ ${this.product.minPrice.toFixed(2)} - ${this.product.maxPrice.toFixed(2)}`
 		},
+		mounted() {
+			window.addEventListener('scroll', this.scrollDs)
+		},
 		methods: {
+			scrollDs() {
+				const scrollPos = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+				const tabBarPos = document.querySelector('#tabBar').offsetTop
+				this.isFixedTab = scrollPos > (tabBarPos - 48)
+			},
 			selecteLength (len) {
 				const length = this.product.lengths.find(ele => ele.len === len)
 				if (length) {
@@ -313,13 +319,30 @@
 		padding-left: 5px;
 	}
 
-	.detail-menu-tab {
+	.detail-tab-group {
+		background-color: white;
+		padding-top: 10px;
+	}
+
+	.details-group {
 		background-color: white;
 		padding: 5px 10px;
 	}
 
 	.detail-tab-group {
 		padding-bottom: 10px;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-around;
+	}
+
+	.fix-tab-group {
+		position: fixed;
+		top: 48px;
+		z-index: 10;
+		width: 100%;
+		background-color: white;
 	}
 
 	.tab-title {
