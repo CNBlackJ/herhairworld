@@ -74,7 +74,7 @@
 
 <style>
 	.cart-container {
-		padding-top: 50px;
+		padding-top: 48px;
 		background-color: #efefef;
     height: 667px;
 	}

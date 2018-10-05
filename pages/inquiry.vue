@@ -206,7 +206,7 @@
 
 <style>
 	.wholesale-inquiry {
-		padding-top: 50px;
+		padding-top: 48px;
 	}
 
 	.wi-header {

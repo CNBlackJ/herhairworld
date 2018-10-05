@@ -45,7 +45,7 @@
 
 <style>
 	.list-container {
-		padding-top: 50px;
+		padding-top: 48px;
 		background-color: #efefef;
 		min-height: 450px;
 	}

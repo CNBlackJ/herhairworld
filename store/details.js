@@ -16,7 +16,6 @@ export const mutations = {
 export const actions = {
   async setProduct ({ commit }, productId) {
     const prod = await product.getById(productId)
-    console.log(prod.lengths)
     const allPrice = [...prod.lengths].map(ele => ele.price).sort()
     prod.minPrice = allPrice[0]
     prod.maxPrice = allPrice.pop()

@@ -133,7 +133,7 @@
 
 <style>
   .index-container {
-    padding-top: 50px;
+    padding-top: 48px;
   }
 
   .bs-container {

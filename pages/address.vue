@@ -236,7 +236,7 @@
 
 <style>
 	.address-container {
-		padding-top: 50px;
+		padding-top: 48px;
 	}
 
 	.address-group {

@@ -191,10 +191,13 @@
 			this.price = `$ ${this.product.minPrice.toFixed(2)} - ${this.product.maxPrice.toFixed(2)}`
 		},
 		mounted() {
-			window.addEventListener('scroll', this.scrollDs)
+			window.addEventListener('scroll', this.handleScroll)
+		},
+		destroyed () {
+			window.removeEventListener('scroll', this.handleScroll)
 		},
 		methods: {
-			scrollDs() {
+			handleScroll() {
 				const scrollPos = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
 				const tabBarPos = document.querySelector('#tabBar').offsetTop
 				this.isFixedTab = scrollPos > (tabBarPos - 48)
@@ -272,7 +275,7 @@
 
 <style>
 	.detail-container {
-		padding-top: 50px;
+		padding-top: 48px;
 		background-color: #efefef;
 		height: 600px;
 	}
