@@ -1,18 +1,18 @@
 import * as axios from 'axios'
 
-function getCookieInClient (name) {
-  const reg = new RegExp('(^| )' + name + '=([^;]*)(;|$)')
-  const arr = document.cookie.match(reg)
-  console.log(document.cookie)
-  if (arr) {
-    return unescape(arr[2])
-  } else {
-    return null
-  }
-}
+// function getCookieInClient (name) {
+//   const reg = new RegExp('(^| )' + name + '=([^;]*)(;|$)')
+//   const arr = document.cookie.match(reg)
+//   console.log(document.cookie)
+//   if (arr) {
+//     return unescape(arr[2])
+//   } else {
+//     return null
+//   }
+// }
 
 export default ({ app, store, redirect }) => {
-  axios.defaults.baseURL = 'http://127.0.0.1:3010'
+  axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? 'http://apiherhairworld.wifihi.cn' : 'http://127.0.0.1:3010'
 
   axios.interceptors.request.use(req => {
     const authToken = store.state.authToken
