@@ -114,7 +114,19 @@
 				<span>whosale inquiry</span>
 			</div>
 			<div class="detail-bottom-right">
+				<el-tooltip
+					v-if="isExistCart"
+					effect="dark"
+					:content="addToCartTip"
+					placement="top">
+					<div
+						@click="addToCart(product._id)"
+						class="detail-bottom-cart">
+						Add to Cart
+					</div>
+				</el-tooltip>
 				<div
+				  v-else
 					@click="addToCart(product._id)"
 					class="detail-bottom-cart">
 					Add to Cart
@@ -151,6 +163,7 @@
 		},
 		data () {
 			return {
+				addToCartTip: 'It`s in cart',
 				price: '',
 				cartImg: '',
 				favImg: this.$store.state.imgBaseUrl + 'unfavorite.png',
@@ -181,10 +194,12 @@
 					price: '',
 					count: 1
 				},
-				isFixedTab: false
+				isFixedTab: false,
+				isExistCart: false
 			}
 		},
 		async created () {
+			this.$store.dispatch('cart/setCarts')
 			const { productId } = this.$nuxt.$route.query
 			await this.$store.dispatch('details/setProduct', productId)
 			this.getCartFavImg()
@@ -192,6 +207,7 @@
 			if (this.product.minPrice === this.product.maxPrice) {
 				this.price = this.product.minPrice.toFixed(2)
 			}
+			this.isExistCart = !!this.carts.find(cart => cart.productId === productId)
 		},
 		mounted() {
 			window.addEventListener('scroll', this.handleScroll)
@@ -249,15 +265,24 @@
 				this.getCartFavImg()
 			},
 			addToCart (productId) {
-				const lengthPrice = this.product.lengths.find(ele => ele.len === this.detailForm.length)
-				const cartInfo = {...lengthPrice, ...{ productId }, ...{ count: this.detailForm.count }}
-				if (this.isAuthenticated) {
-					this.$store.dispatch('list/createCart', cartInfo)
-				} else {
-					LS.createCart(cartInfo)
-					this.$store.dispatch('cart/setLocalCartList')
+				// check length
+				if (!this.detailForm.length) {
+					this.$message('Please select length.')
+					return
 				}
-				this.getCartFavImg()
+				if (!this.isExistCart) {
+					const lengthPrice = this.product.lengths.find(ele => ele.len === this.detailForm.length)
+					const cartInfo = {...lengthPrice, ...{ productId }, ...{ count: this.detailForm.count }}
+					if (this.isAuthenticated) {
+						this.$store.dispatch('list/createCart', cartInfo)
+					} else {
+						LS.createCart(cartInfo)
+						this.$store.dispatch('cart/setLocalCartList')
+					}
+					this.getCartFavImg()
+					this.$store.dispatch('cart/setCarts')
+					this.isExistCart = true
+				}
 			},
 			getInquiry () {
 				this.$router.push({ path: '/inquiry' })
