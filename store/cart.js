@@ -1,7 +1,7 @@
 import _ from 'lodash'
 
 import cart from '@/apis/cart'
-import product from '@/apis/product'
+// import product from '@/apis/product'
 import LS from '@/apis/localStorage'
 
 // TODO: add favorite apis
@@ -81,12 +81,12 @@ export const actions = {
     } else {
       checkedProducts.push(productId)
     }
-    const products = await product.getByIds({ productIds: checkedProducts })
-    const prices = products.map(e => e.price)
+    const prices = state.carts.filter(ele => checkedProducts.indexOf(ele.productId) > -1).map(ele => ele.price * ele.count)
     let subtotal = 0
     if (prices.length) subtotal = prices.reduce((c, n) => c + n)
-    commit('SET_IS_CHECKED_ALL', checkedProducts.length === state.carts.length)
+
     commit('SET_CHECKED_PRODUCTS', checkedProducts)
     commit('SET_SUBTOTAL', subtotal)
+    commit('SET_IS_CHECKED_ALL', checkedProducts.length === state.carts.length)
   }
 }

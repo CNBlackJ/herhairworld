@@ -14,7 +14,7 @@
 					<div class="cart-checkall">
 						<el-checkbox
 							@change="checkAll"
-							:checked="isCheckedAll">
+							:checked="checkedAll">
 						</el-checkbox>
 						<div class="select-all-text">all</div>
 					</div>
@@ -55,7 +55,8 @@
 		data () {
 			return {
 				cartProdList: [],
-				checkedCount: 0
+				checkedCount: 0,
+				checkedAll: false
 			}
 		},
 		created () {
@@ -63,7 +64,7 @@
 		},
 		methods: {
 			checkAll () {
-				console.log('check all')
+				this.checkedAll = !this.checkedAll
 			},
 			goToPurchase () {
 				this.$router.push({ path: '/purchase' })

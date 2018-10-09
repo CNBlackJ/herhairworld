@@ -18,16 +18,16 @@
 					</div>
 					<div class="cc-detail">
 						<div class="cc-parameters">
-							10inch / natural color / 1Pcs
+							{{length}} inch / {{product.material}}
 						</div>
 					</div>
 					<div class="cc-price">
-						$ {{product.price.toFixed(2)}}
+						$ {{price}}
 					</div>
 					<div class="cc-counter">
 						<div>
 							<el-input-number
-								v-model="counter"
+								v-model="count"
 								@change="updateCount(product._id)"
 								size="mini"
 								:min="1" 
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-	import { mapState } from 'vuex'
+	import { mapState, mapGetters } from 'vuex'
 
 	import product from '@/apis/product'
 	import cart from '@/apis/cart'
@@ -57,12 +57,16 @@
 		props: [
 			'cartProd'
 		],
+		computed: {
+			...mapGetters(['isAuthenticated'])
+		},	
 		data () {
 			return {
 				isChecked: false,
-				counter: 0,
+				price: 0,
+				count: 1,
+				length: 0,
 				product: {
-					price: 0,
 					mainImg: ''
 				}
 			}
@@ -75,13 +79,24 @@
     methods: {
 			async getProduct (productId) {
 				this.product = await product.getById(productId)
+				this.price = this.cartProd.price.toFixed(2)
+				this.count = this.cartProd.count
+				this.length = this.cartProd.len
 			},
       async updateCount (productId) {
-				const cartInfo = { productId }
-				await cart.updateByProdId({ cart: cartInfo })
+				if (this.isAuthenticated) {
+					const cartInfo = { productId }
+					await cart.updateByProdId({ cart: cartInfo })
+				}
 			},
-			async removeFromCart (_id) {
-				await cart.deleteByProdId(_id)
+			async removeFromCart (productId) {
+				if (this.isAuthenticated) {
+					await cart.deleteByProdId(productId)
+				} else {
+					LS.createCart({ productId })
+					this.$store.dispatch('cart/setLocalCartList')
+				}
+				this.$store.dispatch('cart/setCarts')
 			},
 			checkCartProd (productId) {
 				this.$store.dispatch('cart/setCheckedProducts', productId)

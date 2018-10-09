@@ -249,7 +249,7 @@
 				this.getCartFavImg()
 			},
 			addToCart (productId) {
-				const lengthPrice = this.product.lengths.find(ele => ele.length === this.detailForm.length)
+				const lengthPrice = this.product.lengths.find(ele => ele.len === this.detailForm.length)
 				const cartInfo = {...lengthPrice, ...{ productId }, ...{ count: this.detailForm.count }}
 				if (this.isAuthenticated) {
 					this.$store.dispatch('list/createCart', cartInfo)
