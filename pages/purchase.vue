@@ -75,13 +75,8 @@
 				paypal: {
 					sandbox: 'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',
 					// sanbox: 'access_token$sandbox$77k65bvyyxs3mcs6$cb80b1fc3d3d4f5ffc7574dc662691c9',
-          production: '<production client id>'
+          production: 'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R'
         },
-				payments: [
-					{ id: 1, name: 'Paypal', value: 'paypal' },
-					{ id: 2, name: 'AliPay', value: 'alipay' },
-					{ id: 3, name: 'ApplePay', value: 'applepay' }
-				],
 				orderInfo: {
 					payment: '',
 					couponCode: ''

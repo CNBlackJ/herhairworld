@@ -62,7 +62,7 @@ export const actions = {
     const carts = await cart.list({})
     commit('SET_CART_LIST', carts)
   },
-  setLocalCartList ({ commit }) {
+  async setLocalCartList ({ commit }) {
     const localCarts = LS.getVal('carts')
     commit('SET_LOCAL_CART_LIST', localCarts ? JSON.parse(localCarts) : [])
   },

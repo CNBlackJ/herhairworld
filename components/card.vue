@@ -13,7 +13,7 @@
 				</span>
 				<div class="prod-bottom">
 					<div class="price">
-						$ {{product.price.toFixed(2)}}
+						$ {{price}}
 					</div>
 					<div class="prod-fav-cart">
 						<div>
@@ -50,7 +50,10 @@
 		computed: {
 			...mapGetters(['isAuthenticated']),
 			...mapState({
-				carts: state => state.cart.carts,
+				carts: state => {
+					if (state.isAuthenticated) return state.cart.cartList
+					return state.cart.localCartList
+				},
 				favList: state => {
 					if (state.isAuthenticated) return state.cart.favList
 					return state.cart.localFavList
@@ -61,13 +64,20 @@
 		data () {
 			return {
 				cartImg: '',
-				favImg: ''
+				favImg: '',
+				price: ''
 			}
 		},
 		created () {
 			this.getCartFavImg()
+			this.formatPrice()
 		},
 		methods: {
+			formatPrice () {
+				const allPrice = [...this.product.lengths].map(ele => ele.price).sort()
+				const minPrice = allPrice[0]
+				this.price = minPrice.toFixed(2)
+			},
 			getCartFavImg () {
 				const cartIdList = this.carts.map(ele => ele.productId)
 				const favList = this.favList
@@ -81,7 +91,6 @@
 				this.$router.push({ path: `/details?productId=${productId}` })
 			},
 			addToCart (productId) {
-				console.log(this.product)
 				const { price, len } = this.product.lengths[0]
 				const cartInfo = { productId, price, len, count: 1 }
 

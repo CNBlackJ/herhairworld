@@ -24,7 +24,7 @@
 					</el-col>
 					<el-col :span="19">
 						<span class="detail-price">
-							{{price}}
+							$ {{price}}
 						</span>
 					</el-col>
 				</el-row>
@@ -188,7 +188,10 @@
 			const { productId } = this.$nuxt.$route.query
 			await this.$store.dispatch('details/setProduct', productId)
 			this.getCartFavImg()
-			this.price = `$ ${this.product.minPrice.toFixed(2)} - ${this.product.maxPrice.toFixed(2)}`
+			this.price = `${this.product.minPrice.toFixed(2)} - ${this.product.maxPrice.toFixed(2)}`
+			if (this.product.minPrice === this.product.maxPrice) {
+				this.price = this.product.minPrice.toFixed(2)
+			}
 		},
 		mounted() {
 			window.addEventListener('scroll', this.handleScroll)
@@ -216,7 +219,7 @@
 				const length = this.product.lengths.find(ele => ele.len === len)
 				if (length) {
 					const price = length.price.toFixed(2)
-					this.price = `$ ${price}`
+					this.price = price
 					this.detailForm.price = price
 				} else {
 					this.price = ''
