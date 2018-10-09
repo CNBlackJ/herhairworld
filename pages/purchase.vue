@@ -1,7 +1,7 @@
 <template>
 	<div class="purchase-container">
 		<div class="purchase-step">
-			<el-card>
+			<el-card shadow="never">
 				<el-steps :active="0" align-center>
 					<el-step title="Place Order" icon="el-icon-edit"></el-step>
 					<el-step title="Pay" icon="el-icon-tickets"></el-step>
@@ -13,15 +13,15 @@
 		<div class="purchase-orders">
 			<div
 				v-for="product in products"
-				:key="product.id">
-				<cartCard
+				:key="product.productId">
+				<purchaseCard
 					:cartProd="product">
-				</cartCard>
+				</purchaseCard>
 			</div>
 		</div>
 
 		<div class="purchase-coupon">
-			<el-card>
+			<el-card shadow="never">
 				<div slot="header">
 					<span class="purchase-card-title">Coupon Code</span>
 					<el-button style="float: right; padding: 3px 0" type="text">
@@ -62,13 +62,13 @@
 	import product from '@/apis/product'
 
 	import addressCard from '@/components/addressCard'
-	import cartCard from '@/components/cartCard'
+	import purchaseCard from '@/components/purchaseCard'
 
 	export default {
 		layout: 'mainWithoutFooter',
 		components: {
 			addressCard,
-			cartCard
+			purchaseCard
 		},
 		data () {
 			return {
@@ -86,7 +86,8 @@
 		},
 		computed: {
 			...mapState({
-				checkedProducts: state => state.cart.checkedProducts
+				checkedProducts: state => state.cart.checkedProducts,
+				carts: state => state.cart.carts
 			})
 		},
 		async created () {
@@ -95,10 +96,7 @@
 		methods: {
 			async listCheckedProds () {
 				const productIds = this.checkedProducts
-				const products = await product.getByIds({ productIds })
-				console.log(productIds)
-				console.log(products)
-				this.products = products
+				this.products = this.carts.filter(ele => productIds.indexOf(ele.productId) > -1)
 			},
 			createOrder () {
 				const payload = this.orderInfo
