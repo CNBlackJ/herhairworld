@@ -24,10 +24,6 @@
 			<el-card shadow="never">
 				<div slot="header">
 					<span class="purchase-card-title">Coupon Code</span>
-					<el-button style="float: right; padding: 3px 0" type="text">
-						<i class="el-icon-plus"></i>
-						Get Coupon
-					</el-button>
 				</div>
 				<div>
 					<el-input v-model="orderInfo.couponCode" placeholder="$3 off with coupon code"></el-input>
@@ -36,11 +32,6 @@
 		</div>
 
 		<div class="purchase-submit">
-			<!-- <div
-				@click="createOrder"
-				class="purchase-submit-text">
-				Submit
-			</div> -->
 			<no-ssr>
 				<paypal-checkout
 					env="sandbox"
@@ -97,10 +88,6 @@
 			async listCheckedProds () {
 				const productIds = this.checkedProducts
 				this.products = this.carts.filter(ele => productIds.indexOf(ele.productId) > -1)
-			},
-			createOrder () {
-				const payload = this.orderInfo
-				console.log(`createOrder: ${JSON.stringify(payload)}`)
 			},
 			showCallback (c) {
 				console.log(c)

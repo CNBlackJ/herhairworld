@@ -266,11 +266,10 @@
 			},
 			addToCart (productId) {
 				// check length
-				if (!this.detailForm.length) {
-					this.$message('Please select length.')
-					return
-				}
 				if (!this.isExistCart) {
+					if (!this.detailForm.length) {
+						this.$message('Please select length.')
+					}
 					const lengthPrice = this.product.lengths.find(ele => ele.len === this.detailForm.length)
 					const cartInfo = {...lengthPrice, ...{ productId }, ...{ count: this.detailForm.count }}
 					if (this.isAuthenticated) {
@@ -288,14 +287,20 @@
 				this.$router.push({ path: '/inquiry' })
 			},
 			async buyNow (productId) {
-				const orderForm = {...this.detailForm, ...{ productId }}
-				const orderPayload = {
-					products: [
-						orderForm
-					],
-					couponCode: ''
+				if (!this.detailForm.length) {
+					this.$message('Please select length.')
+					return
 				}
-				await order.create(orderPayload)
+				if (this.isAuthenticated) {
+					const orderForm = {...this.detailForm, ...{ productId }}
+					const orderPayload = {
+						products: [
+							orderForm
+						],
+						couponCode: ''
+					}
+					await order.create(orderPayload)
+				}
 			}
 		}
 	}
