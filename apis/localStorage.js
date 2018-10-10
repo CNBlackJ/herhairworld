@@ -56,11 +56,11 @@ export default class LS {
     }
   }
 
-  static addCartCount ({ prodId, count }) {
+  static updateCartCount ({ productId, count }) {
     if (process.browser && window.localStorage.carts) {
       const carts = JSON.parse(window.localStorage.carts)
       carts.map(cart => {
-        if (cart.prodId === prodId) cart.count = count
+        if (cart.productId === productId) cart.count = count
         return cart
       })
       window.localStorage.carts = JSON.stringify(carts)

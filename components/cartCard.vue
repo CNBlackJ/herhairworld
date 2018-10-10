@@ -3,7 +3,7 @@
 		<el-row>
 			<el-col :xs="2">
 				<div class="cc-checkbox-con">
-					<el-checkbox :checked="isChecked" @change="checkCartProd(cartProd.productId)"></el-checkbox>
+					<el-checkbox v-model="isChecked" @change="checkCartProd(cartProd.productId)"></el-checkbox>
 				</div>
 			</el-col>
 			<el-col :xs="6">
@@ -87,7 +87,11 @@
 				if (this.isAuthenticated) {
 					const cartInfo = { productId }
 					await cart.updateByProdId({ cart: cartInfo })
+				} else {
+					LS.updateCartCount({ productId, count: this.count })
 				}
+				this.$store.dispatch('cart/setCarts')
+				this.$store.dispatch('cart/setSubtotal')
 			},
 			async removeFromCart (productId) {
 				if (this.isAuthenticated) {

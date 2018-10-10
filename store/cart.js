@@ -74,19 +74,21 @@ export const actions = {
     const localFavs = LS.getVal('favorites')
     commit('SET_LOCAL_FAV_LIST', localFavs ? JSON.parse(localFavs) : [])
   },
-  async setCheckedProducts ({ state, commit }, productId) {
+  async setCheckedProducts ({ state, commit, dispatch }, productId) {
     const checkedProducts = [...state.checkedProducts]
     if (_.find(checkedProducts, ele => ele === productId)) {
       _.remove(checkedProducts, ele => ele === productId)
     } else {
       checkedProducts.push(productId)
     }
-    const prices = state.carts.filter(ele => checkedProducts.indexOf(ele.productId) > -1).map(ele => ele.price * ele.count)
+    commit('SET_CHECKED_PRODUCTS', checkedProducts)
+    commit('SET_IS_CHECKED_ALL', checkedProducts.length === state.carts.length)
+    dispatch('setSubtotal')
+  },
+  setSubtotal ({ state, commit }) {
+    const prices = state.carts.filter(ele => state.checkedProducts.indexOf(ele.productId) > -1).map(ele => ele.price * ele.count)
     let subtotal = 0
     if (prices.length) subtotal = prices.reduce((c, n) => c + n)
-
-    commit('SET_CHECKED_PRODUCTS', checkedProducts)
     commit('SET_SUBTOTAL', subtotal)
-    commit('SET_IS_CHECKED_ALL', checkedProducts.length === state.carts.length)
   }
 }
