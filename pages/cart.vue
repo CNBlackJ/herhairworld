@@ -2,6 +2,12 @@
 	<no-ssr>
 		<div class="cart-container">
 			<div
+				class="cart-empty"
+				v-if="carts.length <= 0">
+				It`s empty on your cart~
+			</div>
+			<div
+				v-else
 				v-for="cart in carts"
 				:key="cart._id"
 				class="cart-card-con">
@@ -21,9 +27,9 @@
 	
 					<div class="price-counter">
 						<div class="cart-subtotal">Subtotal:</div>
-						<div class="cart-price-counter">$ {{$store.state.cart.subtotal}}</div>
+						<div class="cart-price-counter">$ {{subtotal}}</div>
 						<div @click="goToPurchase" class="cart-checkout-btn">
-							CHECKOUT ( {{$store.state.cart.checkedProducts.length}} )
+							CHECKOUT ( {{checkedProducts.length}} )
 						</div>
 					</div>
 				</div>
@@ -49,7 +55,9 @@
 			...mapState({
 				isCheckedAll: state => state.cart.isCheckedAll,
 				carts: state => state.cart.carts,
-				localCartList: state => state.cart.localCartList
+				localCartList: state => state.cart.localCartList,
+				subtotal: state => state.cart.subtotal,
+				checkedProducts: state => state.cart.checkedProducts
 			})
 		},
 		data () {
@@ -67,7 +75,7 @@
 				this.checkedAll = !this.checkedAll
 			},
 			goToPurchase () {
-				this.$router.push({ path: '/purchase' })
+				if (this.checkedProducts.length) this.$router.push({ path: '/purchase' })
 			}
 		}
 	}
@@ -78,6 +86,13 @@
 		padding-top: 48px;
 		background-color: #efefef;
     height: 667px;
+	}
+
+	.cart-empty {
+		width: 100%;
+		text-align: center;
+		padding-top: 20%;
+		color: #808080;
 	}
 
 	.cart-card-con {
