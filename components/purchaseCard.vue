@@ -67,7 +67,7 @@
     methods: {
 			async getProduct (productId) {
 				this.product = await product.getById(productId)
-				this.price = this.cartProd.price.toFixed(2)
+				this.price = Number(this.cartProd.price).toFixed(2)
 				this.count = this.cartProd.count
 				this.length = this.cartProd.len
 			},

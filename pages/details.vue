@@ -289,17 +289,10 @@
 			async buyNow (productId) {
 				if (!this.detailForm.length) {
 					this.$message('Please select length.')
-					return
-				}
-				if (this.isAuthenticated) {
-					const orderForm = {...this.detailForm, ...{ productId }}
-					const orderPayload = {
-						products: [
-							orderForm
-						],
-						couponCode: ''
-					}
-					await order.create(orderPayload)
+				} else {
+					const productInfo = {...this.detailForm, ...{ productId }}
+					this.$store.commit('details/SET_BUY_NOW', productInfo)
+					this.$router.push({ path: '/purchase?isBuyNow=true' })
 				}
 			}
 		}

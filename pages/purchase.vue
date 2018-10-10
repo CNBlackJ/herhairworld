@@ -78,16 +78,22 @@
 		computed: {
 			...mapState({
 				checkedProducts: state => state.cart.checkedProducts,
-				carts: state => state.cart.carts
+				carts: state => state.cart.carts,
+				buyNowProduct: state => state.details.buyNowProduct
 			})
 		},
 		async created () {
-			await this.listCheckedProds()
+			const { isBuyNow } = this.$nuxt.$route.query
+			await this.listCheckedProds(isBuyNow)
 		},
 		methods: {
-			async listCheckedProds () {
-				const productIds = this.checkedProducts
-				this.products = this.carts.filter(ele => productIds.indexOf(ele.productId) > -1)
+			async listCheckedProds (isBuyNow) {
+				if (!isBuyNow) {
+					const productIds =  this.checkedProducts
+					this.products = this.carts.filter(ele => productIds.indexOf(ele.productId) > -1)
+				} else {
+					this.products = [this.buyNowProduct]
+				}
 			},
 			showCallback (c) {
 				console.log(c)

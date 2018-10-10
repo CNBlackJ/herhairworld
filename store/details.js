@@ -4,12 +4,16 @@ export const state = () => ({
   product: {
     minPrice: 0,
     maxPrice: 0
-  }
+  },
+  buyNowProduct: null
 })
 
 export const mutations = {
   SET_PRODUCT (state, product) {
     state.product = product
+  },
+  SET_BUY_NOW (state, productInfo) {
+    state.buyNowProduct = productInfo
   }
 }
 
