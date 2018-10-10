@@ -31,6 +31,29 @@
 			</el-card>
 		</div>
 
+		<div class="purchase-summary">
+			<el-row>
+				<el-col :span="5" :offset="13">
+					total:
+				</el-col>
+				<el-col :span="5">
+					{{summary.total}}
+				</el-col>
+				<el-col :span="5" :offset="13">
+					price:
+				</el-col>
+				<el-col :span="5" style="color: #dd127b">
+					$ {{summary.price.toFixed(2)}}
+				</el-col>
+				<el-col :span="5" :offset="13">
+					shipping:
+				</el-col>
+				<el-col :span="5" style="color: #dd127b">
+					$ {{summary.shipping.toFixed(2)}}
+				</el-col>
+			</el-row>
+		</div>
+
 		<div class="purchase-submit">
 			<no-ssr>
 				<paypal-checkout
@@ -72,7 +95,12 @@
 					payment: '',
 					couponCode: ''
 				},
-				products: []
+				products: [],
+				summary: {
+					total: 0,
+					price: 0,
+					shipping: 0
+				}
 			}
 		},
 		computed: {
@@ -85,6 +113,7 @@
 		async created () {
 			const { isBuyNow } = this.$nuxt.$route.query
 			await this.listCheckedProds(isBuyNow)
+			this.getSummary()
 		},
 		methods: {
 			async listCheckedProds (isBuyNow) {
@@ -92,7 +121,16 @@
 					const productIds =  this.checkedProducts
 					this.products = this.carts.filter(ele => productIds.indexOf(ele.productId) > -1)
 				} else {
-					this.products = [this.buyNowProduct]
+					this.products = this.buyNowProduct ? [this.buyNowProduct] : []
+				}
+			},
+			getSummary () {
+				if (this.products.length) {
+					const counts = this.products.map(ele => ele.count)
+					const prices = this.products.map(ele => ele.count * ele.price)
+					this.summary.total = counts ? counts.reduce((c, n) => c + n) : 0
+					this.summary.price = prices ? prices.reduce((c, n) => c + n) : 0
+					this.summary.shipping = 20
 				}
 			},
 			showCallback (c) {
@@ -127,6 +165,14 @@
 		padding-bottom: 5px;
 	}
 
+	.purchase-summary {
+		padding: 10px 0;
+		border-bottom: 1px solid #efefef;
+	}
+
+	.purchase-summary .el-col {
+		text-align: right;
+	}
 
 	.purchase-submit {
 		padding: 10px 5px;

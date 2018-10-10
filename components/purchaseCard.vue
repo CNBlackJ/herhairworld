@@ -69,7 +69,7 @@
 				this.product = await product.getById(productId)
 				this.price = Number(this.cartProd.price).toFixed(2)
 				this.count = this.cartProd.count
-				this.length = this.cartProd.len
+				this.length = this.cartProd.length
 			},
       async updateCount (productId) {
 				if (this.isAuthenticated) {
