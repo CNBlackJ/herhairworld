@@ -407,23 +407,26 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
+		z-index: 1;
 	}
 
 	.detail-bottom-left {
 		width: 45%;
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
 		align-items: center;
 	}
 
 	.detail-bottom-left img {
 		width: 22px;
 		height: 22px;
+		padding: 0 10px 0 20px;
 	}
 
 	.detail-bottom-left span {
-		font-size: 8px;
+		font-size: 14px;
 		color: #dd127b;
+		text-transform: capitalize;
 	}
 
 	.detail-bottom-right {
