@@ -2,6 +2,7 @@ import request from './request'
 
 export default class inquiry {
   static async create ({ inquiry }) {
+    inquiry.mobile = String(inquiry.mobile)
     const resp = await request.post('/api/inquiries', inquiry)
     return resp.data
   }

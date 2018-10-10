@@ -25,7 +25,13 @@
 							<span class="required-span">*</span>{{inquiryForm.text}}
 						</div>
 						<el-input
-							type="text"
+							v-if="inquiryForm.type === 'number'"
+							type="string"
+							v-model.number="inquiryInfo[inquiryForm.tag]">
+						</el-input>
+						<el-input
+							v-else
+							type="string"
 							v-model="inquiryInfo[inquiryForm.tag]">
 						</el-input>
 					</el-form-item>
@@ -66,7 +72,7 @@
 					<el-form-item
 						prop="comment">
 						<div>
-							<span class="required-span">*</span>Comment :
+							Comment :
 						</div>
 						<el-input
 							type="textarea"
@@ -106,6 +112,7 @@
 
 <script>
 	import inquiry from '@/apis/inquiry'
+	import country from '@/apis/country'
 
 	import recommend from '@/components/recommend'
 
@@ -117,36 +124,19 @@
 		data () {
 			return {
 				inquirySuccess: false,
-				countries: [
-					{
-						value: 'china',
-						label: 'China'
-					}, {
-						value: 'canada',
-						label: 'Canada'
-					}, {
-						value: 'russia',
-						label: 'Russia'
-					}, {
-						value: 'usa',
-						label: 'United States of America'
-					}, {
-						value: 'india',
-						label: 'India'
-					}
-				],
+				countries: [],
 				inquiryInfo: {
 					name: '',
 					mobile: '',
 					email: '',
-					country: '',
+					country: 'United States of America',
 					businessTypes: [],
 					comment: ''
 				},
 				inquiryFormGroup: [
-					{ id: 1, text: 'Name :', tag: 'name' },
-					{ id: 2, text: 'Phone :', tag: 'mobile' },
-					{ id: 3, text: 'Email :', tag: 'email' }
+					{ id: 1, text: 'Name :', tag: 'name', type: 'text', modelType: '' },
+					{ id: 2, text: 'Phone :', tag: 'mobile', type: 'number', modelType: 'number' },
+					{ id: 3, text: 'Email :', tag: 'email', type: 'text', modelType: '' }
 				],
 				businessTypes: [
 					{ id: 1, text: 'Boutique or Shop', tag: 'boutiqueOrShop' },
@@ -164,21 +154,31 @@
 						{ type: 'number', message: 'It must be number', trigger: 'blur' }
 					],
 					email: [
-						{ required: true, message: 'Please enter your email', trigger: 'blur' }
+						{ required: true, message: 'Please enter your email', trigger: 'blur' },
+						{ type: 'email', message: 'Please checking your email format', trigger: ['blur', 'change'] }
 					],
 					country: [
 						{ required: true, message: 'Please choose your country', trigger: 'blur' }
 					],
 					businessTypes: [
 						{ type: 'array', required: true, message: 'Please chooce your business type', trigger: 'blur' }
-					],
-					comment: [
-						{ required: true, message: 'Please enter your comment', trigger: 'blur' }
 					]
 				}
 			}
 		},
+		async created () {
+			await this.listCountries()
+		},
 		methods: {
+			async listCountries () {
+				const countries = await country.list({ limit: 300, sort: 'name' })
+				this.countries = countries.map(ele => {
+					return {
+						value: ele.alpha3Code,
+						label: ele.name
+					}
+				})
+			},
 			createInquiry (formName) {
 				this.$refs[formName].validate((valid) => {
 					if (valid) {
