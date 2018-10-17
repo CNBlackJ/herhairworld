@@ -8,15 +8,33 @@
 			<div></div>
 		</div>
 		<div class="search-input-con">
-			<el-autocomplete
-				style="display: block;"
-				v-model="searchVal"
-				:fetch-suggestions="querySearch"
+			<el-input
+				clearable
+				size="small"
 				placeholder="Please enter ..."
-				@select="handleSelect"
-				clearable>
-				<i slot="prefix" class="el-input__icon el-icon-search"></i>
-			</el-autocomplete>
+				v-model="searchVal">
+				<el-button
+					@click="search(searchVal)"
+					slot="append"
+					icon="el-icon-search">
+				</el-button>
+			</el-input>
+		</div>
+		<div
+			v-if="!isSearched"
+			class="search-recommand">
+			<div class="sr-title">
+				Hot :
+			</div>
+			<div class="hot-tags">
+				<div
+					class="hot-tag"
+					v-for="hotTag in hotTags"
+					@click="search(hotTag.tag)"
+					:key="hotTag._id">
+					{{hotTag.tag}}
+				</div>
+			</div>
 		</div>
 		<div class="search-result">
 			<el-row>
@@ -25,10 +43,15 @@
 					v-for="prod in prodList" 
 					:key="prod._id" 
 					:span="12">
-					<card :prod="prod">
+					<card :product="prod">
 					</card>
 				</el-col>
 			</el-row>
+		</div>
+		<div
+			class="empty-search"
+			v-if="isSearched && prodList.length === 0">
+			It`s empty ~~
 		</div>
 	</div>
 </template>
@@ -39,48 +62,26 @@
 	import product from '@/apis/product'
 
 	export default {
-		layout: 'main',
+		layout: 'mainWithoutFooter',
 		components: {
 			card
 		},
 		data () {
 			return {
 				searchVal: '',
-				searchAdvices: [],
-				prodList: []
+				prodList: [],
+				isSearched: false,
+				hotTags: [
+					{ _id: 1, tag: 'iphone' },
+					{ _id: 2, tag: 'hair' },
+					{ _id: 3, tag: 'new style' }
+				]
 			}
 		},
-    mounted() {
-      this.searchAdvices = this.loadAll();
-    },
 		methods: {
-			handleSelect (item) {
-        this.listProd()
-			},
-			listProd () {
-				product.list({}).then((resp) => {
-					this.prodList = resp.data
-				}).catch(err => {
-					console.log(`listProd: ${JSON.stringify(err)}`)
-				})
-			},
-      querySearch(queryString, cb) {
-        const searchAdvices = this.searchAdvices;
-        const results = queryString ? searchAdvices.filter(this.createFilter(queryString)) : searchAdvices;
-        // 调用 callback 返回建议列表的数据
-        cb(results);
-      },
-      createFilter(queryString) {
-        return (searchVal) => {
-          return (searchVal.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-        };
-			},
-			loadAll () {
-				return [
-					{ value: 'hair' },
-					{ value: 'hair 2' },
-					{ value: 'hair 3' }
-				]
+			async search (searchVal) {
+				this.isSearched = true
+        this.prodList = await product.list({ search: searchVal })
 			}
 		}
 	}
@@ -104,7 +105,38 @@
 		padding: 10px;
 	}
 
+	.search-recommand {
+		display: flex;
+		flex-direction: column;
+		padding: 10px;
+	}
+
+	.sr-title {
+		font-size: 14px;
+	}
+
+	.hot-tags {
+		display: flex;
+		flex-direction: row;
+		padding-top: 10px;
+		font-size: 13px;
+	}
+
+	.hot-tag {
+		background-color: #dfdfdf;
+		margin-right: 8px;
+		padding: 3px 10px;
+		border-radius: 25px;
+	}
+
 	.prod-card {
     padding: 6px;
+	}
+
+	.empty-search {
+		width: 100%;
+		text-align: center;
+		padding-top: 20%;
+		color: #808080;
 	}
 </style>
