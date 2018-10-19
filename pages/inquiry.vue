@@ -123,7 +123,7 @@
 		},
 		data () {
 			return {
-				inquirySuccess: false,
+				inquirySuccess: true,
 				countries: [],
 				inquiryInfo: {
 					name: '',

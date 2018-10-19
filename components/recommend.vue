@@ -7,10 +7,10 @@
 		<el-row>
 			<el-col 
 				class="recommend-prod-card"
-				v-for="prod in recommendProds" 
-				:key="prod._id" 
+				v-for="product in recommendProds" 
+				:key="product._id" 
 				:span="12">
-				<card :prod="prod">
+				<card :product="product">
 				</card>
 			</el-col>
 		</el-row>
@@ -31,16 +31,12 @@
 				recommendProds: []
 			}
 		},
-		created () {
-			this.listProd()
+		async created () {
+			await this.listProd()
 		},
 		methods: {
-			listProd () {
-				product.list({ limit: 2 }).then((resp) => {
-					this.recommendProds = resp.data
-				}).catch(err => {
-					console.log(`listProd: ${JSON.stringify(err)}`)
-				})
+			async listProd () {
+				this.recommendProds = await product.recommand(2)
 			}
 		}
 	}

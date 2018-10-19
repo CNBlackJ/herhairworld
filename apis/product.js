@@ -6,6 +6,13 @@ export default class product {
     return resp.data
   }
 
+  static async recommand (count = 2) {
+    const resp = (await request.get(`/api/product/recommand?count=${count}`)).data
+    let results = []
+    if (!resp.error_code) results = resp.data
+    return results
+  }
+
   static async list ({ limit, skip, sort, categoryId, search }) {
     const categoryIdStr = categoryId ? `&categoryId=${categoryId}` : ''
     const searchStr = search ? `&search=${search}` : ''
