@@ -6,6 +6,7 @@
 				v-for="category in categories"
 				:key="category.id">
 				<div
+					v-if="category.name !== 'All'"
 					class="category-card"
 					@click="goList(category._id)">
 					<img :src="category.img" class="category-image">

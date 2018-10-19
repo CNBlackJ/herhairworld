@@ -60,6 +60,7 @@ module.exports = {
     '@/plugins/element-ui',
     '@/plugins/axios',
     { src: './plugins/vue-scrollto', ssr: false },
+    { src: './plugins/ly-tab', ssr: false },
     { src: '~/plugins/paypal.js', ssr: false }
   ],
   modules: [

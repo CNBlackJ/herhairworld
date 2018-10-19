@@ -56,5 +56,10 @@ export const getters = {
       imgs[ele.index - 1] = ele.img
     })
     return imgs
+  },
+  activateCatId (state) {
+    if (!state.activateCat) return 0
+    const id = state.categories.indexOf(state.categories.find(ele => ele._id === state.activateCat))
+    return id
   }
 }

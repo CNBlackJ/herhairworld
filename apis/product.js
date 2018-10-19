@@ -8,7 +8,8 @@ export default class product {
 
   static async list ({ limit, skip, sort, categoryId, search }) {
     const categoryIdStr = categoryId ? `&categoryId=${categoryId}` : ''
-    const queryStr = `?limit=${limit || 20}&skip=${skip || 0}&sort=${sort || '-createdAt'}${categoryIdStr}&search=${search}`
+    const searchStr = search ? `&search=${search}` : ''
+    const queryStr = `?limit=${limit || 20}&skip=${skip || 0}&sort=${sort || '-createdAt'}${categoryIdStr}${searchStr}`
     const resp = (await request.get(`/api/products${queryStr}`)).data
     let results = []
     if (!resp.error_code) results = resp.data

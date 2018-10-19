@@ -13,8 +13,12 @@
 				</div>
 			</div>
 			<div class="sidebar-group">
-				<div v-for="category in categories" :key="category._id" class="sidebar-menu" @click="closeSidebar">
-					<div @click="goList(category._id)">
+				<div v-for="category in categories"
+					:key="category._id"
+					class="sidebar-menu"
+					@click="closeSidebar">
+					<div
+						@click="goList(category._id)">
 						{{ category.name }}
 					</div>
 				</div>
@@ -29,16 +33,6 @@
 	import category from '@/apis/category'
 
 	export default {
-		data () {
-			return {
-				sidebars: [
-					{ id: 0, text: 'frontal', key:'frontal', url: '/list?type=frontal' },
-					{ id: 1, text: 'closure', key:'closure', url: '/list?type=closure' },
-					{ id: 2, text: 'lace wigs', key:'lace_wigs', url: '/list?type=lace_wigs' },
-					{ id: 3, text: 'hair extension', key:'hair_extension', url: '/list?type=hair_extension' }
-				]
-			}
-		},
 		computed: mapState({
 			categories: state => state.home.categories
 		}),

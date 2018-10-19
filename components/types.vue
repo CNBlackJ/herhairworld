@@ -1,37 +1,47 @@
 <template>
 	<div class="type-bar">
-		<div
-			@click="choice()"
-			:class="{'type-btn-click': !activateCat }">
-			<a class="type-btn">
-				All
-			</a>
-		</div>
-		<div
-			v-for="cat in categories"
-			:key="cat._id"
-			@click="choice(cat._id)"
-			:class="{'type-btn-click': cat._id === activateCat}">
-			<a class="type-btn">
-				{{cat.name}}
-			</a>
-		</div>
+		<no-ssr>
+			<ly-tab
+				v-model="selectedId"
+				v-on:change="choice"
+				:items="categories"
+				:options="options">
+			</ly-tab>
+		</no-ssr>
 	</div>
 </template>
 
 <script>
-	import { mapState } from 'vuex'
+	import { mapGetters, mapState } from 'vuex'
 
 	import category from '@/apis/category'
 
 	export default {
-		computed: mapState({
-			categories: state => state.home.categories,
-			activateCat: state => state.home.activateCat
-		}),
+		computed: {
+			...mapGetters({
+        activateCatId: 'home/activateCatId'
+			}),
+			...mapState({
+				categories: state => state.home.categories,
+				activateCat: state => state.home.activateCat
+			})
+		},
+		data () {
+			return {
+				selectedId: 0,
+				options: {
+					activeColor: '#dd127b',
+					labelKey: 'name'
+				},
+			}
+		},
+		created () {
+			this.selectedId = this.activateCatId
+		},
     methods: {
-      choice (categoryId) {
-				this.$store.commit('home/SET_ACTIVATE_CAT', categoryId)
+      choice (category) {
+				const { _id, name} = category
+				this.$store.commit('home/SET_ACTIVATE_CAT', name.toLowerCase() !== 'all' ? _id : '')
 				this.$store.dispatch('list/setProductList')
 			}
 		}
