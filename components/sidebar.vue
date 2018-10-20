@@ -18,7 +18,7 @@
 					class="sidebar-menu"
 					@click="closeSidebar">
 					<div
-						@click="goList(category._id)">
+						@click="goList( category.name === 'All' ? '' : category._id)">
 						{{ category.name }}
 					</div>
 				</div>

@@ -45,7 +45,7 @@
 								v-for="country in countries"
 								:key="country.value"
 								:label="country.label"
-								:value="country.value">
+								:value="country.label">
 							</el-option>
 						</el-select>
 					</el-form-item>
@@ -123,7 +123,7 @@
 		},
 		data () {
 			return {
-				inquirySuccess: true,
+				inquirySuccess: false,
 				countries: [],
 				inquiryInfo: {
 					name: '',
