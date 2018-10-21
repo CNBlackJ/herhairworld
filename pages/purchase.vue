@@ -58,9 +58,9 @@
 			<no-ssr>
 				<paypal-checkout
 					env="sandbox"
-					amount="10000"
+					amount="0.1"
 					currency="USD"
-					locale="fr_FR"
+					locale="en_US"
 					payment-completed="showCallback"
 					:client="paypal"
 					:invoice-number="'201705051001'">

@@ -15,7 +15,7 @@
 			<no-ssr>
 				<paypal-checkout
 					env="sandbox"
-					amount="10000"
+					amount="0.1"
 					currency="USD"
 					locale="fr_FR"
 					:client="paypal"
@@ -32,7 +32,7 @@
 			return {
 				paypal: {
 					// sandbox: 'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',
-					sanbox: 'access_token$sandbox$77k65bvyyxs3mcs6$cb80b1fc3d3d4f5ffc7574dc662691c9',
+					sanbox: 'access_token$sandbox$tpy9ynrkzwnzcd74$f606424361826aac515e5fb3dcf12291',
           production: '<production client id>'
         }
 			}

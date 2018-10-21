@@ -36,7 +36,7 @@
 		},
 		methods: {
 			async listProd () {
-				this.recommendProds = await product.recommand(2)
+				this.recommendProds = await product.recommand(10)
 			}
 		}
 	}

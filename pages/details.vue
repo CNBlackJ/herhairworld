@@ -83,7 +83,7 @@
 					:key="tab._id">
 					<div
 						@click="activateTab=tab._id"
-						v-scroll-to="{ el: tab.scrollTo, offset: -50 }"
+						v-scroll-to="{ el: tab.scrollTo }"
 						class="tab-title"
 						:class="{'detail-tab-selected': activateTab === tab._id}">
 						<i v-if="activateTab === tab._id" class="el-icon-location"></i>
