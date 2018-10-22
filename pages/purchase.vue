@@ -61,9 +61,11 @@
 					amount="0.1"
 					currency="USD"
 					locale="en_US"
-					payment-completed="showCallback"
+					v-on:payment-authorized="payAuth"
+					v-on:payment-completed="showCallback"
+					v-on:payment-cancelled="cancelPayment"
 					:client="paypal"
-					:invoice-number="'201705051001'">
+					:invoice-number="'201810211134'">
 				</paypal-checkout>
 			</no-ssr>
 		</div>
@@ -134,7 +136,14 @@
 				}
 			},
 			showCallback (c) {
+				console.log('pay success')
 				console.log(c)
+			},
+			payAuth () {
+				console.log('pay auth')
+			},
+			cancelPayment () {
+				console.log('cancel payment')
 			}
 		}
 	}

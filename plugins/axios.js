@@ -12,7 +12,7 @@ import * as axios from 'axios'
 // }
 
 export default ({ app, store, redirect }) => {
-  axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? 'http://apiherhairworld.wifihi.cn' : 'http://127.0.0.1:3010'
+  axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? 'http://47.90.207.98:3010' : 'http://127.0.0.1:3010'
 
   axios.interceptors.request.use(req => {
     const authToken = store.state.authToken
