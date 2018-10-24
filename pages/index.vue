@@ -18,7 +18,7 @@
           <img
             class="bs-img"
             :src="item"/>
-          <div class="bs-title">FOR NEW START BUSINESS</div>
+          <div class="bs-title">{{serviceFourTitles[i]}}</div>
         </el-col>
       </div>
     </div>
@@ -117,6 +117,12 @@
           { id: 2, title: 'Hugu Profit', img: 'choose_2.jpg' },
           { id: 3, title: 'Unlimited', img: 'choose_3.jpg' },
           { id: 4, title: 'Professional', img: 'choose_4.jpg' }
+        ],
+        serviceFourTitles: [
+          'For New Start Business',
+          'For Salon Owners/Stylists',
+          'For Online Sellers',
+          'For Store Owner'
         ]
       }
     },

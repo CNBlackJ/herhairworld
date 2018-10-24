@@ -61,5 +61,8 @@ export const getters = {
     if (!state.activateCat) return 0
     const id = state.categories.indexOf(state.categories.find(ele => ele._id === state.activateCat))
     return id
+  },
+  isShowCategories (state) {
+    return state.categories.filter(ele => ele.isShow)
   }
 }
