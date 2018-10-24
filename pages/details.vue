@@ -208,6 +208,7 @@
 				this.price = this.product.minPrice.toFixed(2)
 			}
 			this.isExistCart = !!this.carts.find(cart => cart.productId === productId)
+			this.productImgs.product = this.product.detailImgs.product.map(ele => ele.url)
 		},
 		mounted() {
 			window.addEventListener('scroll', this.handleScroll)
