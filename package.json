@@ -18,6 +18,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@nuxtjs/auth": "^4.5.2",
+    "@nuxtjs/axios": "^5.3.3",
     "auth0-lock": "^11.9.1",
     "axios": "^0.18.0",
     "cookie-universal-nuxt": "^2.0.5",
