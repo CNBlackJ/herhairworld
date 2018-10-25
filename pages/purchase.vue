@@ -58,14 +58,15 @@
 			<no-ssr>
 				<paypal-checkout
 					env="sandbox"
-					amount="0.1"
+					:amount="String(amount) + '.00'"
 					currency="USD"
 					locale="en_US"
 					v-on:payment-authorized="payAuth"
 					v-on:payment-completed="showCallback"
 					v-on:payment-cancelled="cancelPayment"
 					:client="paypal"
-					:invoice-number="'201810211134'">
+					:items="items"
+					:invoice-number="String(Date.now())">
 				</paypal-checkout>
 			</no-ssr>
 		</div>
@@ -73,7 +74,7 @@
 </template>
 
 <script>
-	import { mapState } from 'vuex'
+	import { mapState, mapGetters } from 'vuex'
 
 	import product from '@/apis/product'
 
@@ -110,12 +111,17 @@
 				checkedProducts: state => state.cart.checkedProducts,
 				carts: state => state.cart.carts,
 				buyNowProduct: state => state.details.buyNowProduct
+			}),
+			...mapGetters({
+				items: 'purchase/items',
+				amount: 'purchase/amount'
 			})
 		},
 		async created () {
 			const { isBuyNow } = this.$nuxt.$route.query
 			await this.listCheckedProds(isBuyNow)
 			this.getSummary()
+			this.$store.dispatch('purchase/getPurchaseProducts')
 		},
 		methods: {
 			async listCheckedProds (isBuyNow) {
