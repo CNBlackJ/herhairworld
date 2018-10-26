@@ -74,7 +74,7 @@
 		},
 		methods: {
 			formatPrice () {
-				const allPrice = [...this.product.lengths].map(ele => ele.price).sort()
+				const allPrice = _.sortedUniq([...this.product.lengths].map(ele => ele.price))
 				const minPrice = allPrice[0]
 				this.price = minPrice.toFixed(2)
 			},

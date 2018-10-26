@@ -122,8 +122,6 @@
 		},
 		async created () {
 			this.$store.dispatch('purchase/getPurchaseProducts')
-			// 检查是否有商品
-			this.checkPurchase()
 		},
 		methods: {
 			showCallback (payResp) {
@@ -138,11 +136,6 @@
 			},
 			cancelPayment () {
 				console.log('cancel payment')
-			},
-			checkPurchase () {
-				if (!this.summary.total) {
-					console.log('aaa')
-				}
 			}
 		}
 	}

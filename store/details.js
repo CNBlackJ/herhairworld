@@ -1,4 +1,5 @@
 import product from '@/apis/product'
+import _ from 'lodash'
 
 export const state = () => ({
   product: {
@@ -20,7 +21,7 @@ export const mutations = {
 export const actions = {
   async setProduct ({ commit }, productId) {
     const prod = await product.getById(productId)
-    const allPrice = [...prod.lengths].map(ele => ele.price).sort()
+    const allPrice = _.sortedUniq([...prod.lengths].map(ele => ele.price))
     prod.minPrice = allPrice[0]
     prod.maxPrice = allPrice.pop()
     commit('SET_PRODUCT', prod)
