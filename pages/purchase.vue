@@ -43,13 +43,13 @@
 					price:
 				</el-col>
 				<el-col :span="5" style="color: #dd127b">
-					$ {{summary.price.toFixed(2)}}
+					$ {{summary.price}}
 				</el-col>
 				<el-col :span="5" :offset="13">
 					shipping:
 				</el-col>
 				<el-col :span="5" style="color: #dd127b">
-					$ {{summary.shipping.toFixed(2)}}
+					$ {{summary.shipping}}
 				</el-col>
 			</el-row>
 		</div>
@@ -64,7 +64,7 @@
 					v-on:payment-authorized="payAuth"
 					v-on:payment-completed="showCallback"
 					v-on:payment-cancelled="cancelPayment"
-					:client="paypal"
+					:client="paypalConfig"
 					:items="items"
 					:invoice-number="String(Date.now())">
 				</paypal-checkout>
@@ -89,61 +89,36 @@
 		},
 		data () {
 			return {
-				paypal: {
-					sandbox: 'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',
-					// sanbox: 'access_token$sandbox$77k65bvyyxs3mcs6$cb80b1fc3d3d4f5ffc7574dc662691c9',
-          production: 'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R'
-        },
 				orderInfo: {
 					payment: '',
 					couponCode: ''
 				},
-				products: [],
-				summary: {
-					total: 0,
-					price: 0,
-					shipping: 0
-				}
 			}
 		},
 		computed: {
 			...mapState({
 				checkedProducts: state => state.cart.checkedProducts,
 				carts: state => state.cart.carts,
-				buyNowProduct: state => state.details.buyNowProduct
+				buyNowProduct: state => state.details.buyNowProduct,
+				products: state => state.purchase.products,
+				paypalConfig: state => state.purchase.paypalConfig
 			}),
 			...mapGetters({
 				items: 'purchase/items',
-				amount: 'purchase/amount'
+				amount: 'purchase/amount',
+				summary: 'purchase/summary'
 			})
 		},
 		async created () {
-			const { isBuyNow } = this.$nuxt.$route.query
-			await this.listCheckedProds(isBuyNow)
-			this.getSummary()
 			this.$store.dispatch('purchase/getPurchaseProducts')
 		},
 		methods: {
-			async listCheckedProds (isBuyNow) {
-				if (!isBuyNow) {
-					const productIds =  this.checkedProducts
-					this.products = this.carts.filter(ele => productIds.indexOf(ele.productId) > -1)
+			showCallback (payResp) {
+				if (payResp.state === 'approved') {
+					console.log('pay success')
 				} else {
-					this.products = this.buyNowProduct ? [this.buyNowProduct] : []
+					console.log(payResp)
 				}
-			},
-			getSummary () {
-				if (this.products.length) {
-					const counts = this.products.map(ele => ele.count)
-					const prices = this.products.map(ele => ele.count * ele.price)
-					this.summary.total = counts ? counts.reduce((c, n) => c + n) : 0
-					this.summary.price = prices ? prices.reduce((c, n) => c + n) : 0
-					this.summary.shipping = 20
-				}
-			},
-			showCallback (c) {
-				console.log('pay success')
-				console.log(c)
 			},
 			payAuth () {
 				console.log('pay auth')
