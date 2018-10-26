@@ -54,7 +54,9 @@
 			</el-row>
 		</div>
 
-		<div class="purchase-submit">
+		<div
+			v-if="summary.total > 0"
+			class="purchase-submit">
 			<no-ssr>
 				<paypal-checkout
 					env="sandbox"
@@ -69,6 +71,15 @@
 					:invoice-number="String(Date.now())">
 				</paypal-checkout>
 			</no-ssr>
+		</div>
+		<div
+			v-else
+			class="go-shop">
+			<span class="go-shop-btn">
+				<nuxt-link to="/list">
+					Go to shopping
+				</nuxt-link>
+			</span>
 		</div>
 	</div>
 </template>
@@ -111,6 +122,8 @@
 		},
 		async created () {
 			this.$store.dispatch('purchase/getPurchaseProducts')
+			// 检查是否有商品
+			this.checkPurchase()
 		},
 		methods: {
 			showCallback (payResp) {
@@ -125,6 +138,11 @@
 			},
 			cancelPayment () {
 				console.log('cancel payment')
+			},
+			checkPurchase () {
+				if (!this.summary.total) {
+					console.log('aaa')
+				}
 			}
 		}
 	}
@@ -175,5 +193,18 @@
 		text-align: center;
 		padding: 10px 0;
 		border-radius: 5px;
+	}
+
+	.go-shop {
+		width: 100%;
+		padding: 20px 5px;
+		text-align: center;
+	}
+
+	.go-shop-btn {
+		background-color: #dd127b;
+		color: white;
+		padding: 5px 10px;
+		border-radius: 25px;
 	}
 </style>
