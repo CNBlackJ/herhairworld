@@ -74,4 +74,12 @@ export default class LS {
       window.localStorage.carts = JSON.stringify(carts)
     }
   }
+
+  static createOrder (orderId) {
+    if (process.browser && orderId) {
+      const orderIds = window.localStorage.orderIds ? JSON.parse(window.localStorage.orderIds) : []
+      orderIds.push(orderId)
+      window.localStorage.orderIds = JSON.stringify(orderIds)
+    }
+  }
 }

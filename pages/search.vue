@@ -1,7 +1,7 @@
 <template>
 	<div class="search-container">
 		<div class="search-head">
-			<div @click="$router.back(-1)" class="search-back">
+			<div @click="$router.back(-1)">
 				<i class="el-icon-arrow-left"></i>
 			</div>
 			<div>Search</div>

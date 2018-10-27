@@ -26,7 +26,7 @@
 					<span class="purchase-card-title">Coupon Code</span>
 				</div>
 				<div>
-					<el-input v-model="orderInfo.couponCode" placeholder="$3 off with coupon code"></el-input>
+					<el-input v-model="couponCode" placeholder="$3 off with coupon code"></el-input>
 				</div>
 			</el-card>
 		</div>
@@ -64,7 +64,7 @@
 					currency="USD"
 					locale="en_US"
 					v-on:payment-authorized="payAuth"
-					v-on:payment-completed="showCallback"
+					v-on:payment-completed="paySuccess"
 					v-on:payment-cancelled="cancelPayment"
 					:client="paypalConfig"
 					:items="items"
@@ -100,16 +100,12 @@
 		},
 		data () {
 			return {
-				orderInfo: {
-					payment: '',
-					couponCode: ''
-				},
+				couponCode: ''
 			}
 		},
 		computed: {
 			...mapState({
 				checkedProducts: state => state.cart.checkedProducts,
-				carts: state => state.cart.carts,
 				buyNowProduct: state => state.details.buyNowProduct,
 				products: state => state.purchase.products,
 				paypalConfig: state => state.purchase.paypalConfig
@@ -124,9 +120,14 @@
 			this.$store.dispatch('purchase/getPurchaseProducts')
 		},
 		methods: {
-			showCallback (payResp) {
+			async paySuccess (payResp) {
 				if (payResp.state === 'approved') {
-					console.log('pay success')
+					const order = {
+						products: this.products,
+						couponCode: this.couponCode
+					}
+					await this.$store.dispatch('orders/createOrder', order)
+					this.$router.push({ path: '/orders' })
 				} else {
 					console.log(payResp)
 				}

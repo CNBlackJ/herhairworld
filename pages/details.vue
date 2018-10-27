@@ -39,7 +39,7 @@
 							@change="selecteLength"
 							size="small"
 							style="width: 100%"
-							v-model="detailForm.length"
+							v-model="detailForm.len"
 							placeholder="Selecte Length">
 							<el-option
 								v-for="length in product.lengths"
@@ -190,7 +190,7 @@
 					]
 				},
 				detailForm: {
-					length: '',
+					len: '',
 					price: '',
 					count: 1
 				},
@@ -268,10 +268,10 @@
 			addToCart (productId) {
 				// check length
 				if (!this.isExistCart) {
-					if (!this.detailForm.length) {
+					if (!this.detailForm.len) {
 						this.$message('Please select length.')
 					}
-					const lengthPrice = this.product.lengths.find(ele => ele.len === this.detailForm.length)
+					const lengthPrice = this.product.lengths.find(ele => ele.len === this.detailForm.len)
 					const cartInfo = {...lengthPrice, ...{ productId }, ...{ count: this.detailForm.count }}
 					if (this.isAuthenticated) {
 						this.$store.dispatch('list/createCart', cartInfo)
@@ -288,7 +288,7 @@
 				this.$router.push({ path: '/inquiry' })
 			},
 			async buyNow (productId) {
-				if (!this.detailForm.length) {
+				if (!this.detailForm.len) {
 					this.$message('Please select length.')
 				} else {
 					const productInfo = {...this.detailForm, ...{ productId }}
