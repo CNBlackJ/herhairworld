@@ -67,10 +67,10 @@ export default class LS {
     }
   }
 
-  static removeFromCart ({ prodId }) {
+  static removeFromCart ({ productId }) {
     if (window.localStorage.carts) {
       const carts = JSON.parse(window.localStorage.carts)
-      _.remove(carts, ele => ele.prodId === prodId)
+      _.remove(carts, ele => ele.productId === productId)
       window.localStorage.carts = JSON.stringify(carts)
     }
   }

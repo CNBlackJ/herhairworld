@@ -25,6 +25,13 @@ export const actions = {
   },
   async createOrder ({ state, commit, rootState }, payload) {
     const orderRes = await order.create(payload)
+    // 删除购物车物品
+    const { products } = orderRes
+    const productIds = products.map(ele => ele.productId)
+    productIds.forEach(productId => {
+      LS.removeFromCart({productId})
+    })
+
     commit('SET_ORDER', orderRes)
     LS.createOrder(orderRes._id)
   }
