@@ -10,8 +10,7 @@ export default class order {
 
   static async list ({ limit, skip, sort, orderIds }) {
     const queryStr = `?limit=${limit || 20}&skip=${skip || 0}&sort=${sort || '-createdAt'}&orderIds=${orderIds}`
-    const resp = (await request.get(`/api/orders${queryStr}`)).date
-    console.log(orderIds)
+    const resp = (await request.get(`/api/orders${queryStr}`)).data
     let result = null
     if (!resp.error_code) result = resp.data
     return result

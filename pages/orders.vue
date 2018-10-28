@@ -1,7 +1,7 @@
 <template>
 	<div class="orders-container">
 		<div class="orders-head">
-			<div @click="$router.back(-1)">
+			<div @click="$router.push({ path: '/list' })">
 				<i class="el-icon-arrow-left"></i>
 			</div>
 			<div>My Orders</div>
@@ -9,35 +9,49 @@
 		</div>
 
 		<div class="orders-group">
-			<div class="orders-card">
+			<div
+				v-for="order in orders"
+				:key="order._id"
+				class="orders-card">
 				<div class="oc-header">
-					<span>订单编号: 123123</span>
-					<span>状态: 已出货</span>
+					<span>Order Id: &nbsp;&nbsp;{{order._id}}</span>
+					<!-- <span>状态: {{ order.status }}</span> -->
 				</div>
 				<div class="oc-main">
 					<div class="oc-imgs">
-						<img src="http://herhairworld.wifihi.cn/880110752d524389909750e86e65aa7f.jpg">
-						<img src="http://herhairworld.wifihi.cn/880110752d524389909750e86e65aa7f.jpg">
-						<img src="http://herhairworld.wifihi.cn/880110752d524389909750e86e65aa7f.jpg">
+						<img
+							v-for="(img, i) in orderImgs(order._id)"
+							:key="i"
+							:src="img">
 					</div>
 					<div class="oc-summary">
-						<span>共4件商品</span>
-						<span>总金额 $300</span>
+						<span>Total: {{order.total}}</span>
+						<span>Amount: ${{order.price}}</span>
 					</div>
 				</div>
-				<div class="oc-bottom">
+				<!-- <div class="oc-bottom">
 					<span class="oc-bt">
-						订单详情
+						Details
 					</span>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+	import { mapState, mapGetters } from 'vuex'
+
 	export default {
 		layout: 'mainWithoutFooter',
+		computed: {
+			...mapState({
+				orders: state => state.orders.orders
+			}),
+			...mapGetters({
+				orderImgs: 'orders/orderImgs'
+			})
+		},
 		created () {
 			this.$store.dispatch('orders/getOrders')
 		}
@@ -67,6 +81,7 @@
 	.orders-card {
 		background-color: white;
 		padding:10px;
+		margin-bottom: 10px;
 	}
 
 	.oc-header {
@@ -95,6 +110,7 @@
 		width: 68px;
 		height: 68px;
 		margin-right: 10px;
+		border: 1px solid #eeeeee;
 	}
 
 	.oc-summary {

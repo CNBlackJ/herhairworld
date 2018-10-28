@@ -124,7 +124,9 @@
 				if (payResp.state === 'approved') {
 					const order = {
 						products: this.products,
-						couponCode: this.couponCode
+						couponCode: this.couponCode,
+						price: this.summary.price,
+						total: this.summary.total
 					}
 					await this.$store.dispatch('orders/createOrder', order)
 					this.$router.push({ path: '/orders' })
