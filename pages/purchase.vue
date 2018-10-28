@@ -123,7 +123,7 @@
 			async paySuccess (payResp) {
 				if (payResp.state === 'approved') {
 					const order = {
-						products: this.products,
+						products: this.products.map(ele => { return { count: ele.count, len: ele.len, price: ele.price, productId: ele.productId } }),
 						couponCode: this.couponCode,
 						price: this.summary.price,
 						total: this.summary.total
