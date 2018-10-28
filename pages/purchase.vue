@@ -60,7 +60,7 @@
 			<no-ssr>
 				<paypal-checkout
 					env="sandbox"
-					:amount="String(amount) + '.00'"
+					:amount="String(amount.toFixed(2))"
 					currency="USD"
 					locale="en_US"
 					v-on:payment-authorized="payAuth"
