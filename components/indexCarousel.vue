@@ -5,7 +5,9 @@
 				<el-carousel-item
 					v-for="item in banner"
 					:key="item._id">
-					<img class="carousel-img"
+					<img
+						@click="redirectTo(item.path)"
+						class="carousel-img"
 						:src="item.img">
 				</el-carousel-item>
 			</el-carousel>
@@ -22,6 +24,11 @@
 		}),
 		created () {
 			this.$store.dispatch('home/setPageConfig')
+		},
+		methods: {
+			redirectTo (path) {
+				this.$router.push({ path })
+			}
 		}
 	}
 </script>
