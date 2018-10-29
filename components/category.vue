@@ -2,15 +2,33 @@
 	<div class="category-container">
 		<el-row>
 			<el-col
-				:span="6"
 				v-for="category in categories"
-				:key="category.id">
-				<div
-					v-if="category.name !== 'All'"
-					class="category-card"
-					@click="goList(category._id)">
-					<img :src="category.img" class="category-image">
-					<div class="category-title">
+				:key="category.id"
+				:span="12">
+				<div>
+					<vue-flip
+						v-if="category.name !== 'All'"
+						:active-click="true"
+						width="100%" 
+						height="200px">
+						<div slot="front">
+							<img :src="category.img" class="category-image">
+						</div>
+						<div slot="back">
+							<div class="sub-categories">
+								<span
+									@click="goList(category._id)"
+									v-for="item in 3"
+									:key="item">
+									<i class="el-icon-arrow-right"></i>
+									sub-category-{{item}}
+								</span>
+							</div>
+						</div>
+					</vue-flip>
+					<div
+						v-if="category.name !== 'All'"
+						class="category-title">
 						<span>{{category.name}}</span>
 					</div>
 				</div>
@@ -23,6 +41,8 @@
 	import { mapState, mapGetters } from 'vuex'
 	import category from '@/apis/category'
 
+	import VueFlip from 'vue-flip'
+
 	export default {
 		computed: {
 			...mapState({
@@ -31,6 +51,9 @@
 			...mapGetters({
         isShowCategories: 'home/isShowCategories'
 			}),
+		},
+		components: {
+			'vue-flip': VueFlip
 		},
 		created () {
 			this.$store.dispatch('home/setCategories')
@@ -57,10 +80,6 @@
 		border: 1px solid #cacaca;
 	}
 
-	.category-card {
-		padding: 0 5px;
-	}
-
 	.category-title {
 		padding: 5px;
 		width: 100%;
@@ -68,16 +87,16 @@
 		font-size: 70%;
 	}
 
-  .swiper-inner {
-    width: 100%;
-    height: 400px;
-    padding-top: 50px;
-    padding-bottom: 50px;
-  }
-  .swiper-slide {
-    background-position: center;
-    background-size: cover;
-    width: 300px;
-    height: 300px;
-  }
+	.sub-categories {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		height: 200px;
+		background-color: #eeeeee;
+	}	
+
+	.sub-categories span {
+		padding: 5px;
+	}
 </style>

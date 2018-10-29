@@ -26,7 +26,7 @@ export const mutations = {
 
 export const actions = {
   async setCategories ({ commit }) {
-    const categories = await category.list({ sort: 'name' })
+    const categories = await category.list({ sort: 'index' })
     commit('SET_CATEGORIES', categories)
   },
   async setPageConfig ({ commit }) {
