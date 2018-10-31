@@ -3,7 +3,7 @@
 		<types></types>
 		<div class="prod-cards">
 			<el-row>
-				<el-col 
+				<el-col
 					class="prod-card" 
 					v-for="product in productList" 
 					:key="product._id" 
@@ -11,13 +11,22 @@
 					<card :product="product">
 					</card>
 				</el-col>
+				<!-- <no-ssr>
+					<infinite-loading @infinite="infiniteHandler">
+						<div slot="no-more" class="list-nomore">
+							<div class="list-nomore-text">
+								no mores～
+							</div>
+						</div>
+					</infinite-loading>
+				</no-ssr> -->
 			</el-row>
 		</div>
 		<div class="list-nomore">
-			<div class="list-nomore-text">
-				no mores～
+				<div class="list-nomore-text">
+					no mores～
+				</div>
 			</div>
-		</div>
 	</div>
 </template>
 
@@ -36,9 +45,25 @@
 		computed: mapState({
 			productList: state => state.list.productList
 		}),
-		created () {
-			this.$store.dispatch('list/setProductList')
+		async created () {
+			this.$store.dispatch('list/setProductList', { limit: 100 })
 			this.$store.dispatch('cart/setLocalFavList')
+		},
+		data () {
+			return {
+				page: 1
+			}
+		},
+		methods: {
+			async infiniteHandler ($state) {
+				await this.$store.dispatch('list/setProductList', { limit: 100 })
+				if (this.productList.length === (this.page * 2)) {
+					this.page += 1
+					$state.loaded()
+				} else {
+					$state.complete()
+				}
+			}
 		}
 	}
 </script>

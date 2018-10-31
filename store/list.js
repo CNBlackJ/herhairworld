@@ -13,8 +13,8 @@ export const mutations = {
 }
 
 export const actions = {
-  async setProductList ({ state, commit, rootState }) {
-    const products = await product.list({ categoryId: rootState.home.activateCat })
+  async setProductList ({ state, commit, rootState }, { limit = 2, skip = 0 }) {
+    const products = await product.list({ categoryId: rootState.home.activateCat, limit, skip })
     commit('SET_PRODUCT_LIST', products)
   },
   async createCart ({ state, commit }, { productId, price, len, count }) {

@@ -42,7 +42,7 @@
       choice (category) {
 				const { _id, name} = category
 				this.$store.commit('home/SET_ACTIVATE_CAT', name.toLowerCase() !== 'all' ? _id : '')
-				this.$store.dispatch('list/setProductList')
+				this.$store.dispatch('list/setProductList', { limit: 100 })
 			}
 		}
 	}
