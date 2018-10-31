@@ -8,6 +8,8 @@ export default {
 		const unsetToken = require('~/utils/auth').unsetToken
 		const logout = require('~/utils/lock').logout
 
+		this.$store.commit('SET_AUTH_TOKEN', null)
+		this.$store.commit('SET_USER', null)
 		unsetToken()
 		logout()
 	}

@@ -1,7 +1,9 @@
+import user from '@/apis/user'
+
 export const state = () => ({
   user: null,
   imgBaseUrl: 'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/',
-  authToken: ''
+  authToken: null
 })
 
 export const mutations = {
@@ -22,12 +24,17 @@ export const actions = {
   },
   loggedUser (state) {
     return state.user
+  },
+  async createVisitor ({ state, commit }) {
+    const userInfo = await user.autoCreate()
+    commit('SET_AUTH_TOKEN', userInfo.authToken)
+    commit('SET_USER', userInfo)
   }
 }
 
 export const getters = {
   isAuthenticated (state) {
-    return !!state.user
+    return state.user && state.user.type === 'user'
   },
   loggedUser (state) {
     return state.user

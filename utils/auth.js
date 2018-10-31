@@ -1,8 +1,6 @@
 import jwtDecode from 'jwt-decode'
 import Cookie from 'js-cookie'
 
-import user from '@/apis/user'
-
 const getQueryParams = () => {
   const params = {}
   window.location.href.replace(/([^(?|#)=&]+)(=([^&]*))?/g, ($0, $1, $2, $3) => {
@@ -20,17 +18,25 @@ export const extractInfoFromHash = () => {
   }
 }
 
-export const setToken = async (token) => {
+export const setToken = ({ token }) => {
   if (process.SERVER_BUILD) return
-  const userInfo = jwtDecode(token)
   window.localStorage.setItem('token', token)
-  window.localStorage.setItem('user', JSON.stringify(userInfo))
   Cookie.set('token', token)
-  // craete auth0 user
-  const auth0User = { auth0Sub: userInfo.sub, auth0User: JSON.stringify(userInfo) }
-  const auth0UserInfo = await user.auth0Create({ auth0User })
-  window.localStorage.setItem('authToken', auth0UserInfo.authToken)
-  Cookie.set('authToken', auth0UserInfo.authToken)
+
+  window.localStorage.setItem('authToken', token)
+  Cookie.set('authToken', token)
+}
+
+export const setServerToken = ({ token }) => {
+  if (process.SERVER_BUILD) return
+  Cookie.set('token', token)
+  Cookie.set('authToken', token)
+}
+
+export const setClientToken = ({ token }) => {
+  if (process.SERVER_BUILD) return
+  window.localStorage.setItem('token', token)
+  window.localStorage.setItem('authToken', token)
 }
 
 export const unsetToken = () => {
@@ -38,7 +44,9 @@ export const unsetToken = () => {
   window.localStorage.removeItem('token')
   window.localStorage.removeItem('user')
   window.localStorage.removeItem('secret')
+  window.localStorage.removeItem('authToken')
   Cookie.remove('token')
+  Cookie.remove('authToken')
   window.localStorage.setItem('logout', Date.now())
 }
 
@@ -51,8 +59,8 @@ export const getUserFromCookie = (req) => {
 }
 
 export const getUserFromLocalStorage = () => {
-  const authToken = window.localStorage.user
-  return authToken ? JSON.parse(authToken) : ''
+  const authToken = window.localStorage.authToken
+  return authToken ? jwtDecode(authToken) : ''
 }
 
 export const getAuthTokenFromCookie = (req) => {

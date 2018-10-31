@@ -4,10 +4,10 @@
 			<div class="user-avatar-con">
 				<img
 					class="user-avatar"
-					:src="loggedUser.picture">
+					:src="user.avatar">
 			</div>
 			<div class="user-name">
-				{{loggedUser.name}}
+				{{user.username}}
 			</div>
 		</div>
 
@@ -84,12 +84,11 @@
 		computed: {
 			...mapState({
 				cartList: state => state.cart.cartList,
-				loggedUser: state => state.user
+				user: state => state.user || {}
 			})
 		},
 		data () {
 			return {
-				user: '',
 				menuGroups: [
 					{ id: 1, icon: 'padnote.png', text: 'my order', href: '/orders' },
 					{ id: 2, icon: 'favorites.png', text: 'my favorites', href: '/favorites' },

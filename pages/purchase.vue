@@ -25,9 +25,28 @@
 				<div slot="header">
 					<span class="purchase-card-title">Coupon Code</span>
 				</div>
-				<div>
-					<el-input v-model="couponCode" placeholder="$3 off with coupon code"></el-input>
-				</div>
+				<el-row>
+					<el-popover
+						placement="top-end"
+						width="200"
+						content="check your coupon code."
+						v-model="showErrMsg"
+						trigger="manual">
+						<el-input
+							slot="reference"
+							v-model="couponCode"
+							placeholder="$3 off with coupon code"
+							:disabled="isDisable"
+							clearable>
+							<el-button
+								@click="verifyCouponCode"
+								slot="append"
+								:icon="isCheckedCode ? 'el-icon-success' : 'el-icon-question'">
+								{{isCheckedCode ? 'VERIFY' : 'check'}}
+							</el-button>
+						</el-input>
+					</el-popover>
+				</el-row>
 			</el-card>
 		</div>
 
@@ -88,6 +107,7 @@
 	import { mapState, mapGetters } from 'vuex'
 
 	import product from '@/apis/product'
+	import coupon from '@/apis/coupon'
 
 	import addressCard from '@/components/addressCard'
 	import purchaseCard from '@/components/purchaseCard'
@@ -100,7 +120,10 @@
 		},
 		data () {
 			return {
-				couponCode: ''
+				couponCode: '',
+				isCheckedCode: false,
+				isDisable: false,
+				showErrMsg: false
 			}
 		},
 		computed: {
@@ -126,7 +149,8 @@
 						products: this.products.map(ele => { return { count: ele.count, len: ele.len, price: ele.price, productId: ele.productId } }),
 						couponCode: this.couponCode,
 						price: this.summary.price,
-						total: this.summary.total
+						total: this.summary.total,
+						paymentInfo: JSON.stringify(payResp)
 					}
 					await this.$store.dispatch('orders/createOrder', order)
 					this.$router.push({ path: '/orders' })
@@ -139,6 +163,26 @@
 			},
 			cancelPayment () {
 				console.log('cancel payment')
+			},
+			async verifyCouponCode () {
+				const code = this.couponCode
+				if (code) {
+					const resp = await coupon.list({ code })
+					if (resp && resp.length && (resp[0].code === code)) {
+						// verified
+						this.isCheckedCode = true
+						this.isDisable = true
+						this.showErrMsg = false
+					} else {
+						this.isCheckedCode = false
+						this.isDisable = false
+						this.showErrMsg = true
+					}
+				} else {
+					this.isCheckedCode = false
+					this.isDisable = false
+					this.showErrMsg = true
+				}
 			}
 		}
 	}

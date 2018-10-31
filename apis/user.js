@@ -4,8 +4,10 @@ import request from './request'
 
 export default class user {
   static async getUser () {
-    const resp = await request.get('/api/user')
-    return resp.data
+    const resp = (await request.get('/api/user')).data
+    let userInfo = null
+    if (!resp.error_code) userInfo = resp.data
+    return userInfo
   }
 
   static async auth0Create ({ auth0User }) {
@@ -20,12 +22,15 @@ export default class user {
     return resp.data
   }
 
-  static async autoCreate (mobile) {
+  static async autoCreate () {
+    // generate unique user._id
     const user = {
-      username: mobile,
-      mobile,
-      password: md5(mobile)
+      uniqueId: md5(new Date()),
+      type: 'visitor'
     }
-    return this.create({ user })
+    const resp = (await request.post('/api/users/visitor', user)).data
+    let userInfo = null
+    if (!resp.error_code) userInfo = resp.data
+    return userInfo
   }
 }

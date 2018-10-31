@@ -20,6 +20,9 @@
 
 <script>
 	import { mapGetters, mapState } from 'vuex'
+	import user from '@/apis/user'
+
+	import { setToken, getAuthTokenFromCookie, getAuthTokenFromLocalStorage } from '~/utils/auth'
 	
 	export default {
 		computed: {
@@ -29,11 +32,35 @@
 					if (state.isAuthenticated) return state.cart.cartList.length
 					return state.cart.localCartList.length
 				},
+				user: state => state.user,
+				authToken: state => state.authToken
 			})
 		},
 		created () {
 			this.$store.dispatch('home/setCategories')
 			this.$store.dispatch('cart/setLocalCartList')
+		},
+		async mounted () {
+			const authToken = getAuthTokenFromLocalStorage()
+			if (!authToken) {
+				// 创建一个临时访客用户
+				await this.$store.dispatch('createVisitor')
+				setToken({ token: this.authToken })
+				this.$store.commit('SET_AUTH_TOKEN', this.authToken)
+			} else {
+				this.$store.commit('SET_AUTH_TOKEN', this.authToken)
+				// 看token是否能获取到用户信息
+				const userInfo = await user.getUser()
+				if (userInfo) {
+					this.$store.commit('SET_USER', userInfo)
+					setToken({ token: authToken })
+					this.$store.commit('SET_AUTH_TOKEN', authToken)
+				} else {
+					await this.$store.dispatch('createVisitor')
+					setToken({ token: this.authToken })
+					this.$store.commit('SET_AUTH_TOKEN', this.authToken)
+				}
+			}
 		},
 		methods: {
 			openMenu () {

@@ -13,9 +13,14 @@ import * as axios from 'axios'
 
 export default ({ app, store, redirect }) => {
   axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? 'http://47.90.207.98:3010' : 'http://127.0.0.1:3010'
+  let authToken = ''
+  if (!process.server) {
+    authToken = window.localStorage.getItem('authToken')
+  } else {
+    authToken = store.state.authToken
+  }
 
   axios.interceptors.request.use(req => {
-    const authToken = store.state.authToken
     if (authToken) {
       req.headers.Authorization = `Bearer ${authToken}`
     }
