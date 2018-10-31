@@ -77,33 +77,11 @@
 				</el-row>
 			</div>
 
-			<div class="detail-tab-group" :class="{'fix-tab-group': isFixedTab}">
-				<div
-					v-for="tab in detailTabs"
-					:key="tab._id">
-					<div
-						@click="activateTab=tab._id"
-						v-scroll-to="{ el: tab.scrollTo }"
-						class="tab-title"
-						:class="{'detail-tab-selected': activateTab === tab._id}">
-						<i v-if="activateTab === tab._id" class="el-icon-location"></i>
-						{{tab.name}}
-					</div>
-				</div>
-			</div>
-
-			<div id="tabBar" class="details-group">
-				<div
-					v-for="tab in detailTabs"
-					:key="tab.id"
-					:id="tab.scrollTo.replace('#', '')">
-					<img
-						class="detail-tab-img"
-						v-for="(item, i) in productImgs[tab.name.toLowerCase()]"
-						:key="i"
-						:src="item">
-				</div>
-			</div>
+			<img
+				class="detail-tab-img"
+				v-for="(item, i) in productImgs.product"
+				:key="i"
+				:src="item">
 		</div>
 
 		<div class="detail-bottom-btns">
@@ -211,10 +189,10 @@
 			this.productImgs.product = this.product.detailImgs.product.map(ele => ele.url)
 		},
 		mounted() {
-			window.addEventListener('scroll', this.handleScroll)
+			// window.addEventListener('scroll', this.handleScroll)
 		},
 		destroyed () {
-			window.removeEventListener('scroll', this.handleScroll)
+			// window.removeEventListener('scroll', this.handleScroll)
 		},
 		methods: {
 			handleScroll() {
