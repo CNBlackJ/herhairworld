@@ -1,67 +1,56 @@
 <template>
 	<div class="category-container">
 		<el-row>
-			<el-col
-				v-for="category in categories"
-				:key="category.id"
-				:span="12">
-				<div>
-					<vue-flip
-						v-if="category.name !== 'All'"
-						:active-click="true"
-						width="100%" 
-						height="200px">
-						<div slot="front">
-							<img :src="category.img" class="category-image">
+			<el-col :span="12">
+				<el-row>
+					<el-col :span="12">
+						<div class="img-con">
+							<img :src="baseUrl + imgs[0]" class="category-image">
 						</div>
-						<div slot="back">
-							<div class="sub-categories">
-								<span
-									@click="goList(category._id)"
-									v-for="item in 3"
-									:key="item">
-									<i class="el-icon-arrow-right"></i>
-									sub-category-{{item}}
-								</span>
-							</div>
+					</el-col>
+					<el-col :span="12">
+						<div class="img-con">
+							<img :src="baseUrl + imgs[1]" class="category-image">
 						</div>
-					</vue-flip>
-					<div
-						v-if="category.name !== 'All'"
-						class="category-title">
-						<span>{{category.name}}</span>
-					</div>
-				</div>
+					</el-col>
+				</el-row>
+			</el-col>
+			<el-col :span="12">
+				<el-row>
+					<el-col :span="24">
+						<div class="img-con">
+							<img :src="baseUrl + imgs[2]" class="category-image">
+						</div>
+					</el-col>
+
+					<el-col :span="12">
+						<div class="img-con img-small">
+							<img :src="baseUrl + imgs[3]" class="category-image">
+						</div>
+					</el-col>
+					<el-col :span="12">
+						<div class="img-con img-small">
+							<img :src="baseUrl + imgs[4]" class="category-image">
+						</div>
+					</el-col>
+				</el-row>
 			</el-col>
 		</el-row>
 	</div>
 </template>
 
 <script>
-	import { mapState, mapGetters } from 'vuex'
-	import category from '@/apis/category'
-
-	import VueFlip from 'vue-flip'
-
 	export default {
-		computed: {
-			...mapState({
-				categories: state => state.home.categories
-			}),
-			...mapGetters({
-        isShowCategories: 'home/isShowCategories'
-			}),
-		},
-		components: {
-			'vue-flip': VueFlip
-		},
-		created () {
-			this.$store.dispatch('home/setCategories')
-		},
-		methods: {
-			goList (activateCat) {
-				this.$store.commit('home/SET_ACTIVATE_CAT', activateCat)
-				this.$router.push({ path: '/list' })
+		data () {
+			return {
+				baseUrl: 'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/categories/',
+				imgs: [
+					'01.jpg',
+					'02.jpg',
+					'03.jpg',
+					'04.jpg',
+					'05.jpg'
+				]
 			}
 		}
 	}
@@ -69,7 +58,7 @@
 
 <style>
 	.category-container {
-		padding: 0 10px;
+		padding: 0 5px;
 	}
 
 	.category-image {
@@ -77,26 +66,13 @@
 		height: auto;
 		max-width: 100%;
 		max-height: 100%;	
-		border: 1px solid #cacaca;
 	}
 
-	.category-title {
-		padding: 5px;
-		width: 100%;
-		text-align: center;
-		font-size: 70%;
+	.img-con {
+		padding: 0 2px;
 	}
 
-	.sub-categories {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		height: 200px;
-		background-color: #eeeeee;
-	}	
-
-	.sub-categories span {
-		padding: 5px;
+	.img-small {
+		margin-top: -2px;
 	}
 </style>
