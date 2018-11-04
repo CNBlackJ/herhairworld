@@ -4,6 +4,21 @@
     <indexContent title="featured categories"></indexContent>
     <category></category>
 
+    <indexContent title="featured products"></indexContent>
+
+    <div class="fd-con">
+      <el-row>
+        <el-col
+          class="fd-item"
+          :span="12"
+          v-for="item in featuredProducts"
+          :key="item._id">
+          <card :product="item">
+          </card>
+        </el-col>
+      </el-row>
+    </div>
+
     <indexContent :title="serviceTitles[0]"></indexContent>
     <div class="bs-container">
       <div class="bs-description">
@@ -88,6 +103,7 @@
   import category from '@/components/category'
   import indexBtn from '@/components/indexBtn'
   import social from '@/components/social'
+  import card from '@/components/card'
 
   import { mapState, mapGetters } from 'vuex'
 
@@ -98,7 +114,8 @@
       indexContent,
       category,
       indexBtn,
-      social
+      social,
+      card
     },
     computed: {
       ...mapGetters({
@@ -107,7 +124,8 @@
         serviceImgs: 'home/serviceImgs'
       }),
       ...mapState({
-        services: state => state.home.pageConfig.index.services
+        services: state => state.home.pageConfig.index.services,
+        featuredProducts: state => state.featuredProducts
       })
     },
     data () {
@@ -128,6 +146,7 @@
     },
 		created () {
       this.$store.dispatch('home/setPageConfig')
+      this.$store.dispatch('setFeaturedProducts')
 		},
     methods: {
       getInquiry () {
@@ -183,6 +202,14 @@
   .fc-img {
     padding: 20px 0;
     width: 100%;
+  }
+
+  .fd-con {
+    padding: 0 2px;
+  }
+
+  .fd-item {
+    padding: 2px;
   }
 
   .secret-container {
