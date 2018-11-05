@@ -7,7 +7,8 @@ export const state = () => ({
   pageConfig: {
     index: {
       banner: [],
-      services: []
+      services: [],
+      categories: []
     }
   }
 })

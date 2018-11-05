@@ -89,7 +89,7 @@
 				@click="getInquiry"
 				class="detail-bottom-left">
 				<img src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/chat.png">
-				<span>whosale inquiry</span>
+				<span>wholesale inquiry</span>
 			</div>
 			<div class="detail-bottom-right">
 				<el-tooltip

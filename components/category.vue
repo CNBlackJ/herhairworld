@@ -4,13 +4,13 @@
 			<el-col :span="12">
 				<el-row>
 					<el-col :span="12">
-						<div class="img-con">
-							<img :src="baseUrl + imgs[0]" class="category-image">
+						<div class="img-con" @click="goList(0)">
+							<img :src="categories[0] ? categories[0].img : ''" class="category-image">
 						</div>
 					</el-col>
 					<el-col :span="12">
-						<div class="img-con">
-							<img :src="baseUrl + imgs[1]" class="category-image">
+						<div class="img-con" @click="goList(1)">
+							<img :src="categories[1] ? categories[1].img : ''" class="category-image">
 						</div>
 					</el-col>
 				</el-row>
@@ -18,19 +18,19 @@
 			<el-col :span="12">
 				<el-row>
 					<el-col :span="24">
-						<div class="img-con">
-							<img :src="baseUrl + imgs[2]" class="category-image">
+						<div class="img-con" @click="goList(2)">
+							<img :src="categories[2] ? categories[2].img : ''" class="category-image">
 						</div>
 					</el-col>
 
 					<el-col :span="12">
-						<div class="img-con img-small">
-							<img :src="baseUrl + imgs[3]" class="category-image">
+						<div class="img-con img-small" @click="goList(3)">
+							<img :src="categories[3] ? categories[3].img : ''" class="category-image">
 						</div>
 					</el-col>
 					<el-col :span="12">
-						<div class="img-con img-small">
-							<img :src="baseUrl + imgs[4]" class="category-image">
+						<div class="img-con img-small" @click="goList(4)">
+							<img :src="categories[4] ? categories[4].img : ''" class="category-image">
 						</div>
 					</el-col>
 				</el-row>
@@ -40,17 +40,19 @@
 </template>
 
 <script>
+	import { mapState } from 'vuex'
+
 	export default {
-		data () {
-			return {
-				baseUrl: 'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/categories/',
-				imgs: [
-					'01.jpg',
-					'02.jpg',
-					'03.jpg',
-					'04.jpg',
-					'05.jpg'
-				]
+		computed: {
+			...mapState({
+				categories: state => state.home.pageConfig.index.categories
+			})
+		},
+		methods: {
+			goList (index) {
+				const category = this.categories.find(ele => ele.index == index)
+				this.$store.commit('home/SET_ACTIVATE_CAT', category.url)
+				this.$router.push({ path: '/list' })
 			}
 		}
 	}
