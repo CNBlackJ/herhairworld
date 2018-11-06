@@ -153,19 +153,10 @@
 					{ _id: 4, name: 'FAQ', icon: 'el-icon-location', scrollTo: '#detail-faq-imgs' }
 				],
 				productImgs: {
-					product: [
-						'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/productDetail/product_1.png',
-						'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/productDetail/product_2.png'
-					],
-					wholesale: [
-						'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/productDetail/wholesales.png'
-					],
-					shipping: [
-						'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/productDetail/shipping.png'
-					],
-					faq: [
-						'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/productDetail/faq.png'
-					]
+					product: [],
+					wholesale: [],
+					shipping: [],
+					faq: []
 				},
 				detailForm: {
 					len: '',
