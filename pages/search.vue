@@ -81,7 +81,8 @@
 		methods: {
 			async search (searchVal) {
 				this.isSearched = true
-        this.prodList = await product.list({ search: searchVal })
+				const { rows } = await product.list({ search: searchVal })
+				this.prodList = rows
 			}
 		}
 	}

@@ -36,8 +36,8 @@ export const actions = {
     commit('SET_USER', userInfo)
   },
   async setFeaturedProducts ({ state, commit }) {
-    const products = await product.list({ limit: 4 })
-    commit('SET_FEATURED_PRODUCTS', products)
+    const { rows } = await product.list({ limit: 4 })
+    commit('SET_FEATURED_PRODUCTS', rows)
   }
 }
 
