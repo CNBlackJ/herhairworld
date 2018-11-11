@@ -1,7 +1,7 @@
 <template>
 	<div class="detail-container">
 		<div class="detail-slide">
-			<el-carousel height="375px">
+			<el-carousel :height="carouselHeigth">
 				<el-carousel-item v-for="img in product.imgs" :key="img.id">
 					<img class="img" :src="img.url">
 				</el-carousel-item>
@@ -164,10 +164,15 @@
 					count: 1
 				},
 				isFixedTab: false,
-				isExistCart: false
+				isExistCart: false,
+				carouselHeigth: ''
 			}
 		},
 		async created () {
+			// 监听窗口大小变化
+			window.addEventListener('resize', this.handleResize)
+			this.handleResize()
+
 			this.$store.dispatch('cart/setCarts')
 			const { productId } = this.$nuxt.$route.query
 			await this.$store.dispatch('details/setProduct', productId)
@@ -184,8 +189,13 @@
 		},
 		destroyed () {
 			// window.removeEventListener('scroll', this.handleScroll)
+			window.removeEventListener('resize', this.handleResize)
 		},
 		methods: {
+			handleResize() {
+				const windowWidth = window.innerWidth
+				this.carouselHeigth = `${windowWidth}px`
+			},
 			handleScroll() {
 				const scrollPos = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
 				const tabBarPos = document.querySelector('#tabBar').offsetTop
