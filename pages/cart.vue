@@ -18,11 +18,11 @@
 			<div class="cart-counter-con">
 				<div class="cart-counter">
 					<div class="cart-checkall">
-						<el-checkbox
+						<!-- <el-checkbox
 							@change="checkAll"
 							:checked="checkedAll">
 						</el-checkbox>
-						<div class="select-all-text">all</div>
+						<div class="select-all-text">all</div> -->
 					</div>
 	
 					<div class="price-counter">
