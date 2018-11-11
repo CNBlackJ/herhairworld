@@ -1,18 +1,7 @@
 import * as axios from 'axios'
 
-// function getCookieInClient (name) {
-//   const reg = new RegExp('(^| )' + name + '=([^;]*)(;|$)')
-//   const arr = document.cookie.match(reg)
-//   console.log(document.cookie)
-//   if (arr) {
-//     return unescape(arr[2])
-//   } else {
-//     return null
-//   }
-// }
-
 export default ({ app, store, redirect }) => {
-  axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? 'http://47.90.207.98:3010' : 'http://127.0.0.1:3010'
+  axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? 'http://api.herhairworld.com' : 'http://127.0.0.1:3010'
   let authToken = ''
   if (!process.server) {
     authToken = window.localStorage.getItem('authToken')
