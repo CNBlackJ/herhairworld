@@ -18,8 +18,10 @@
 			infinite-scroll-disabled="busy"
 			infinite-scroll-distance="20"
 			class="list-nomore">
+
 			<div class="list-nomore-text">
-				no mores～
+				<i v-if="isLoading" class="el-icon-loading"></i>
+				<span v-else>no mores～</span>
 			</div>
 		</div>
 	</div>
@@ -56,18 +58,20 @@
 			return {
 				data: [],
 				busy: false,
-				currentPage: 1
+				currentPage: 1,
+				isLoading: false
 			}
 		},
 		methods: {
 			async loadMore () {
 				if (this.maxPage > this.currentPage) {
-					product.list({ limit: this.pageSize, skip: this.currentPage * this.pageSize }).then((resp) => {
-						const { rows } = resp
-						this.$store.dispatch('list/pushIntoProductList', rows)
-						this.currentPage++
-					})
+					this.isLoading = true
+					const resp = await product.list({ limit: this.pageSize, skip: this.currentPage * this.pageSize })
+					const { rows } = resp
+					this.$store.dispatch('list/pushIntoProductList', rows)
+					this.currentPage++
 					this.busy = false
+					this.isLoading = false
 				}
 			}
 		}
