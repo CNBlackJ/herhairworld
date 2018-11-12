@@ -72,7 +72,7 @@
 				prodList: [],
 				isSearched: false,
 				hotTags: [
-					{ _id: 1, tag: 'iphone' },
+					{ _id: 1, tag: 'wholesale' },
 					{ _id: 2, tag: 'hair' },
 					{ _id: 3, tag: 'new style' }
 				]
