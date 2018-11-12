@@ -51,8 +51,10 @@
 			})
 		},
 		async created () {
+			this.isLoading = true
 			await this.$store.dispatch('list/setProductList', { limit: 10 })
 			this.$store.dispatch('cart/setLocalFavList')
+			this.isLoading = false
 		},
 		data () {
 			return {
