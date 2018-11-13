@@ -19,8 +19,8 @@ export const actions = {
   async getOrders ({ state, commit, rootState }) {
     const orderIds = LS.getVal('orderIds')
     if (orderIds.length) {
-      const orders = await order.list({ orderIds, sort: '-createdAt' })
-      commit('SET_ORDERS', orders)
+      const { rows } = await order.list({ orderIds, sort: '-createdAt' })
+      commit('SET_ORDERS', rows)
     }
   },
   async createOrder ({ state, commit, rootState }, payload) {
