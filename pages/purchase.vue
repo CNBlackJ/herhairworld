@@ -141,6 +141,7 @@
 		},
 		async created () {
 			this.$store.dispatch('purchase/getPurchaseProducts')
+			await this.$store.dispatch('purchase/setPaypalConfig')
 		},
 		methods: {
 			async paySuccess (payResp) {

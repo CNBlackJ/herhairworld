@@ -1,7 +1,9 @@
+import payment from '@/apis/payment'
+
 export const state = () => ({
   paypalConfig: {
-    sandbox: 'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',
-    production: 'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R'
+    sandbox: '',
+    production: ''
   },
   products: [],
   shipping: 20
@@ -10,6 +12,9 @@ export const state = () => ({
 export const mutations = {
   SET_PRODUCTS (state, products) {
     state.products = products
+  },
+  STE_PAYPAL_CONFIG (state, paypalConfig) {
+    state.paypalConfig = paypalConfig
   }
 }
 
@@ -25,6 +30,14 @@ export const actions = {
       purchaseProducts = carts.filter(ele => checkedProducts.indexOf(ele.productId) > -1)
     }
     commit('SET_PRODUCTS', purchaseProducts)
+  },
+  async setPaypalConfig ({ state, commit }) {
+    const isUsingPaymentInfo = await payment.getIsUsingPayment()
+    const paypalConfig = {
+      sandbox: isUsingPaymentInfo.sandboxToken,
+      production: isUsingPaymentInfo.productionToken
+    }
+    commit('STE_PAYPAL_CONFIG', paypalConfig)
   }
 }
 
