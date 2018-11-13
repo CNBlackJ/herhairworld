@@ -50,7 +50,7 @@ After open browser, choose mobile view, or change host to your local host at `./
 }
 ```
 
-## Update logs
+## Change Logs
 
 - 11.12
   - 添加loadMore到产品列表
