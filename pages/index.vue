@@ -38,8 +38,8 @@
       </div>
     </div>
     <indexBtn
-      title="get your own solution"
-      @click.native="getInquiry"
+      :title="serviceTitles[0]"
+      @click.native="getInquiry(serviceTitles[0])"
     ></indexBtn>
 
     <indexContent :title="serviceTitles[1]"></indexContent>
@@ -54,8 +54,8 @@
         :src="serviceImgs[1]"/>
     </div>
     <indexBtn
-      title="get factory price now"
-      @click.native="getInquiry"
+      :title="serviceTitles[1]"
+      @click.native="getInquiry(serviceTitles[1])"
     ></indexBtn>
 
     <indexContent :title="serviceTitles[2]"></indexContent>
@@ -68,8 +68,8 @@
         :src="serviceImgs[2]"/>
     </div>
     <indexBtn
-      title="know more secret now"
-      @click.native="getInquiry"
+      :title="serviceTitles[2]"
+      @click.native="getInquiry(serviceTitles[2])"
     ></indexBtn>
 
     <indexContent title="hair branding"></indexContent>
@@ -82,8 +82,8 @@
         :src="serviceImgs[3]"/>
     </div>
     <indexBtn
-      title="customize your branding now"
-      @click.native="getInquiry"
+      :title="serviceTitles[3]"
+      @click.native="getInquiry(serviceTitles[3])"
     ></indexBtn>
 
     <indexContent :title="serviceTitles[3]"></indexContent>
@@ -149,7 +149,13 @@
       this.$store.dispatch('setFeaturedProducts')
 		},
     methods: {
-      getInquiry () {
+      getInquiry (title) {
+        const sendPage = {
+					name: this.$route.name,
+					path: this.$route.fullPath,
+					additional: title
+				}
+        this.$store.commit('inquiry/SET_SEND_PAGE', sendPage)
         this.$router.push({ path: '/inquiry' })
       }
     }

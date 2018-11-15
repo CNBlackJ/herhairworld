@@ -116,10 +116,17 @@
 
 	import recommend from '@/components/recommend'
 
+	import { mapState } from 'vuex'
+
 	export default {
 		layout: 'main',
 		components: {
 			recommend
+		},
+		computed: {
+			...mapState({
+				sendPage: state => state.inquiry.sendPage
+			})
 		},
 		data () {
 			return {
@@ -182,7 +189,7 @@
 			createInquiry (formName) {
 				this.$refs[formName].validate((valid) => {
 					if (valid) {
-						inquiry.create({ inquiry: this.inquiryInfo }).then((resp) => {
+						inquiry.create({ inquiry: Object.assign({}, this.inquiryInfo, { sendPage: this.sendPage }) }).then((resp) => {
 							if (!resp.error_code) {
 								this.inquirySuccess = true
 							} else {

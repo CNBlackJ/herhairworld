@@ -264,6 +264,12 @@
 				}
 			},
 			getInquiry () {
+				const sendPage = {
+					name: this.$route.name,
+					path: this.$route.fullPath,
+					additional: ''
+				}
+				this.$store.commit('inquiry/SET_SEND_PAGE', sendPage)
 				this.$router.push({ path: '/inquiry' })
 			},
 			async buyNow (productId) {
