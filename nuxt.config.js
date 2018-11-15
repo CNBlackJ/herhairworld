@@ -6,7 +6,7 @@ module.exports = {
     },
     middleware: [
       // 'check-auth'
-      // 'isPc'
+      'isPc'
     ]
   },
   /*
