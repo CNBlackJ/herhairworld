@@ -4,7 +4,7 @@ export default function (context) {
   const isMobile = /Android|webOS|iPhone|iPod|BlackBerry/i.test(userAgent)
   const isProduction = process.env.NODE_ENV === 'production'
   if (!isMobile && isProduction) {
-    const path = '/pc'
+    const path = 'https://www.herhairworld.com'
     context.redirect(path)
   }
 }
