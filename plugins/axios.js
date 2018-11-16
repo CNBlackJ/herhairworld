@@ -1,7 +1,13 @@
 import * as axios from 'axios'
 
+const baseURL = {
+  production: 'http://api.herhairworld.com',
+  staging: 'http://apiherhairworld.wifihi.cn',
+  development: 'http://127.0.0.1:3010'
+}
+
 export default ({ app, store, redirect }) => {
-  axios.defaults.baseURL = process.env.NODE_ENV === 'production' ? 'http://api.herhairworld.com' : 'http://127.0.0.1:3010'
+  axios.defaults.baseURL = baseURL[process.env.NODE_ENV] || baseURL['staging']
   let authToken = ''
   if (!process.server) {
     authToken = window.localStorage.getItem('authToken')
