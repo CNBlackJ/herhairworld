@@ -7,7 +7,8 @@ const baseURL = {
 }
 
 export default ({ app, store, redirect }) => {
-  axios.defaults.baseURL = baseURL[process.env.NODE_ENV] || baseURL['staging']
+  const BASE_URL = require('~/config.json').BASE_URL
+  axios.defaults.baseURL = BASE_URL || baseURL[process.env.NODE_ENV] || baseURL['staging']
   let authToken = ''
   if (!process.server) {
     authToken = window.localStorage.getItem('authToken')
