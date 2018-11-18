@@ -140,8 +140,8 @@
 			})
 		},
 		async created () {
-			this.$store.dispatch('purchase/getPurchaseProducts')
 			await this.$store.dispatch('purchase/setPaypalConfig')
+			await this.$store.dispatch('purchase/getPurchaseProducts')
 		},
 		methods: {
 			async paySuccess (payResp) {

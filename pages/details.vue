@@ -31,21 +31,21 @@
 				<el-row>
 					<el-col :span="5">
 						<span class="detail-title">
-							Length:
+							{{product.priceType}}:
 						</span>
 					</el-col>
 					<el-col :span="19">
 						<el-select
-							@change="selecteLength"
+							@change="selectedCusKey"
 							size="small"
 							style="width: 100%"
-							v-model="detailForm.len"
-							placeholder="Selecte Length">
+							v-model="detailForm.key"
+							:placeholder="'Selecte ' + product.priceType">
 							<el-option
-								v-for="length in product.lengths"
+								v-for="length in product.customizePrice"
 								:key="length._id"
-								:label="length.len"
-								:value="length.len">
+								:label="length.key"
+								:value="length.key">
 							</el-option>
 						</el-select>
 					</el-col>
@@ -125,6 +125,7 @@
 
 	import LS from '@/apis/localStorage'
 	import order from '@/apis/order'
+	import priceApi from '@/apis'
 
 	export default {
 		layout: 'mainWithoutFooter',
@@ -136,7 +137,8 @@
 				favList: state => {
 					if (state.isAuthenticated) return state.cart.favList
 					return state.cart.localFavList
-				}
+				},
+				priceList: state => state.details.priceList
 			})
 		},
 		data () {
@@ -145,13 +147,6 @@
 				price: '',
 				cartImg: '',
 				favImg: this.$store.state.imgBaseUrl + 'unfavorite.png',
-				activateTab: 1,
-				detailTabs: [
-					{ _id: 1, name: 'Product', icon: 'el-icon-location', scrollTo: '#detail-product-imgs' },
-					{ _id: 2, name: 'Wholesale', icon: 'el-icon-location', scrollTo: '#detail-wholesale-imgs' },
-					{ _id: 3, name: 'Shipping', icon: 'el-icon-location', scrollTo: '#detail-shipping-imgs' },
-					{ _id: 4, name: 'FAQ', icon: 'el-icon-location', scrollTo: '#detail-faq-imgs' }
-				],
 				productImgs: {
 					product: [],
 					wholesale: [],
@@ -159,11 +154,10 @@
 					faq: []
 				},
 				detailForm: {
-					len: '',
+					key: '',
 					price: '',
 					count: 1
 				},
-				isFixedTab: false,
 				isExistCart: false,
 				carouselHeigth: ''
 			}
@@ -184,11 +178,7 @@
 			this.isExistCart = !!this.carts.find(cart => cart.productId === productId)
 			this.productImgs.product = this.product.detailImgs.product.map(ele => ele.url)
 		},
-		mounted() {
-			// window.addEventListener('scroll', this.handleScroll)
-		},
 		destroyed () {
-			// window.removeEventListener('scroll', this.handleScroll)
 			window.removeEventListener('resize', this.handleResize)
 		},
 		methods: {
@@ -196,25 +186,10 @@
 				const windowWidth = window.innerWidth
 				this.carouselHeigth = `${windowWidth}px`
 			},
-			handleScroll() {
-				const scrollPos = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-				const tabBarPos = document.querySelector('#tabBar').offsetTop
-				this.isFixedTab = scrollPos > (tabBarPos - 48)
-				
-				const productImgs = document.querySelector('#detail-product-imgs').offsetTop
-				const wholesaleImgs = document.querySelector('#detail-wholesale-imgs').offsetTop
-				const shippingImgs = document.querySelector('#detail-shipping-imgs').offsetTop
-				const faqImgs = document.querySelector('#detail-faq-imgs').offsetTop
-				
-				if (scrollPos >= productImgs && scrollPos < wholesaleImgs) this.activateTab = 1
-				if (scrollPos >= wholesaleImgs && scrollPos < shippingImgs) this.activateTab = 2
-				if (scrollPos >= shippingImgs && scrollPos < faqImgs) this.activateTab = 3
-				if (scrollPos >= faqImgs) this.activateTab = 4
-			},
-			selecteLength (len) {
-				const length = this.product.lengths.find(ele => ele.len === len)
-				if (length) {
-					const price = length.price.toFixed(2)
+			selectedCusKey (key) {
+				const cusPrice = this.product.customizePrice.find(ele => ele.key === key)
+				if (cusPrice) {
+					const price = cusPrice.price.toFixed(2)
 					this.price = price
 					this.detailForm.price = price
 				} else {
@@ -247,11 +222,11 @@
 			addToCart (productId) {
 				// check length
 				if (!this.isExistCart) {
-					if (!this.detailForm.len) {
-						this.$message('Please select length.')
+					if (!this.detailForm.key) {
+						this.$message(`Please Select ${this.product.productType}.`)
 					}
-					const lengthPrice = this.product.lengths.find(ele => ele.len === this.detailForm.len)
-					const cartInfo = {...lengthPrice, ...{ productId }, ...{ count: this.detailForm.count }}
+					const cusPrice = this.product.customizePrice.find(ele => ele.key === this.detailForm.key)
+					const cartInfo = {...cusPrice, ...{ productId }, ...{ count: this.detailForm.count }, ...{ priceId: this.product.priceId }}
 					if (this.isAuthenticated) {
 						this.$store.dispatch('list/createCart', cartInfo)
 					} else {
@@ -273,8 +248,8 @@
 				this.$router.push({ path: '/inquiry' })
 			},
 			async buyNow (productId) {
-				if (!this.detailForm.len) {
-					this.$message('Please select length.')
+				if (!this.detailForm.key) {
+					this.$message(`Please Select ${this.product.productType}.`)
 				} else {
 					const productInfo = {...this.detailForm, ...{ productId }}
 					this.$store.commit('details/SET_BUY_NOW', productInfo)
