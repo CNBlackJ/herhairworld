@@ -37,12 +37,24 @@
 						<div>
 							<i
 								class="el-icon-close"
-								@click="removeFromCart(product._id)"></i>
+								@click="dialogVisible = true"></i>
 						</div>
 					</div>
 				</div>
 			</el-col>
 		</el-row>
+		<el-dialog
+			class="cart-dialog"
+			:visible.sync="dialogVisible"
+			width="80%">
+			<div>
+				Are you sure to delete it?
+			</div>
+			<span slot="footer">
+				<el-button @click="dialogVisible = false">No</el-button>
+				<el-button class="confirm-btn" @click="removeFromCart(product._id)">Yes</el-button>
+			</span>
+		</el-dialog>
 	</div>
 </template>
 
@@ -62,6 +74,7 @@
 		},	
 		data () {
 			return {
+				dialogVisible: false,
 				isChecked: false,
 				price: 0,
 				count: 1,
@@ -101,6 +114,7 @@
 					this.$store.dispatch('cart/setLocalCartList')
 				}
 				this.$store.dispatch('cart/setCarts')
+				this.dialogVisible = false
 			},
 			checkCartProd (productId) {
 				this.$store.dispatch('cart/setCheckedProducts', productId)
@@ -172,5 +186,16 @@
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
+	}
+
+	.confirm-btn {
+		background-color:#dd127b;
+		border-color: #dd127b;
+		color: white;
+	}
+
+	.cart-dialog .el-dialog {
+		margin-top: 60% !important;
+		border-radius: 5px;
 	}
 </style>

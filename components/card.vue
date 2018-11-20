@@ -32,6 +32,18 @@
 				</div>
 			</div>
 		</el-card>
+
+		<el-dialog
+			:visible.sync="dialogVisible"
+			width="80%">
+			<div>
+				Are you sure to delete it?
+			</div>
+			<span slot="footer">
+				<el-button @click="dialogVisible = false">No</el-button>
+				<el-button class="confirm-btn" @click="dialogVisible = false">Yes</el-button>
+			</span>
+		</el-dialog>
 	</div>
 </template>
 
@@ -63,6 +75,7 @@
 		},
 		data () {
 			return {
+				dialogVisible: false,
 				cartImg: '',
 				favImg: '',
 				price: ''
@@ -101,6 +114,7 @@
 					this.$store.dispatch('cart/setLocalCartList')
 					this.getCartFavImg()
 				}
+				// this.dialogVisible = true
 			},
 			addToFav (productId) {
 				if (this.isAuthenticated) {
