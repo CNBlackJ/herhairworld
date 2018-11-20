@@ -1,7 +1,7 @@
 import * as axios from 'axios'
 
 const baseURL = {
-  production: 'http://api.herhairworld.com',
+  production: 'http://apiherhairworld.wifihi.cn',
   staging: 'http://apiherhairworld.wifihi.cn',
   development: 'http://127.0.0.1:3010'
 }
