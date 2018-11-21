@@ -38,7 +38,7 @@
       </div>
     </div>
     <indexBtn
-      :title="serviceTitles[0]"
+      title="GET YOUR OWN SOLUTION NOW"
       @click.native="getInquiry(serviceTitles[0])"
     ></indexBtn>
 
@@ -54,7 +54,7 @@
         :src="serviceImgs[1]"/>
     </div>
     <indexBtn
-      :title="serviceTitles[1]"
+      title="GET FACTORY PRICE NOW"
       @click.native="getInquiry(serviceTitles[1])"
     ></indexBtn>
 
@@ -68,7 +68,7 @@
         :src="serviceImgs[2]"/>
     </div>
     <indexBtn
-      :title="serviceTitles[2]"
+      title="CUSTOMIZE YOUR BRANDING NOW"
       @click.native="getInquiry(serviceTitles[2])"
     ></indexBtn>
 
@@ -86,10 +86,14 @@
       @click.native="getInquiry(serviceTitles[3])"
     ></indexBtn>
 
-    <indexContent :title="serviceTitles[3]"></indexContent>
+    <indexContent title="WHY CHOOSE US"></indexContent>
     <div class="choose-container">
       <div class="choose-img-container" v-for="c in choices" :key="c.id">
         <img class="choose-img" :src="'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/' + c.img"/>
+      </div>
+    </div>
+    <div class="choose-container">
+      <div class="choose-img-container" v-for="c in choices" :key="c.id">
         <div class="choose-title">{{c.title}}</div>
       </div>
     </div>
