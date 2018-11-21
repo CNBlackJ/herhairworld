@@ -5,8 +5,8 @@
 			<el-row>
 				<el-col
 					class="prod-card" 
-					v-for="product in productList" 
-					:key="product._id" 
+					v-for="(product, i) in productList" 
+					:key="i" 
 					:span="12">
 					<card :product="product">
 					</card>
@@ -44,7 +44,8 @@
 			...mapState({
 				productList: state => state.list.productList,
 				count: state => state.list.count,
-				pageSize: state => state.list.pageSize
+				pageSize: state => state.list.pageSize,
+				currentPage: state => state.list.currentPage
 			}),
 			...mapGetters({
 				maxPage: 'list/maxPage'
@@ -60,18 +61,19 @@
 			return {
 				data: [],
 				busy: false,
-				currentPage: 1,
 				isLoading: false
 			}
 		},
 		methods: {
 			async loadMore () {
-				if (this.maxPage > this.currentPage) {
+				let currentPage = this.currentPage
+				const pageSize = this.pageSize
+				if (this.maxPage > currentPage) {
 					this.isLoading = true
-					const resp = await product.list({ limit: this.pageSize, skip: this.currentPage * this.pageSize })
+					const resp = await product.list({ limit: pageSize, skip: currentPage * pageSize })
 					const { rows } = resp
 					this.$store.dispatch('list/pushIntoProductList', rows)
-					this.currentPage++
+					this.$store.commit('list/SET_CURRENT_PAGE', ++currentPage)
 					this.busy = false
 					this.isLoading = false
 				}

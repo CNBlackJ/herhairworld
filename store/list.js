@@ -5,7 +5,8 @@ const favorite = ''
 export const state = () => ({
   productList: null,
   count: 0,
-  pageSize: 10
+  pageSize: 10,
+  currentPage: 1
 })
 
 export const mutations = {
@@ -14,6 +15,9 @@ export const mutations = {
   },
   SET_COUNT (state, count) {
     state.count = count
+  },
+  SET_CURRENT_PAGE (state, currentPage) {
+    state.currentPage = currentPage
   }
 }
 
@@ -37,7 +41,6 @@ export const actions = {
   pushIntoProductList ({ state, commit }, newProductList) {
     const productList = JSON.parse(JSON.stringify(state.productList))
     const newList = [...productList, ...newProductList]
-    console.log(newList.length, 'newList')
     commit('SET_PRODUCT_LIST', newList)
   }
 }

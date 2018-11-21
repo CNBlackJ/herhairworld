@@ -2,7 +2,7 @@
 	<div class="type-bar">
 		<no-ssr>
 			<ly-tab
-				v-model="selectedId"
+				v-model="activateCatId"
 				v-on:change="choice"
 				:items="categories"
 				:options="options">
@@ -28,20 +28,17 @@
 		},
 		data () {
 			return {
-				selectedId: 0,
 				options: {
 					activeColor: '#dd127b',
 					labelKey: 'name'
 				},
 			}
 		},
-		created () {
-			this.selectedId = this.activateCatId
-		},
     methods: {
       choice (category) {
 				const { _id, name} = category
 				this.$store.commit('home/SET_ACTIVATE_CAT', name.toLowerCase() !== 'all' ? _id : '')
+				this.$store.commit('list/SET_CURRENT_PAGE', 1)
 				this.$store.dispatch('list/setProductList', { limit: 10 })
 			}
 		}
