@@ -48,10 +48,11 @@
 				</el-col>
 			</el-row>
 		</div>
-		<div
-			class="empty-search"
-			v-if="isSearched && prodList.length === 0">
-			It`s empty ~~
+		<div class="empty-search" v-if="isLoading">
+			<i class="el-icon-loading"></i>
+		</div>
+		<div class="empty-search" v-if="isSearched && prodList.length === 0">
+			No more~
 		</div>
 	</div>
 </template>
@@ -71,6 +72,7 @@
 				searchVal: '',
 				prodList: [],
 				isSearched: false,
+				isLoading: false,
 				hotTags: [
 					{ _id: 1, tag: 'wholesale' },
 					{ _id: 2, tag: 'hair' },
@@ -81,8 +83,10 @@
 		methods: {
 			async search (searchVal) {
 				this.isSearched = true
+				this.isLoading = true
 				const { rows } = await product.list({ search: searchVal })
 				this.prodList = rows
+				this.isLoading = false
 			}
 		}
 	}

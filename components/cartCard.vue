@@ -18,7 +18,7 @@
 					</div>
 					<div class="cc-detail">
 						<div class="cc-parameters">
-							{{length}} inch / {{product.material}}
+							{{product.material}}
 						</div>
 					</div>
 					<div class="cc-price">
@@ -78,7 +78,6 @@
 				isChecked: false,
 				price: 0,
 				count: 1,
-				length: 0,
 				product: {
 					mainImg: ''
 				}
@@ -94,7 +93,6 @@
 				this.product = await product.getById(productId)
 				this.price = this.cartProd.price.toFixed(2)
 				this.count = this.cartProd.count
-				this.length = this.cartProd.len
 			},
       async updateCount (productId) {
 				if (this.isAuthenticated) {

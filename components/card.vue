@@ -104,8 +104,8 @@
 				this.$router.push({ path: `/details?productId=${productId}` })
 			},
 			addToCart (productId) {
-				const { price, len } = this.product.lengths[0]
-				const cartInfo = { productId, price, len, count: 1 }
+				const { price, key } = this.product.customizePrice[0]
+				const cartInfo = { productId, price, key, count: 1 }
 
 				if (this.isAuthenticated) {
 					this.$store.dispatch('list/createCart', cartInfo)

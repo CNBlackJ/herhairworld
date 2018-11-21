@@ -224,18 +224,19 @@
 				if (!this.isExistCart) {
 					if (!this.detailForm.key) {
 						this.$message(`Please Select ${this.product.productType}.`)
-					}
-					const cusPrice = this.product.customizePrice.find(ele => ele.key === this.detailForm.key)
-					const cartInfo = {...cusPrice, ...{ productId }, ...{ count: this.detailForm.count }, ...{ priceId: this.product.priceId }}
-					if (this.isAuthenticated) {
-						this.$store.dispatch('list/createCart', cartInfo)
 					} else {
-						LS.createCart(cartInfo)
-						this.$store.dispatch('cart/setLocalCartList')
+						const cusPrice = this.product.customizePrice.find(ele => ele.key === this.detailForm.key)
+						const cartInfo = {...cusPrice, ...{ productId }, ...{ count: this.detailForm.count }, ...{ priceId: this.product.priceId }}
+						if (this.isAuthenticated) {
+							this.$store.dispatch('list/createCart', cartInfo)
+						} else {
+							LS.createCart(cartInfo)
+							this.$store.dispatch('cart/setLocalCartList')
+						}
+						this.getCartFavImg()
+						this.$store.dispatch('cart/setCarts')
+						this.isExistCart = true
 					}
-					this.getCartFavImg()
-					this.$store.dispatch('cart/setCarts')
-					this.isExistCart = true
 				}
 			},
 			getInquiry () {
