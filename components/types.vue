@@ -35,11 +35,12 @@
 			}
 		},
     methods: {
-      choice (category) {
+      async choice (category) {
 				const { _id, name} = category
 				this.$store.commit('home/SET_ACTIVATE_CAT', name.toLowerCase() !== 'all' ? _id : '')
 				this.$store.commit('list/SET_CURRENT_PAGE', 1)
-				this.$store.dispatch('list/setProductList', { limit: 10 })
+				this.$store.commit('list/SET_PRODUCT_LIST', [])
+				await this.$store.dispatch('list/setProductList', { limit: 10, categoryId: _id })
 			}
 		}
 	}

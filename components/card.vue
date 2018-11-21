@@ -89,6 +89,7 @@
 			formatPrice () {
 				const allPrice = _.orderBy([...this.product.customizePrice].map(ele => ele.price))
 				const minPrice = allPrice[0] || 0
+				console.log(minPrice)
 				this.price = minPrice.toFixed(2)
 			},
 			getCartFavImg () {

@@ -24,6 +24,7 @@ export const mutations = {
 export const actions = {
   async setProductList ({ state, commit, rootState }, { limit = 10, skip = 0 }) {
     const categoryId = rootState.home.activateCat
+    console.log(categoryId)
     const condition = { categoryId, limit, skip }
     condition.sort = categoryId ? 'categoryIndex' : 'index'
     const { rows, count } = await product.list(condition)

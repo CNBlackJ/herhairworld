@@ -44,9 +44,9 @@
 				this.$router.push({ path:'/' })
 				this.closeSidebar()
 			},
-			goList (activateCat) {
+			async goList (activateCat) {
 				this.$store.commit('home/SET_ACTIVATE_CAT', activateCat)
-				this.$store.dispatch('list/setProductList', { limit: 10 })
+				await this.$store.dispatch('list/setProductList', { limit: 10 })
 				this.$router.push({ path: '/list' })
 			}
 		}
