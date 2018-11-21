@@ -131,10 +131,10 @@
     data () {
       return {
         choices: [
-          { id: 1, title: 'High Quality', img: 'choose_1.jpg' },
-          { id: 2, title: 'Hugu Profit', img: 'choose_2.jpg' },
-          { id: 3, title: 'Unlimited', img: 'choose_3.jpg' },
-          { id: 4, title: 'Professional', img: 'choose_4.jpg' }
+          { id: 1, title: 'High Quality', img: 'why_choose_us_1.jpg' },
+          { id: 2, title: 'Hugu Profit', img: 'why_choose_us_2.jpg' },
+          { id: 3, title: 'Fast Shipment', img: 'why_choose_us_3.jpg' },
+          { id: 4, title: 'Branding', img: 'why_choose_us_4.jpg' }
         ],
         serviceFourTitles: [
           'For New Start Business',
