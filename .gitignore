@@ -10,7 +10,5 @@ npm-debug.log
 # Nuxt generate
 dist
 
-package-lock.json
-
 /api
 config.json
