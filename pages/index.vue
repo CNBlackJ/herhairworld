@@ -38,7 +38,7 @@
       </div>
     </div>
     <indexBtn
-      title="GET YOUR OWN SOLUTION NOW"
+      :title="serviceBtns[0]"
       @click.native="getInquiry(serviceTitles[0])"
     ></indexBtn>
 
@@ -54,7 +54,7 @@
         :src="serviceImgs[1]"/>
     </div>
     <indexBtn
-      title="GET FACTORY PRICE NOW"
+      :title="serviceBtns[1]"
       @click.native="getInquiry(serviceTitles[1])"
     ></indexBtn>
 
@@ -68,7 +68,7 @@
         :src="serviceImgs[2]"/>
     </div>
     <indexBtn
-      title="CUSTOMIZE YOUR BRANDING NOW"
+      :title="serviceBtns[2]"
       @click.native="getInquiry(serviceTitles[2])"
     ></indexBtn>
 
@@ -82,7 +82,7 @@
         :src="serviceImgs[3]"/>
     </div>
     <indexBtn
-      :title="serviceTitles[3]"
+      :title="serviceBtns[3]"
       @click.native="getInquiry(serviceTitles[3])"
     ></indexBtn>
 
@@ -124,6 +124,7 @@
     computed: {
       ...mapGetters({
         serviceTitles: 'home/serviceTitles',
+        serviceBtns: 'home/serviceBtns',
         serviceDescs: 'home/serviceDescriptions',
         serviceImgs: 'home/serviceImgs'
       }),

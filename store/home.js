@@ -44,6 +44,13 @@ export const getters = {
     })
     return titles
   },
+  serviceBtns (state) {
+    const btns = []
+    state.pageConfig.index.services.forEach(ele => {
+      btns[ele.index - 1] = ele.btn
+    })
+    return btns
+  },
   serviceDescriptions (state) {
     const descs = []
     state.pageConfig.index.services.forEach(ele => {

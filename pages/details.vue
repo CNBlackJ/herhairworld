@@ -223,7 +223,7 @@
 				// check length
 				if (!this.isExistCart) {
 					if (!this.detailForm.key) {
-						this.$message(`Please Select ${this.product.productType}.`)
+						this.$message(`Please Select ${this.product.priceType}.`)
 					} else {
 						const cusPrice = this.product.customizePrice.find(ele => ele.key === this.detailForm.key)
 						const cartInfo = {...cusPrice, ...{ productId }, ...{ count: this.detailForm.count }, ...{ priceId: this.product.priceId }}
@@ -250,7 +250,7 @@
 			},
 			async buyNow (productId) {
 				if (!this.detailForm.key) {
-					this.$message(`Please Select ${this.product.productType}.`)
+					this.$message(`Please Select ${this.product.priceType}.`)
 				} else {
 					const productInfo = {...this.detailForm, ...{ productId }}
 					this.$store.commit('details/SET_BUY_NOW', productInfo)
