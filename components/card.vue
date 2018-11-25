@@ -35,6 +35,7 @@
 
 		<el-dialog
 			:visible.sync="dialogVisible"
+			title="TIPS"
 			width="80%">
 			<div>
 				Are you sure to delete it?
@@ -106,7 +107,8 @@
 			},
 			addToCart (productId) {
 				const { price, key } = this.product.customizePrice[0]
-				const cartInfo = { productId, price, key, count: 1 }
+				const { priceId, maxWeight } = this.product
+				const cartInfo = { productId, price, key, count: 1, priceId, maxWeight }
 
 				if (this.isAuthenticated) {
 					this.$store.dispatch('list/createCart', cartInfo)

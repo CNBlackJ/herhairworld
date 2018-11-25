@@ -18,7 +18,7 @@
 					</div>
 					<div class="cc-detail">
 						<div class="cc-parameters">
-							{{product.material}}
+							{{product.material}} / {{product.maxWeight}} g
 						</div>
 					</div>
 					<div class="cc-price">
@@ -30,8 +30,7 @@
 								v-model="count"
 								@change="updateCount(product._id)"
 								size="mini"
-								:min="1" 
-								:max="10">
+								:min="1">
 							</el-input-number>
 						</div>
 						<div>

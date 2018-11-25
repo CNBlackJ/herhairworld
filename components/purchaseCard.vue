@@ -18,7 +18,7 @@
 					</div>
 					<div class="cc-detail">
 						<div class="cc-parameters">
-							{{length}} inch / {{product.material}}
+							{{product.material}} / {{product.maxWeight}} g
 						</div>
 					</div>
 					<div class="cc-price">

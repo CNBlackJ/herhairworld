@@ -226,7 +226,15 @@
 						this.$message(`Please Select ${this.product.priceType}.`)
 					} else {
 						const cusPrice = this.product.customizePrice.find(ele => ele.key === this.detailForm.key)
-						const cartInfo = {...cusPrice, ...{ productId }, ...{ count: this.detailForm.count }, ...{ priceId: this.product.priceId }}
+						const { priceId, maxWeight } = this.product
+						const cartInfo = {
+							productId,
+							priceId,
+							maxWeight,
+							count: this.detailForm.count,
+							key: cusPrice.key,
+							price: cusPrice.price
+						}
 						if (this.isAuthenticated) {
 							this.$store.dispatch('list/createCart', cartInfo)
 						} else {
