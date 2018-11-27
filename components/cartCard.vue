@@ -51,7 +51,7 @@
 			</div>
 			<span slot="footer">
 				<el-button @click="dialogVisible = false">No</el-button>
-				<el-button class="confirm-btn" @click="removeFromCart(product._id)">Yes</el-button>
+				<el-button class="confirm-btn" @click="removeFromCart(cartProd.productId)">Yes</el-button>
 			</span>
 		</el-dialog>
 	</div>
@@ -107,7 +107,7 @@
 				if (this.isAuthenticated) {
 					await cart.deleteByProdId(productId)
 				} else {
-					LS.createCart({ productId })
+					LS.removeFromCart({ productId })
 					this.$store.dispatch('cart/setLocalCartList')
 				}
 				this.$store.dispatch('cart/setCarts')
