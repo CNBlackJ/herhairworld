@@ -1,7 +1,7 @@
 import _ from 'lodash'
 
 import cart from '@/apis/cart'
-// import product from '@/apis/product'
+import price from '@/apis/price'
 import LS from '@/apis/localStorage'
 
 // TODO: add favorite apis
@@ -15,7 +15,8 @@ export const state = () => ({
   localFavList: [],
   checkedProducts: [],
   subtotal: 0,
-  isCheckedAll: false
+  isCheckedAll: false,
+  priceList: []
 })
 
 export const mutations = {
@@ -42,6 +43,9 @@ export const mutations = {
   },
   SET_IS_CHECKED_ALL (state, isCheckedAll) {
     state.isCheckedAll = isCheckedAll
+  },
+  SET_PRICE_LIST (state, priceList) {
+    state.priceList = priceList
   }
 }
 
@@ -90,5 +94,9 @@ export const actions = {
     let subtotal = 0
     if (prices.length) subtotal = prices.reduce((c, n) => c + n)
     commit('SET_SUBTOTAL', subtotal)
+  },
+  async setPriceList ({ state, commit }) {
+    const { rows } = await price.list({})
+    commit('SET_PRICE_LIST', rows)
   }
 }

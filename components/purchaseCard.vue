@@ -18,7 +18,7 @@
 					</div>
 					<div class="cc-detail">
 						<div class="cc-parameters">
-							{{product.material}} / {{product.maxWeight}} g
+							{{size}}
 						</div>
 					</div>
 					<div class="cc-price">
@@ -47,7 +47,10 @@
 			'cartProd'
 		],
 		computed: {
-			...mapGetters(['isAuthenticated'])
+			...mapGetters(['isAuthenticated']),
+			...mapState({
+				priceList: state => state.cart.priceList
+			})
 		},	
 		data () {
 			return {
@@ -57,12 +60,14 @@
 				length: 0,
 				product: {
 					mainImg: ''
-				}
+				},
+				size: ''
 			}
 		},
 		async created () {
 			const productId = this.cartProd.productId
 			await this.getProduct(productId)
+			await this.$store.dispatch('cart/setPriceList')
 		},
     methods: {
 			async getProduct (productId) {
@@ -70,6 +75,12 @@
 				this.price = Number(this.cartProd.price).toFixed(2)
 				this.count = this.cartProd.count
 				this.length = this.cartProd.len
+
+				const { priceId } = this.product
+				const price = this.priceList.find(ele => String(ele._id) === priceId)
+				const key = price ? price.key : ''
+				const val = this.cartProd.key
+				this.size = `${key}: ${val}`
 			},
       async updateCount (productId) {
 				if (this.isAuthenticated) {

@@ -67,8 +67,8 @@
 				checkedAll: false
 			}
 		},
-		created () {
-			this.$store.dispatch('cart/setCarts')
+		async created () {
+			await this.$store.dispatch('cart/setCarts')
 		},
 		methods: {
 			checkAll () {
