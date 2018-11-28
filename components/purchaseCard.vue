@@ -80,7 +80,7 @@
 				const price = this.priceList.find(ele => String(ele._id) === priceId)
 				const key = price ? price.key : ''
 				const val = this.cartProd.key
-				this.size = `${key}: ${val}`
+				this.size = `${key}: ${val} ${key.toLowerCase() === 'length' ? 'inches' : ''}`
 			},
       async updateCount (productId) {
 				if (this.isAuthenticated) {
