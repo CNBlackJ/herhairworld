@@ -45,7 +45,8 @@
 				productList: state => state.list.productList,
 				count: state => state.list.count,
 				pageSize: state => state.list.pageSize,
-				currentPage: state => state.list.currentPage
+				currentPage: state => state.list.currentPage,
+				activateCat: state => state.home.activateCat
 			}),
 			...mapGetters({
 				maxPage: 'list/maxPage'
@@ -68,9 +69,17 @@
 			async loadMore () {
 				let currentPage = this.currentPage
 				const pageSize = this.pageSize
+				console.log(this.maxPage, currentPage)
 				if (this.maxPage > currentPage) {
 					this.isLoading = true
-					const resp = await product.list({ limit: pageSize, skip: currentPage * pageSize })
+					this.busy = true
+					const resp = await product.list({
+						limit: pageSize,
+						skip: currentPage * pageSize,
+						categoryId: this.activateCat || '',
+						online: true,
+						sort: 'categoryIndex'
+					})
 					const { rows } = resp
 					this.$store.dispatch('list/pushIntoProductList', rows)
 					this.$store.commit('list/SET_CURRENT_PAGE', ++currentPage)
