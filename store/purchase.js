@@ -92,13 +92,17 @@ export const getters = {
       summary.price = (prices ? prices.reduce((c, n) => c + n) : 0).toFixed(2)
       summary.shipping = shipping.toFixed(2)
       const allWeight = products.map(ele => ele.count * ele.maxWeight).reduce((c, n) => c + n)
-      const outWeight = allWeight - 500
-      if (outWeight > 0) {
-        // 超重: 每加0.5kg，多6美金
-        const count = Math.ceil(outWeight / 500)
-        summary.shipping = (19.99 + count * 6).toFixed(2)
+      if (allWeight === 0) {
+        summary.shipping = 0
       } else {
-        summary.shipping = 19.99
+        const outWeight = allWeight - 500
+        if (outWeight > 0) {
+          // 超重: 每加0.5kg，多6美金
+          const count = Math.ceil(outWeight / 500)
+          summary.shipping = (19.99 + count * 6).toFixed(2)
+        } else {
+          summary.shipping = 19.99
+        }
       }
     }
     return summary
