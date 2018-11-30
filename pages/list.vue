@@ -21,7 +21,6 @@
 
 			<div class="list-nomore-text">
 				<i v-if="isLoading" class="el-icon-loading"></i>
-				<span v-else>no mores～</span>
 			</div>
 		</div>
 	</div>
