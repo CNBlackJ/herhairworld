@@ -9,7 +9,8 @@
 			<div
 				v-else
 				v-for="cart in carts"
-				:key="cart._id"
+				:key="cart.productId"
+				v-on:click="$router.push({ path: `/details?productId=${cart.productId}` })"
 				class="cart-card-con">
 				<cartCard
 					:cartProd="cart">

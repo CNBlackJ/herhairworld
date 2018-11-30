@@ -78,7 +78,7 @@ export const actions = {
     const localFavs = LS.getVal('favorites')
     commit('SET_LOCAL_FAV_LIST', localFavs ? JSON.parse(localFavs) : [])
   },
-  async setCheckedProducts ({ state, commit, dispatch }, productId) {
+  setCheckedProducts ({ state, commit, dispatch }, productId) {
     const checkedProducts = [...state.checkedProducts]
     if (_.find(checkedProducts, ele => ele === productId)) {
       _.remove(checkedProducts, ele => ele === productId)
@@ -98,5 +98,13 @@ export const actions = {
   async setPriceList ({ state, commit }) {
     const { rows } = await price.list({})
     commit('SET_PRICE_LIST', rows)
+  }
+}
+
+export const getters = {
+  subtotalOnCart (state) {
+    const { localCartList } = state
+    const prices = localCartList.map(ele => ele.count * ele.price)
+    return (prices.length ? prices.reduce((c, n) => c + n) : 0).toFixed(2)
   }
 }

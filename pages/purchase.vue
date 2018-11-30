@@ -131,7 +131,8 @@
 				checkedProducts: state => state.cart.checkedProducts,
 				buyNowProduct: state => state.details.buyNowProduct,
 				products: state => state.purchase.products,
-				paypalConfig: state => state.purchase.paypalConfig
+				paypalConfig: state => state.purchase.paypalConfig,
+				carts: state => state.cart.carts,
 			}),
 			...mapGetters({
 				items: 'purchase/items',

@@ -89,7 +89,7 @@ export const getters = {
       const counts = products.map(ele => ele.count)
       const prices = products.map(ele => ele.count * ele.price)
       summary.total = counts ? counts.reduce((c, n) => c + n) : 0
-      summary.price = (prices ? prices.reduce((c, n) => c + n) : 0).toFixed(2)
+      summary.price = (prices.length ? prices.reduce((c, n) => c + n) : 0).toFixed(2)
       summary.shipping = shipping.toFixed(2)
       const allWeight = products.map(ele => ele.count * ele.maxWeight).reduce((c, n) => c + n)
       if (allWeight === 0) {

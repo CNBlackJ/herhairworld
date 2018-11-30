@@ -87,9 +87,6 @@
 					const cartInfo = { productId }
 					await cart.updateByProdId({ cart: cartInfo })
 				}
-			},
-			checkCartProd (productId) {
-				this.$store.dispatch('cart/setCheckedProducts', productId)
 			}
     }
 	}	

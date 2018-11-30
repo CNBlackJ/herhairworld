@@ -16,7 +16,7 @@
 						$ {{price}}
 					</div>
 					<div class="prod-fav-cart">
-						<div>
+						<!-- <div>
 							<img
 								@click="addToFav(product._id)"
 								class="prod-fav-icon"
@@ -27,24 +27,16 @@
 								@click="addToCart(product._id)"
 								class="prod-fav-icon"
 								:src="cartImg">
+						</div> -->
+						<div class="card-inquiry-btn">
+							<span>Inquiry</span>
 						</div>
 					</div>
 				</div>
 			</div>
 		</el-card>
 
-		<el-dialog
-			:visible.sync="dialogVisible"
-			title="TIPS"
-			width="80%">
-			<div>
-				Are you sure to delete it?
-			</div>
-			<span slot="footer">
-				<el-button @click="dialogVisible = false">No</el-button>
-				<el-button class="confirm-btn" @click="dialogVisible = false">Yes</el-button>
-			</span>
-		</el-dialog>
+		<addedDialog v-if="dialogVisible"></addedDialog>
 	</div>
 </template>
 
@@ -56,10 +48,15 @@
 	import cart from '@/apis/cart'
 	import LS from '@/apis/localStorage'
 
+	import addedDialog from '@/components/addedDialog'
+
 	export default {
 		props: [
 			'product'
 		],
+		components: {
+			addedDialog
+		},
 		computed: {
 			...mapGetters(['isAuthenticated']),
 			...mapState({
@@ -116,7 +113,7 @@
 					this.$store.dispatch('cart/setLocalCartList')
 					this.getCartFavImg()
 				}
-				// this.dialogVisible = true
+				this.dialogVisible = !this.dialogVisible
 			},
 			addToFav (productId) {
 				if (this.isAuthenticated) {
@@ -179,4 +176,14 @@
 		padding: 0 3px;
 	}
 
+	.card-inquiry-btn {
+		background-color: #dd127b;
+		color: white;
+		border-radius: 5px;
+		padding: 4px 10px;
+	}
+
+	.card-inquiry-btn span {
+		
+	}
 </style>
