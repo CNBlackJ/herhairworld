@@ -116,6 +116,7 @@
 				</div>
 			</div>
 		</div>
+		<addedDialog v-if="dialogVisible"></addedDialog>
 	</div>
 </template>
 
@@ -127,8 +128,13 @@
 	import order from '@/apis/order'
 	import priceApi from '@/apis'
 
+	import addedDialog from '@/components/addedDialog'
+
 	export default {
 		layout: 'mainWithoutFooter',
+		components: {
+			addedDialog
+		},
 		computed: {
 			...mapGetters(['isAuthenticated']),
 			...mapState({
@@ -143,6 +149,7 @@
 		},
 		data () {
 			return {
+				dialogVisible: false,
 				addToCartTip: 'It`s in cart',
 				price: '',
 				cartImg: '',
@@ -244,6 +251,7 @@
 						this.getCartFavImg()
 						this.$store.dispatch('cart/setCarts')
 						this.isExistCart = true
+						this.dialogVisible = !this.dialogVisible
 					}
 				}
 			},
