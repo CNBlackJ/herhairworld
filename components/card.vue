@@ -28,7 +28,9 @@
 								class="prod-fav-icon"
 								:src="cartImg">
 						</div> -->
-						<div class="card-inquiry-btn">
+						<div
+							class="card-inquiry-btn"
+							v-on:click="getInquiry(product.name)">
 							<span>Inquiry</span>
 						</div>
 					</div>
@@ -123,7 +125,16 @@
 					this.$store.dispatch('cart/setLocalFavList')
 					this.getCartFavImg()
 				}
-			}
+			},
+			getInquiry (title) {
+        const sendPage = {
+					name: this.$route.name,
+					path: this.$route.fullPath,
+					additional: title
+				}
+        this.$store.commit('inquiry/SET_SEND_PAGE', sendPage)
+        this.$router.push({ path: '/inquiry' })
+      }
 		}
 	}
 </script>
