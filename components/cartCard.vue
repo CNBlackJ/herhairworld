@@ -7,13 +7,17 @@
 				</div>
 			</el-col>
 			<el-col :xs="6">
-				<div class="cart-card-img-con">
+				<div
+					v-on:click="$router.push({ path: `/details?productId=${cartProd.productId}` })"
+					class="cart-card-img-con">
 					<img class="cart-card-img" :src="product.mainImg">
 				</div>
 			</el-col>
 			<el-col :xs="16" style="padding-left: 10px;">
 				<div class="cc-rigth">
-					<div class="cc-name">
+					<div
+						v-on:click="$router.push({ path: `/details?productId=${cartProd.productId}` })"
+						class="cc-name">
 						{{product.name}}
 					</div>
 					<div class="cc-detail">
@@ -36,7 +40,7 @@
 						<div>
 							<i
 								class="el-icon-close"
-								@click="dialogVisible = true"></i>
+								@click="selectedToDel(cartProd.productId)"></i>
 						</div>
 					</div>
 				</div>
@@ -51,7 +55,7 @@
 			</div>
 			<span slot="footer">
 				<el-button @click="dialogVisible = false">No</el-button>
-				<el-button class="confirm-btn" @click="removeFromCart(cartProd.productId)">Yes</el-button>
+				<el-button class="confirm-btn" @click="removeFromCart">Yes</el-button>
 			</span>
 		</el-dialog>
 	</div>
@@ -80,6 +84,7 @@
 				isChecked: false,
 				price: 0,
 				count: 1,
+				selectedToDelProductId: '',
 				product: {
 					mainImg: ''
 				},
@@ -114,7 +119,12 @@
 				this.$store.dispatch('cart/setCarts')
 				this.$store.dispatch('cart/setSubtotal')
 			},
-			async removeFromCart (productId) {
+			async selectedToDel (productId) {
+				this.selectedToDelProductId = productId
+				this.dialogVisible = true
+			},
+			async removeFromCart () {
+				const productId = this.selectedToDelProductId
 				if (this.isAuthenticated) {
 					await cart.deleteByProdId(productId)
 				} else {

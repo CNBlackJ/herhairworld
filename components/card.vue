@@ -179,11 +179,7 @@
 	.card-inquiry-btn {
 		background-color: #dd127b;
 		color: white;
-		border-radius: 5px;
+		border-radius: 3px;
 		padding: 4px 10px;
-	}
-
-	.card-inquiry-btn span {
-		
 	}
 </style>
