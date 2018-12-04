@@ -1,6 +1,6 @@
 <template>
 	<div class="list-container">
-		<types v-if="activeType" v-on:fetchList="fetchList" :activeType="activeType"></types>
+		<types v-if="activeType > -1" v-on:fetchList="fetchList" :activeType="activeType"></types>
 		<div class="prod-cards">
 			<el-row>
 				<el-col
@@ -65,7 +65,7 @@
 				busy: false,
 				isLoading: false,
 				productList: [],
-				activeType: 0
+				activeType: -1
 			}
 		},
 		methods: {

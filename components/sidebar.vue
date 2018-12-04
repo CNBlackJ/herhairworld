@@ -45,10 +45,9 @@
 				this.closeSidebar()
 			},
 			async goList (category) {
-				const activateCat = category.name === 'All' ? '' : category._id
-				this.$store.commit('home/SET_ACTIVATE_CAT', activateCat)
+				this.$store.commit('home/SET_ACTIVATE_CAT', category._id)
 				await this.$store.dispatch('list/setProductList', { limit: 10 })
-				this.$router.push({ path: `/list?categoryId=${activateCat}&category=${category.name.toLowerCase().split(' ').join('-')}` })
+				this.$router.push({ path: `/list?categoryId=${category._id}&category=${category.name.toLowerCase().split(' ').join('-')}` })
 			}
 		}
 	}
