@@ -54,9 +54,7 @@
 				const featuredCategory = this.featuredCategories.find(ele => ele.index == index)
 				const currentId = featuredCategory.url
 				const category = this.categories.find(category => String(category._id) === String(currentId))
-				const activateCat = category.name === 'All' ? '' : category._id
-				this.$store.commit('home/SET_ACTIVATE_CAT', category._id)
-				this.$router.push({ path: `/list?categoryId=${activateCat}&category=${category.name.toLowerCase().split(' ').join('-')}` })
+				this.$router.push({ path: `/list?categoryId=${currentId}&category=${category.name.toLowerCase().split(' ').join('-')}` })
 			}
 		}
 	}
