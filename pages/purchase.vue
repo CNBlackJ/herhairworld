@@ -87,7 +87,8 @@
 					v-on:payment-cancelled="cancelPayment"
 					:client="paypalConfig"
 					:items="items"
-					:invoice-number="String(Date.now())">
+					:invoice-number="String(Date.now())"
+					:button-style="paypal_button_style">
 				</paypal-checkout>
 			</no-ssr>
 		</div>
@@ -123,7 +124,12 @@
 				couponCode: '',
 				isCheckedCode: false,
 				isDisable: false,
-				showErrMsg: false
+				showErrMsg: false,
+				paypal_button_style: {
+					label: 'pay',
+					size: 'medium',
+					shape: 'pill'
+				},
 			}
 		},
 		computed: {
