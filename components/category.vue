@@ -5,12 +5,12 @@
 				<el-row>
 					<el-col :span="12">
 						<div class="img-con" @click="goList(0)">
-							<img :src="categories[0] ? categories[0].img : ''" class="category-image">
+							<img :src="featuredCategories[0] ? featuredCategories[0].img : ''" class="category-image">
 						</div>
 					</el-col>
 					<el-col :span="12">
 						<div class="img-con" @click="goList(1)">
-							<img :src="categories[1] ? categories[1].img : ''" class="category-image">
+							<img :src="featuredCategories[1] ? featuredCategories[1].img : ''" class="category-image">
 						</div>
 					</el-col>
 				</el-row>
@@ -19,18 +19,18 @@
 				<el-row>
 					<el-col :span="24">
 						<div class="img-con" @click="goList(2)">
-							<img :src="categories[2] ? categories[2].img : ''" class="category-image">
+							<img :src="featuredCategories[2] ? featuredCategories[2].img : ''" class="category-image">
 						</div>
 					</el-col>
 
 					<el-col :span="12">
 						<div class="img-con img-small" @click="goList(3)">
-							<img :src="categories[3] ? categories[3].img : ''" class="category-image">
+							<img :src="featuredCategories[3] ? featuredCategories[3].img : ''" class="category-image">
 						</div>
 					</el-col>
 					<el-col :span="12">
 						<div class="img-con img-small" @click="goList(4)">
-							<img :src="categories[4] ? categories[4].img : ''" class="category-image">
+							<img :src="featuredCategories[4] ? featuredCategories[4].img : ''" class="category-image">
 						</div>
 					</el-col>
 				</el-row>
@@ -45,14 +45,18 @@
 	export default {
 		computed: {
 			...mapState({
-				categories: state => state.home.pageConfig.index.categories
+				featuredCategories: state => state.home.pageConfig.index.categories,
+				categories: state => state.home.categories
 			})
 		},
 		methods: {
 			goList (index) {
-				const category = this.categories.find(ele => ele.index == index)
-				this.$store.commit('home/SET_ACTIVATE_CAT', category.url)
-				this.$router.push({ path: '/list' })
+				const featuredCategory = this.featuredCategories.find(ele => ele.index == index)
+				const currentId = featuredCategory.url
+				const category = this.categories.find(category => String(category._id) === String(currentId))
+				const activateCat = category.name === 'All' ? '' : category._id
+				this.$store.commit('home/SET_ACTIVATE_CAT', category._id)
+				this.$router.push({ path: `/list?categoryId=${activateCat}&category=${category.name.toLowerCase().split(' ').join('-')}` })
 			}
 		}
 	}

@@ -52,7 +52,11 @@
 			})
 		},
 		async created () {
+			this.$store.commit('list/SET_CURRENT_PAGE', 1)
+			this.$store.commit('list/SET_PRODUCT_LIST', [])
 			this.isLoading = true
+			const { categoryId } = this.$route.query
+			this.$store.commit('home/SET_ACTIVATE_CAT', categoryId)
 			await this.$store.dispatch('list/setProductList', { limit: 10 })
 			this.$store.dispatch('cart/setLocalFavList')
 			this.isLoading = false
@@ -68,7 +72,6 @@
 			async loadMore () {
 				let currentPage = this.currentPage
 				const pageSize = this.pageSize
-				console.log(this.maxPage, currentPage)
 				if (this.maxPage > currentPage) {
 					this.isLoading = true
 					this.busy = true

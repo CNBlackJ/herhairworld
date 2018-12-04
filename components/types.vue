@@ -2,7 +2,7 @@
 	<div class="type-bar">
 		<no-ssr>
 			<ly-tab
-				v-model="activateCatId"
+				v-model="active"
 				v-on:change="choice"
 				:items="categories"
 				:options="options">
@@ -32,15 +32,21 @@
 					activeColor: '#dd127b',
 					labelKey: 'name'
 				},
+				active: 0
 			}
+		},
+		created () {
+			const { categoryId } = this.$route.query
+			this.$store.commit('home/SET_ACTIVATE_CAT', categoryId)
+			this.active = this.activateCatId
 		},
     methods: {
       async choice (category) {
-				const { _id, name} = category
-				this.$store.commit('home/SET_ACTIVATE_CAT', name.toLowerCase() !== 'all' ? _id : '')
-				this.$store.commit('list/SET_CURRENT_PAGE', 1)
-				this.$store.commit('list/SET_PRODUCT_LIST', [])
-				await this.$store.dispatch('list/setProductList', { limit: 10, categoryId: _id })
+				const { _id, name } = category
+				const { categoryId } = this.$route.query
+				this.$store.commit('home/SET_ACTIVATE_CAT', _id)
+				await this.$store.dispatch('list/setProductList', { limit: 10 })
+				this.$router.push({ path: `/list?categoryId=${_id}&category=${name.toLowerCase().split(' ').join('-')}` })
 			}
 		}
 	}

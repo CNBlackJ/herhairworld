@@ -18,7 +18,7 @@
 					class="sidebar-menu"
 					@click="closeSidebar">
 					<div
-						@click="goList( category.name === 'All' ? '' : category._id)">
+						@click="goList(category)">
 						{{ category.name }}
 					</div>
 				</div>
@@ -44,10 +44,11 @@
 				this.$router.push({ path:'/' })
 				this.closeSidebar()
 			},
-			async goList (activateCat) {
+			async goList (category) {
+				const activateCat = category.name === 'All' ? '' : category._id
 				this.$store.commit('home/SET_ACTIVATE_CAT', activateCat)
 				await this.$store.dispatch('list/setProductList', { limit: 10 })
-				this.$router.push({ path: '/list' })
+				this.$router.push({ path: `/list?categoryId=${activateCat}&category=${category.name.toLowerCase().split(' ').join('-')}` })
 			}
 		}
 	}
