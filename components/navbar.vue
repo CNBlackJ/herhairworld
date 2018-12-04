@@ -100,6 +100,7 @@
 
 	.navbar-logo {
 		width: 100%;
+		text-align: center;
 	}
 
 	.img-logo {
