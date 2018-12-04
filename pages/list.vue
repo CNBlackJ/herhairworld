@@ -1,6 +1,6 @@
 <template>
 	<div class="list-container">
-		<types></types>
+		<types v-if="activeType" v-on:fetchList="fetchList" :activeType="activeType"></types>
 		<div class="prod-cards">
 			<el-row>
 				<el-col
@@ -41,34 +41,41 @@
 		},
 		computed: {
 			...mapState({
-				productList: state => state.list.productList,
 				count: state => state.list.count,
 				pageSize: state => state.list.pageSize,
 				currentPage: state => state.list.currentPage,
-				activateCat: state => state.home.activateCat
+				activateCat: state => state.home.activateCat,
+				listData: state => state.list.data,
+				listList: state => state.list.list,
+				categories: state => state.home.categories
 			}),
 			...mapGetters({
-				maxPage: 'list/maxPage'
+				maxPage: 'list/maxPage',
+				allCategoryId: 'home/allCategoryId'
 			})
 		},
 		async created () {
-			this.$store.commit('list/SET_CURRENT_PAGE', 1)
-			this.$store.commit('list/SET_PRODUCT_LIST', [])
-			this.isLoading = true
-			const { categoryId } = this.$route.query
-			this.$store.commit('home/SET_ACTIVATE_CAT', categoryId)
-			await this.$store.dispatch('list/setProductList', { limit: 10 })
-			this.$store.dispatch('cart/setLocalFavList')
-			this.isLoading = false
+			await this.$store.dispatch('home/setCategories')
+			const _id = this.$route.query.categoryId
+			this.activeType = this.categories.findIndex(ele => String(ele._id) === String(_id))
+			await this.fetchList({ _id })
 		},
 		data () {
 			return {
-				data: [],
 				busy: false,
-				isLoading: false
+				isLoading: false,
+				productList: [],
+				activeType: 0
 			}
 		},
 		methods: {
+			async fetchList ({ _id }) {
+				this.isLoading = true
+				await this.$store.dispatch('list/setData')
+				this.productList = _id === this.allCategoryId ? this.listList :
+					this.listList.filter(item => String(item.category._id) === String(_id))
+				this.isLoading = false
+			},
 			async loadMore () {
 				let currentPage = this.currentPage
 				const pageSize = this.pageSize

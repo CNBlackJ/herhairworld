@@ -2,7 +2,7 @@
 	<div class="type-bar">
 		<no-ssr>
 			<ly-tab
-				v-model="active"
+				:value="activeType"
 				v-on:change="choice"
 				:items="categories"
 				:options="options">
@@ -17,10 +17,10 @@
 	import category from '@/apis/category'
 
 	export default {
+		props: [
+			'activeType'
+		],
 		computed: {
-			...mapGetters({
-        activateCatId: 'home/activateCatId'
-			}),
 			...mapState({
 				categories: state => state.home.categories,
 				activateCat: state => state.home.activateCat
@@ -31,22 +31,15 @@
 				options: {
 					activeColor: '#dd127b',
 					labelKey: 'name'
-				},
-				active: 0
+				}
 			}
-		},
-		created () {
-			const { categoryId } = this.$route.query
-			this.$store.commit('home/SET_ACTIVATE_CAT', categoryId)
-			this.active = this.activateCatId
 		},
     methods: {
       async choice (category) {
 				const { _id, name } = category
 				const { categoryId } = this.$route.query
-				this.$store.commit('home/SET_ACTIVATE_CAT', _id)
-				await this.$store.dispatch('list/setProductList', { limit: 10 })
 				this.$router.push({ path: `/list?categoryId=${_id}&category=${name.toLowerCase().split(' ').join('-')}` })
+				this.$emit('fetchList', category)
 			}
 		}
 	}

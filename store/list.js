@@ -6,7 +6,9 @@ export const state = () => ({
   productList: null,
   count: 0,
   pageSize: 10,
-  currentPage: 1
+  currentPage: 1,
+  data: {},
+  list: []
 })
 
 export const mutations = {
@@ -18,10 +20,27 @@ export const mutations = {
   },
   SET_CURRENT_PAGE (state, currentPage) {
     state.currentPage = currentPage
+  },
+  SET_DATA (state, data) {
+    state.data = data
+  },
+  SET_LIST (state, list) {
+    state.list = list
   }
 }
 
 export const actions = {
+  async setData ({ commit }) {
+    const { rows } = await product.list({limit: 1000})
+    commit('SET_LIST', rows)
+    commit('SET_DATA', rows.reduce(
+      (total, item) => ({
+        ...total,
+        [item._id]: item
+      }),
+      {}
+    ))
+  },
   async setProductList ({ state, commit, rootState }, { limit = 10, skip = 0 }) {
     const categoryId = rootState.home.activateCat
     const condition = { categoryId, limit, skip }

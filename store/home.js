@@ -72,5 +72,9 @@ export const getters = {
   },
   isShowCategories (state) {
     return state.categories.filter(ele => ele.isShow)
+  },
+  allCategoryId (state) {
+    const category = state.categories.find(ele => ele.name.toLowerCase() === 'all')
+    return category ? String(category._id) : ''
   }
 }
