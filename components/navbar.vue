@@ -104,7 +104,6 @@
 	}
 
 	.img-logo {
-		width: 102px;
 		height: 44px;
 	}
 
