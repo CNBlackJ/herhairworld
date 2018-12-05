@@ -78,7 +78,7 @@
 							type="textarea"
 							:rows="4"
 							v-model="inquiryInfo.comment"
-							placeholder="Enter anything you would like to know here,such as  the product">
+							placeholder="Enter anything you would like to know here,such as the product,prices and etc.">
 						</el-input>
 					</el-form-item>
 	

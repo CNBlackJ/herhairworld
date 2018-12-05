@@ -62,8 +62,6 @@
 		},
 		data () {
 			return {
-				cartProdList: [],
-				checkedCount: 0,
 				checkedAll: false
 			}
 		},
