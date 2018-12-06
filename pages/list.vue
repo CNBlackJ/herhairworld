@@ -72,8 +72,8 @@
 			async fetchList ({ _id }) {
 				this.isLoading = true
 				await this.$store.dispatch('list/setData')
-				this.productList = _id === this.allCategoryId ? this.listList :
-					this.listList.filter(item => String(item.category._id) === String(_id))
+				this.productList = _id === this.allCategoryId ? [...this.listList].sort((c, n) => (c.index > n.index ? 1 : -1)) :
+				[...this.listList].filter(item => String(item.category._id) === String(_id)).sort((c, n) => (c.index > n.index ? 1 : -1))
 				this.isLoading = false
 			},
 			async loadMore () {
