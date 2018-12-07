@@ -22,6 +22,14 @@
 						{{ category.name }}
 					</div>
 				</div>
+				<div
+					v-for="item in customerLink"
+					:key="item.id"
+					@click="closeSidebar">
+					<div>
+						{{ item.name }}
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="fe-sidebar-right" @click="closeSidebar"></div>
@@ -36,6 +44,14 @@
 		computed: mapState({
 			categories: state => state.home.categories
 		}),
+		data () {
+			return {
+				customerLink: [
+					{ id: 1, name: 'About us', link: '' },
+					{ id: 2, name: 'Contact us', link: '' }
+				]
+			}
+		},
 		methods: {
 			closeSidebar () {
 				this.$emit('closeSidebar')
