@@ -116,6 +116,8 @@
 				</div>
 			</div>
 		</div>
+
+		<recommend></recommend>
 		<addedDialog v-if="dialogVisible"></addedDialog>
 	</div>
 </template>
@@ -129,11 +131,13 @@
 	import priceApi from '@/apis'
 
 	import addedDialog from '@/components/addedDialog'
+	import recommend from '@/components/recommend'
 
 	export default {
 		layout: 'mainWithoutFooter',
 		components: {
-			addedDialog
+			addedDialog,
+			recommend
 		},
 		computed: {
 			...mapGetters(['isAuthenticated']),
@@ -281,7 +285,7 @@
 	.detail-container {
 		padding-top: 48px;
 		background-color: #efefef;
-		height: 600px;
+		padding-bottom: 50px;
 	}
 
 	.img {
@@ -289,7 +293,8 @@
 	}
 
 	.detail-conten-con {
-		padding-bottom: 50px;
+		padding-bottom: 10px;
+		border-bottom: 1px dashed #dd127b;
 	}
 
 	.detail-prod-name {

@@ -23,6 +23,7 @@
 					</div>
 				</div>
 				<div
+					class="sidebar-menu"
 					v-for="item in customerLink"
 					:key="item.id"
 					@click="closeSidebar">
@@ -47,8 +48,9 @@
 		data () {
 			return {
 				customerLink: [
-					{ id: 1, name: 'About us', link: '' },
-					{ id: 2, name: 'Contact us', link: '' }
+					{ id: 1, name: 'Wholesale', link: '' },
+					{ id: 2, name: 'About us', link: '' },
+					{ id: 3, name: 'Contact us', link: '' }
 				]
 			}
 		},

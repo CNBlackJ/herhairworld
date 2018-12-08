@@ -36,7 +36,8 @@
 		},
 		methods: {
 			async listProd () {
-				this.recommendProds = await product.recommand(10)
+				const { rows } = await product.list({ limit: 10, sort: 'index' })
+				this.recommendProds = rows
 			}
 		}
 	}

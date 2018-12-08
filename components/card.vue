@@ -81,12 +81,12 @@
 				price: ''
 			}
 		},
-		created () {
+		async created () {
+			await this.formatPrice()
 			this.getCartFavImg()
-			this.formatPrice()
 		},
 		methods: {
-			formatPrice () {
+			async formatPrice () {
 				const allPrice = _.orderBy([...this.product.customizePrice].map(ele => ele.price))
 				const minPrice = allPrice[0] || 0
 				this.price = minPrice.toFixed(2)
@@ -147,7 +147,7 @@
 
   .produc-card-image {
     width: 100%;
-		height: 196px;
+		/* height: 196px; */
     display: block;
   }
 

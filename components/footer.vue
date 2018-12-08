@@ -96,6 +96,7 @@
 
 	.footer-support {
 		padding-top: 3px;
+		margin: 0!important;
 	}
 
 	.infos {
