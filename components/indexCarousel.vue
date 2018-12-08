@@ -24,13 +24,15 @@
 		}),
 		created () {
 			// 监听窗口大小变化
-			window.addEventListener('resize', this.handleResize)
-			this.handleResize()
+			if (!process.server) {
+				window.addEventListener('resize', this.handleResize)
+				this.handleResize()
+			}
 
 			this.$store.dispatch('home/setPageConfig')
 		},
 		destroyed () {
-			window.removeEventListener('resize', this.handleResize)
+			if (!process.server) window.removeEventListener('resize', this.handleResize)
 		},
 		data () {
 			return {
