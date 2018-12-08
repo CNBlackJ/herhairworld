@@ -1,7 +1,7 @@
 <template>
 	<div class="index-carousel">
 		<div class="block">
-			<el-carousel height="170px">
+			<el-carousel :height="carouselHeigth">
 				<el-carousel-item
 					v-for="item in banner"
 					:key="item._id">
@@ -23,12 +23,28 @@
 			banner: state => state.home.pageConfig.index.banner
 		}),
 		created () {
+			// 监听窗口大小变化
+			window.addEventListener('resize', this.handleResize)
+			this.handleResize()
+
 			this.$store.dispatch('home/setPageConfig')
+		},
+		destroyed () {
+			window.removeEventListener('resize', this.handleResize)
+		},
+		data () {
+			return {
+				carouselHeigth: ''
+			}
 		},
 		methods: {
 			redirectTo (path) {
 				this.$router.push({ path })
-			}
+			},
+			handleResize() {
+				const windowWidth = window.innerWidth / 2
+				this.carouselHeigth = `${windowWidth}px`
+			},
 		}
 	}
 </script>
