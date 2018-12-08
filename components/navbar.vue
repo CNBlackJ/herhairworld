@@ -42,7 +42,7 @@
 		},
 		async mounted () {
 			const authToken = getAuthTokenFromLocalStorage()
-			if (!authToken) {
+			if (authToken === 'null' || !authToken) {
 				// 创建一个临时访客用户
 				await this.$store.dispatch('createVisitor')
 				setToken({ token: this.authToken })
