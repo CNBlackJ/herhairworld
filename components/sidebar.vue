@@ -27,7 +27,8 @@
 					v-for="item in customerLink"
 					:key="item.id"
 					@click="closeSidebar">
-					<div>
+					<div
+						@click="$router.push({ path: item.link })">
 						{{ item.name }}
 					</div>
 				</div>
@@ -49,8 +50,8 @@
 			return {
 				customerLink: [
 					{ id: 1, name: 'Wholesale', link: '' },
-					{ id: 2, name: 'About us', link: '' },
-					{ id: 3, name: 'Contact us', link: '' }
+					{ id: 2, name: 'About us', link: '/about#aboutus' },
+					{ id: 3, name: 'Contact us', link: '/about#contact' }
 				]
 			}
 		},

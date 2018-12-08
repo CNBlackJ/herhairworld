@@ -13,7 +13,11 @@
 		</el-row>
 		<div class="footer-center">
 			<el-row class="links">
-				<el-col class="link" :span="12" v-for="link in links" :key="link.id">
+				<el-col
+					class="link"
+					:span="12"
+					v-for="link in links"
+					:key="link.id">
 					{{link.title}}
 				</el-col>
 			</el-row>
@@ -46,12 +50,12 @@
 			return {
 				fixedFooter: false,
 				links: [
-					{ id: 1, title: 'Contact Us', url: '' },
-					{ id: 2, title: 'About Us', url: '' },
-					{ id: 3, title: 'Why Choose Us', url: '' },
+					{ id: 1, title: 'Contact Us', url: '/about#contact' },
+					{ id: 2, title: 'About Us', url: '/about#aboutus' },
+					{ id: 3, title: 'Why Choose Us', url: '/about#chooseus' },
 					{ id: 4, title: 'Return & Exchange', url: '' },
 					{ id: 5, title: 'News', url: '' },
-					{ id: 6, title: 'Home', url: '' }
+					{ id: 6, title: 'Home', url: '/' }
 				]
 			}
 		}
