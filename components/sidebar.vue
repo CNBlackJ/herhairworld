@@ -28,7 +28,7 @@
 					:key="item.id"
 					@click="closeSidebar">
 					<div
-						@click="$router.push({ path: item.link })">
+						@click="goCustomerLink(item)">
 						{{ item.name }}
 					</div>
 				</div>
@@ -49,7 +49,7 @@
 		data () {
 			return {
 				customerLink: [
-					{ id: 1, name: 'Wholesale', link: '' },
+					{ id: 1, name: 'Wholesale', link: '/inquiry' },
 					{ id: 2, name: 'About us', link: '/about#aboutus' },
 					{ id: 3, name: 'Contact us', link: '/about#contact' }
 				]
@@ -62,6 +62,18 @@
 			goIndex () {
 				this.$router.push({ path:'/' })
 				this.closeSidebar()
+			},
+			goCustomerLink ({ link }) {
+				this.$router.push({ path: link })
+				const eleId = link.split('#')[1]
+				if (this.$route.path === '/about' && eleId) {
+					const selector = `#${eleId}`
+					const options = {
+						easing: 'ease-in-out',
+						offset: -72
+					}
+					this.$scrollTo(selector, 1000, options)
+				}
 			},
 			async goList (category) {
 				this.$store.commit('home/SET_ACTIVATE_CAT', category._id)

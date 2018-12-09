@@ -64,6 +64,15 @@
 		methods: {
 			goPage ({ url }) {
 				this.$router.push({ path: url })
+				const eleId = url.split('#')[1]
+				if (this.$route.path === '/about' && eleId) {
+					const selector = `#${eleId}`
+					const options = {
+						easing: 'ease-in-out',
+						offset: -72
+					}
+					this.$scrollTo(selector, 1000, options)
+				}
 			}
 		}
 	}

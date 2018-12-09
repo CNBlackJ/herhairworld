@@ -80,8 +80,6 @@
 		},
 		methods: {
 			goAnchor (selector) {
-				// const anchor = this.$el.querySelector(selector)
-				// document.documentElement.scrollTop = anchor.offsetTop - 50
 				const options = {
 					easing: 'ease-in-out',
 					offset: -50
