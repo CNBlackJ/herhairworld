@@ -18,7 +18,9 @@
 					:span="12"
 					v-for="link in links"
 					:key="link.id">
-					{{link.title}}
+					<span @click="goPage(link)">
+						{{link.title}}
+					</span>
 				</el-col>
 			</el-row>
 		</div>
@@ -57,6 +59,11 @@
 					{ id: 5, title: 'News', url: '' },
 					{ id: 6, title: 'Home', url: '/' }
 				]
+			}
+		},
+		methods: {
+			goPage ({ url }) {
+				this.$router.push({ path: url })
 			}
 		}
 	}

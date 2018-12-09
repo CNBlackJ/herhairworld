@@ -74,6 +74,15 @@
 			whyChooseUs,
 			social,
 			inquiryForm
+		},
+		mounted () {
+			this.goAnchor(this.$route.hash)
+		},
+		methods: {
+			goAnchor (selector) {
+				const anchor = this.$el.querySelector(selector)
+				document.documentElement.scrollTop = anchor.offsetTop - 50
+			}
 		}
 	}
 </script>
