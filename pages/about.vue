@@ -39,23 +39,19 @@
 		<section id="aboutus">
 			<div class="section-head">ABOUT US</div>
 			<el-row>
-				<el-col :span="11"><hr></el-col>
-				<el-col class="section-icon" :span="2">
-					<i class="el-icon-caret-bottom"></i>
-				</el-col>
-				<el-col :span="11"><hr></el-col>
+				<img class="section-angle" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/about_angle.jpeg" alt="">
 			</el-row>
-			<p class="aboutus-content">Not checking certificates means that you cannot be certain of the identity of the other party and so might be subject to a spoofed host. Even if you do not check certificates, however, you still get encrypted communication that cannot be (easily) spied on. So adding this line does not "remove the security" of SSL nor, as another commenter said "disable[] the entire benefit of SSL".</p>
+			<p class="aboutus-content"><b>HerHairWorld Co.,LTD</b> the reliable and professional hair factory located
+				in China. Now China is the biggest country export the human hair to 
+				USA and other coutries. You can enjoy the high quality human hair with
+				factory directly prices. We insist on the spirit of the honest,creation and 
+				development and the principle of <span style="color:#dd127b">"Your Business is Our Business"</span>.</p>
 			<img class="aboutus-img" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/aboutus.jpg" alt="">
 		</section>
 		<section id="chooseus">
 			<div class="section-head">WHY CHOOSE US</div>
 			<el-row type="flex" justify="cenetr" align="middle">
-				<el-col :span="11"><hr></el-col>
-				<el-col class="section-icon" :span="2">
-					<i class="el-icon-caret-bottom"></i>
-				</el-col>
-				<el-col :span="11"><hr></el-col>
+				<img class="section-angle" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/about_angle.jpeg" alt="">
 			</el-row>
 			<whyChooseUs></whyChooseUs>
 			<social></social>
@@ -155,10 +151,9 @@
 		text-align: center;
 	}
 
-	.section-icon {
-		text-align: center;
-		font-size: 30px;
-		margin-top: -8px;
+	.section-angle {
+		width: auto;
+		max-width: 100%;
 	}
 
 	.aboutus-content {

@@ -52,6 +52,16 @@ After open browser, choose mobile view, or change host to your local host at `./
 
 ## Change Logs
 
+- 11.15
+  - 记录用户询盘ip等信息
+
+- 11.14
+  - 添加404页面
+
+- 11.13
+  - 添加paypal支付token可后台配置
+  - 更新产品列表api
+
 - 11.12
   - 添加loadMore到产品列表
   - 添加README.md
