@@ -53,10 +53,10 @@
 				fixedFooter: false,
 				links: [
 					{ id: 1, title: 'Contact Us', url: '/wholesale#contact' },
-					{ id: 2, title: 'About Us', url: '/wholesale#aboutus' },
+					{ id: 2, title: 'About Us', url: '/about' },
 					{ id: 3, title: 'Why Choose Us', url: '/wholesale#chooseus' },
 					{ id: 4, title: 'Return & Exchange', url: '' },
-					{ id: 5, title: 'Wholesale', url: '/wholesale' },
+					{ id: 5, title: 'Wholesale', url: '/inquiry' },
 					{ id: 6, title: 'Home', url: '/' }
 				]
 			}

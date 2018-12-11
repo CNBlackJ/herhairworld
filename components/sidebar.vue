@@ -50,7 +50,7 @@
 			return {
 				customerLink: [
 					{ id: 1, name: 'Wholesale', link: '/inquiry' },
-					{ id: 2, name: 'About us', link: '/wholesale#aboutus' },
+					{ id: 2, name: 'About us', link: '/about' },
 					{ id: 3, name: 'Contact us', link: '/wholesale#contact' }
 				]
 			}
