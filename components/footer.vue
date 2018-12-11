@@ -52,11 +52,11 @@
 			return {
 				fixedFooter: false,
 				links: [
-					{ id: 1, title: 'Contact Us', url: '/about#contact' },
-					{ id: 2, title: 'About Us', url: '/about#aboutus' },
-					{ id: 3, title: 'Why Choose Us', url: '/about#chooseus' },
+					{ id: 1, title: 'Contact Us', url: '/wholesale#contact' },
+					{ id: 2, title: 'About Us', url: '/wholesale#aboutus' },
+					{ id: 3, title: 'Why Choose Us', url: '/wholesale#chooseus' },
 					{ id: 4, title: 'Return & Exchange', url: '' },
-					{ id: 5, title: 'Wholesale', url: '/about' },
+					{ id: 5, title: 'Wholesale', url: '/wholesale' },
 					{ id: 6, title: 'Home', url: '/' }
 				]
 			}
@@ -65,7 +65,7 @@
 			goPage ({ url }) {
 				this.$router.push({ path: url })
 				const eleId = url.split('#')[1]
-				if (this.$route.path === '/about' && eleId) {
+				if (this.$route.path === '/wholesale' && eleId) {
 					const selector = `#${eleId}`
 					const options = {
 						easing: 'ease-in-out',

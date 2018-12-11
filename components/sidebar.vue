@@ -50,8 +50,8 @@
 			return {
 				customerLink: [
 					{ id: 1, name: 'Wholesale', link: '/inquiry' },
-					{ id: 2, name: 'About us', link: '/about#aboutus' },
-					{ id: 3, name: 'Contact us', link: '/about#contact' }
+					{ id: 2, name: 'About us', link: '/wholesale#aboutus' },
+					{ id: 3, name: 'Contact us', link: '/wholesale#contact' }
 				]
 			}
 		},
@@ -66,7 +66,7 @@
 			goCustomerLink ({ link }) {
 				this.$router.push({ path: link })
 				const eleId = link.split('#')[1]
-				if (this.$route.path === '/about' && eleId) {
+				if (this.$route.path === '/wholesale' && eleId) {
 					const selector = `#${eleId}`
 					const options = {
 						easing: 'ease-in-out',
