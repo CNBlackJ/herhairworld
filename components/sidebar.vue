@@ -28,6 +28,7 @@
 					:key="item.id"
 					@click="closeSidebar">
 					<div
+						:style="item.style"
 						@click="goCustomerLink(item)">
 						{{ item.name }}
 					</div>
@@ -49,9 +50,9 @@
 		data () {
 			return {
 				customerLink: [
-					{ id: 1, name: 'Wholesale', link: '/inquiry' },
-					{ id: 2, name: 'About us', link: '/about' },
-					{ id: 3, name: 'Contact us', link: '/wholesale#contact' }
+					{ id: 1, name: 'Wholesale', link: '/inquiry', style: 'color: #dd127b' },
+					{ id: 2, name: 'About us', link: '/about', style: '' },
+					{ id: 3, name: 'Contact us', link: '/wholesale#contact', style: '' }
 				]
 			}
 		},
