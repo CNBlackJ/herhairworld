@@ -35,8 +35,9 @@ export const actions = {
     commit('SET_AUTH_TOKEN', userInfo.authToken)
     commit('SET_USER', userInfo)
   },
-  async setFeaturedProducts ({ state, commit }) {
-    const { rows } = await product.list({ limit: 4 })
+  async setFeaturedProducts ({ rootState, state, commit }) {
+    const productIds = rootState.home.pageConfig.faeturedProducts
+    const rows = await product.getByIds({ productIds })
     commit('SET_FEATURED_PRODUCTS', rows)
   }
 }

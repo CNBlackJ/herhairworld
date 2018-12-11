@@ -136,9 +136,9 @@
         ]
       }
     },
-		created () {
-      this.$store.dispatch('home/setPageConfig')
-      this.$store.dispatch('setFeaturedProducts')
+		async created () {
+      await this.$store.dispatch('home/setPageConfig')
+      await this.$store.dispatch('setFeaturedProducts')
 		},
     methods: {
       getInquiry (title) {
