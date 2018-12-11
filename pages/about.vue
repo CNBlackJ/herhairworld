@@ -8,7 +8,7 @@
 			We insist on the spirit of the honest,creation and development and the principle of 
 			<span style="color: #dd127b">"Your Business is Our Business"</span>.
 		</p>
-		<img class="about-img" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/aboutus.jpg" alt="">
+		<img class="about-img" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/about_herhairworld.jpg" alt="">
 
 		<div class="about-head">OUR FACTORY</div>
 		<p class="about-content">
@@ -16,7 +16,7 @@
 			our factory specializesin all kinds of human hair. We own a set of sophisticated 
 			and mature production line and professional technicians.
 		</p>
-		<img class="about-img" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/aboutus.jpg" alt="">
+		<img class="about-img" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/our_factory.jpg" alt="">
 
 		<inquiryForm></inquiryForm>
 	</div>
@@ -45,6 +45,7 @@
 
 	.about-content {
 		font-size: 14px;
+		padding-bottom: 10px;
 	}
 
 	.about-img {
