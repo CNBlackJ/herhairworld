@@ -39,7 +39,7 @@
 		<section id="aboutus">
 			<div class="section-head">ABOUT US</div>
 			<el-row>
-				<img class="section-angle" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/about_angle.jpeg" alt="">
+				<img class="section-angle" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/about_angle.jpg" alt="">
 			</el-row>
 			<p class="aboutus-content"><b>HerHairWorld Co.,LTD</b> the reliable and professional hair factory located
 				in China. Now China is the biggest country export the human hair to 
@@ -51,7 +51,7 @@
 		<section id="chooseus">
 			<div class="section-head">WHY CHOOSE US</div>
 			<el-row type="flex" justify="cenetr" align="middle">
-				<img class="section-angle" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/about_angle.jpeg" alt="">
+				<img class="section-angle" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/about_angle.jpg" alt="">
 			</el-row>
 			<whyChooseUs></whyChooseUs>
 			<social></social>
