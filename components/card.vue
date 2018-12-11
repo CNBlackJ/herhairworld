@@ -13,7 +13,7 @@
 				</span>
 				<div class="prod-bottom">
 					<div class="price">
-						$ {{price}}
+						$ {{product.price}}
 					</div>
 					<div class="prod-fav-cart">
 						<!-- <div>

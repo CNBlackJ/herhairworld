@@ -56,7 +56,7 @@
 					{ id: 2, title: 'About Us', url: '/about#aboutus' },
 					{ id: 3, title: 'Why Choose Us', url: '/about#chooseus' },
 					{ id: 4, title: 'Return & Exchange', url: '' },
-					{ id: 5, title: 'News', url: '' },
+					{ id: 5, title: 'Wholesale', url: '/about' },
 					{ id: 6, title: 'Home', url: '/' }
 				]
 			}
