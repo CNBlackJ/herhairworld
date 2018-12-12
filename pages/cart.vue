@@ -3,13 +3,13 @@
 		<div class="cart-container">
 			<div
 				class="cart-empty"
-				v-if="carts.length <= 0">
+				v-if="cartList.length <= 0">
 				It`s empty on your cart~
 			</div>
 			<div
 				v-else
-				v-for="cart in carts"
-				:key="cart.productId"
+				v-for="(cart, index) in cartList"
+				:key="index"
 				class="cart-card-con">
 				<cartCard
 					:cartProd="cart">
@@ -54,7 +54,7 @@
 			...mapGetters(['isAuthenticated']),
 			...mapState({
 				isCheckedAll: state => state.cart.isCheckedAll,
-				carts: state => state.cart.carts,
+				cartList: state => state.cart.cartList,
 				localCartList: state => state.cart.localCartList,
 				subtotal: state => state.cart.subtotal,
 				checkedProducts: state => state.cart.checkedProducts
@@ -66,7 +66,7 @@
 			}
 		},
 		async created () {
-			await this.$store.dispatch('cart/setCarts')
+			await this.$store.dispatch('cart/getCartData')
 		},
 		methods: {
 			checkAll () {

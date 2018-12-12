@@ -60,7 +60,6 @@
 						<el-input-number
 							size="small"
 							v-model="detailForm.count"
-							@change="changeQty"
 							:min="1" 
 							:max="product.quantity"
 							label="quantity">
@@ -92,20 +91,8 @@
 				<span>wholesale inquiry</span>
 			</div>
 			<div class="detail-bottom-right">
-				<el-tooltip
-					v-if="isExistCart"
-					effect="dark"
-					:content="addToCartTip"
-					placement="top">
-					<div
-						@click="addToCart(product._id)"
-						class="detail-bottom-cart">
-						Add to Cart
-					</div>
-				</el-tooltip>
 				<div
-				  v-else
-					@click="addToCart(product._id)"
+					@click="addToCart(product)"
 					class="detail-bottom-cart">
 					Add to Cart
 				</div>
@@ -154,7 +141,6 @@
 		data () {
 			return {
 				dialogVisible: false,
-				addToCartTip: 'It`s in cart',
 				price: '',
 				cartImg: '',
 				favImg: this.$store.state.imgBaseUrl + 'unfavorite.png',
@@ -169,7 +155,6 @@
 					price: '',
 					count: 1
 				},
-				isExistCart: false,
 				carouselHeigth: ''
 			}
 		},
@@ -181,12 +166,9 @@
 			this.$store.dispatch('cart/setCarts')
 			const { productId } = this.$nuxt.$route.query
 			await this.$store.dispatch('details/setProduct', productId)
-			this.getCartFavImg()
-			this.price = `${this.product.minPrice.toFixed(2)} - ${this.product.maxPrice.toFixed(2)}`
-			if (this.product.minPrice === this.product.maxPrice) {
-				this.price = this.product.minPrice.toFixed(2)
-			}
-			this.isExistCart = !!this.carts.find(cart => cart.productId === productId)
+			// this.getCartFavImg()
+			const { minPrice, maxPrice } = this.product
+			this.price = minPrice === maxPrice ? this.price = minPrice.toFixed(2) : `${minPrice.toFixed(2)} - ${maxPrice.toFixed(2)}`
 			this.productImgs.product = this.product.detailImgs.product.map(ele => ele.url)
 		},
 		destroyed () {
@@ -207,12 +189,6 @@
 					this.price = ''
 				}
 			},
-			changeQty () {
-				console.log('change qty...')
-			},
-			clickTab (tab, event) {
-				console.log(tab, event)
-			},
 			getCartFavImg () {
 				const cartIdList = this.carts.map(ele => ele.productId)
 				const favList = this.favList
@@ -230,32 +206,31 @@
 				}
 				this.getCartFavImg()
 			},
-			addToCart (productId) {
-				if (!this.isExistCart) {
-					if (!this.detailForm.key) {
-						this.$message(`Please Select ${this.product.priceType}.`)
-					} else {
-						const cusPrice = this.product.customizePrice.find(ele => ele.key === this.detailForm.key)
-						const { priceId, maxWeight } = this.product
-						const cartInfo = {
-							productId,
-							priceId,
-							maxWeight,
-							count: this.detailForm.count,
-							key: cusPrice.key,
-							price: cusPrice.price
-						}
-						if (this.isAuthenticated) {
-							this.$store.dispatch('list/createCart', cartInfo)
-						} else {
-							LS.createCart(cartInfo)
-							this.$store.dispatch('cart/setLocalCartList')
-						}
-						this.getCartFavImg()
-						this.$store.dispatch('cart/setCarts')
-						this.isExistCart = true
-						this.dialogVisible = !this.dialogVisible
+			addToCart ({ _id, priceType, priceId, maxWeight, customizePrice }) {
+				const productId = String(_id)
+				if (!this.detailForm.key) {
+					this.$message(`Please Select ${priceType}.`)
+				} else {
+					const cusPrice = customizePrice.find(ele => ele.key === this.detailForm.key)
+					const cartInfo = {
+						id: productId+cusPrice._id,
+						productId,
+						priceId,
+						maxWeight,
+						count: this.detailForm.count,
+						key: cusPrice.key,
+						price: cusPrice.price
 					}
+					// if (this.isAuthenticated) {
+					// 	this.$store.dispatch('list/createCart', cartInfo)
+					// } else {
+					// 	LS.createCart(cartInfo)
+					// 	this.$store.dispatch('cart/setLocalCartList')
+					// }
+					this.$store.dispatch('cart/addToCart', { cartInfo })
+					// this.getCartFavImg()
+					// this.$store.dispatch('cart/setCarts')
+					this.dialogVisible = !this.dialogVisible
 				}
 			},
 			getInquiry () {

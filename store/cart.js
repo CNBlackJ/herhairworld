@@ -16,7 +16,8 @@ export const state = () => ({
   checkedProducts: [],
   subtotal: 0,
   isCheckedAll: false,
-  priceList: []
+  priceList: [],
+  cartData: {}
 })
 
 export const mutations = {
@@ -46,6 +47,9 @@ export const mutations = {
   },
   SET_PRICE_LIST (state, priceList) {
     state.priceList = priceList
+  },
+  SET_CART_DATA (state, cartData) {
+    state.cartData = cartData
   }
 }
 
@@ -90,7 +94,7 @@ export const actions = {
     dispatch('setSubtotal')
   },
   setSubtotal ({ state, commit }) {
-    const prices = state.carts.filter(ele => state.checkedProducts.indexOf(ele.productId) > -1).map(ele => ele.price * ele.count)
+    const prices = state.cartList.filter(ele => state.checkedProducts.indexOf(ele.productId) > -1).map(ele => ele.price * ele.count)
     let subtotal = 0
     if (prices.length) subtotal = prices.reduce((c, n) => c + n)
     commit('SET_SUBTOTAL', subtotal)
@@ -98,13 +102,32 @@ export const actions = {
   async setPriceList ({ state, commit }) {
     const { rows } = await price.list({})
     commit('SET_PRICE_LIST', rows)
+  },
+  async addToCart ({ state, commit }, { cartInfo }) {
+    const localCarts = LS.getVal('carts')
+    const carts = localCarts ? JSON.parse(localCarts) : {}
+    const { id, productId, count } = cartInfo
+    if (carts[id]) {
+      // 直接更新数量
+      carts[id].count = carts[id].count + count
+    } else {
+      carts[id] = cartInfo
+    }
+    LS.setVal('carts', JSON.stringify(carts))
+    commit('SET_CART_DATA', carts)
+    commit('SET_CART_LIST', Object.values(carts))
+  },
+  getCartData ({ state, commit }) {
+    const localCarts = LS.getVal('carts')
+    const carts = localCarts ? JSON.parse(localCarts) : {}
+    commit('SET_CART_LIST', Object.values(carts))
   }
 }
 
 export const getters = {
   subtotalOnCart (state) {
-    const { localCartList } = state
-    const prices = localCartList.map(ele => ele.count * ele.price)
+    const cartList = state.cartList || []
+    const prices = cartList.map(ele => ele.count * ele.price)
     return (prices.length ? prices.reduce((c, n) => c + n) : 0).toFixed(2)
   }
 }

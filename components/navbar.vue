@@ -21,17 +21,13 @@
 <script>
 	import { mapGetters, mapState } from 'vuex'
 	import user from '@/apis/user'
-
-	import { setToken, getAuthTokenFromCookie, getAuthTokenFromLocalStorage } from '~/utils/auth'
+	import LS from '@/apis/localStorage'
 	
 	export default {
 		computed: {
 			...mapGetters(['isAuthenticated']),
 			...mapState({
-				cartCount: state => {
-					if (state.isAuthenticated) return state.cart.cartList.length
-					return state.cart.localCartList.length
-				},
+				cartCount: state => state.cart.cartList.length,
 				user: state => state.user,
 				authToken: state => state.authToken
 			})
@@ -41,24 +37,22 @@
 			this.$store.dispatch('cart/setLocalCartList')
 		},
 		async mounted () {
-			const authToken = getAuthTokenFromLocalStorage()
+			const authToken = window.localStorage.getItem('authToken')
 			if (authToken === 'null' || !authToken) {
 				// 创建一个临时访客用户
 				await this.$store.dispatch('createVisitor')
-				setToken({ token: this.authToken })
-				this.$store.commit('SET_AUTH_TOKEN', this.authToken)
+				LS.setVal('authToken', this.authToken)
+				this.$store.commit('SET_AUTH_TOKEN', authToken)
 			} else {
-				this.$store.commit('SET_AUTH_TOKEN', this.authToken)
+				this.$store.commit('SET_AUTH_TOKEN', authToken)
 				// 看token是否能获取到用户信息
 				const userInfo = await user.getUser()
 				if (userInfo) {
 					this.$store.commit('SET_USER', userInfo)
-					setToken({ token: authToken })
 					this.$store.commit('SET_AUTH_TOKEN', authToken)
 				} else {
 					await this.$store.dispatch('createVisitor')
-					setToken({ token: this.authToken })
-					this.$store.commit('SET_AUTH_TOKEN', this.authToken)
+					LS.setVal('authToken', this.authToken)
 				}
 			}
 		},

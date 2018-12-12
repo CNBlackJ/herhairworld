@@ -18,7 +18,6 @@ export default {
   layout: 'mainWithFixedFooter',
   methods: {
     goHome () {
-      console.log('aa')
       this.$router.push({ path: '/' })
     }
   }
