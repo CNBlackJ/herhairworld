@@ -231,7 +231,6 @@
 				this.getCartFavImg()
 			},
 			addToCart (productId) {
-				// check length
 				if (!this.isExistCart) {
 					if (!this.detailForm.key) {
 						this.$message(`Please Select ${this.product.priceType}.`)
