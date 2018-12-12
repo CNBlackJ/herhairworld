@@ -50,7 +50,7 @@
 		data () {
 			return {
 				customerLink: [
-					{ id: 1, name: 'Wholesale', link: '/inquiry', style: 'color: #dd127b' },
+					{ id: 1, name: 'Wholesale', link: '/wholesale#contact', style: 'color: #dd127b' },
 					{ id: 2, name: 'About us', link: '/about', style: '' },
 					{ id: 3, name: 'Contact us', link: '/wholesale#contact', style: '' }
 				]
