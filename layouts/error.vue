@@ -26,7 +26,7 @@ export default {
 
 <style>
   .error-container {
-    padding-top: 48px;
+    padding-top: 44px;
 		position: absolute;
 		width: 100%;
 		top: 10%;

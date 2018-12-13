@@ -102,7 +102,7 @@
 
 <style>
 	.list-container {
-		padding-top: 48px;
+		padding-top: 44px;
 		background-color: #efefef;
 		min-height: 450px;
 	}

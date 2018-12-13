@@ -249,7 +249,7 @@
 
 <style>
 	.detail-container {
-		padding-top: 48px;
+		padding-top: 44px;
 		background-color: #efefef;
 		padding-bottom: 50px;
 	}

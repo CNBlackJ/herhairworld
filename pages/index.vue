@@ -156,7 +156,7 @@
 
 <style>
   .index-container {
-    padding-top: 48px;
+    padding-top: 44px;
   }
 
   .bs-container {

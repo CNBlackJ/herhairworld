@@ -200,7 +200,7 @@
 
 <style>
 	.purchase-container {
-		padding-top: 48px;
+		padding-top: 44px;
 	}
 
 	.purchase-step {

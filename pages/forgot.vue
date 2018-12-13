@@ -12,6 +12,6 @@
 
 <style>
 	.fotgot-container {
-		padding-top: 48px;
+		padding-top: 44px;
 	}
 </style>

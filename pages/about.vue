@@ -36,7 +36,7 @@
 <style>
 	.about-container {
 		padding: 0 10px;
-		padding-top: 48px;
+		padding-top: 44px;
 	}
 	.about-head {
 		padding: 10px 0;
