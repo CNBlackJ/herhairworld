@@ -48,7 +48,7 @@ export const actions = {
       (total, item) => ({
       ...total,
       [item.uniqueId]: item
-    })) : {}
+    }), {}) : {}
     commit('SET_CART_LIST', rows)
     commit('SET_CART_DATA', cartData)
   },
@@ -102,6 +102,28 @@ export const getters = {
     const prices = cartList.filter(item => item.isChecked).map(ele => ele.count * ele.price)
     return (prices.length ? prices.reduce((c, n) => c + n) : 0).toFixed(2)
   },
+  items (state) {
+    const purchaseProducts = state.cartList.filter(item => item.isChecked)
+    const shipping = 19.99
+    const payItems = purchaseProducts.map(ele => {
+      return {
+        name: ele.productId,
+        sku: ele.productId,
+        price: ele.price,
+        currency: 'USD',
+        quantity: String(ele.count)
+      }
+    })
+    const shippingItem = {
+      name: 'shipping',
+      sku: 'shippingsku',
+      price: shipping,
+      currency: 'USD',
+      quantity: '1'
+    }
+    payItems.push(shippingItem)
+    return payItems
+  },
   summary (state) {
     const products = state.cartList.filter(item => item.isChecked)
     const shipping = 19.99
@@ -129,6 +151,7 @@ export const getters = {
           summary.shipping = 19.99
         }
       }
+      summary.amount = Number(summary.price) + Number(summary.shipping)
     }
     return summary
   },

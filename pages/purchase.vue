@@ -79,7 +79,7 @@
 			<no-ssr>
 				<paypal-checkout
 					env="sandbox"
-					:amount="String(amount.toFixed(2))"
+					:amount="summary.amount.toFixed(2)"
 					currency="USD"
 					locale="en_US"
 					v-on:payment-authorized="payAuth"
@@ -135,31 +135,34 @@
 		computed: {
 			...mapState({
 				buyNowProduct: state => state.details.buyNowProduct,
-				products: state => state.purchase.products,
 				paypalConfig: state => state.purchase.paypalConfig,
 				cartList: state => state.cart.cartList,
 			}),
 			...mapGetters({
-				items: 'purchase/items',
-				amount: 'purchase/amount',
+				items: 'cart/items',
 				summary: 'cart/summary'
 			})
 		},
 		async created () {
 			await this.$store.dispatch('purchase/setPaypalConfig')
-			// await this.$store.dispatch('purchase/getPurchaseProducts')
 		},
 		methods: {
 			async paySuccess (payResp) {
 				if (payResp.state === 'approved') {
 					const order = {
-						products: this.products.map(ele => { return { count: ele.count, len: ele.len, price: ele.price, productId: ele.productId } }),
+						carts: this.cartList.filter(item => item.isChecked).map(cart => cart._id),
 						couponCode: this.couponCode,
 						price: this.summary.price,
 						total: this.summary.total,
 						paymentInfo: JSON.stringify(payResp)
 					}
-					await this.$store.dispatch('orders/createOrder', order)
+					const orderRes = await this.$store.dispatch('orders/createOrder', order)
+					if (orderRes.carts.length) {
+						// 删除购物车中的对应商品
+						for (let cartId of orderRes.carts) {
+							this.$store.dispatch('cart/deleteCart', { cartInfo: { _id: cartId } })
+						}
+					}
 					this.$router.push({ path: '/orders' })
 				} else {
 					console.log(payResp)

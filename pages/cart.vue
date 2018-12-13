@@ -4,7 +4,15 @@
 			<div
 				class="cart-empty"
 				v-if="cartList.length <= 0">
-				It`s empty on your cart~
+				<div class="cart-empty-img">
+					<img src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/empty_cart.jpg" alt="">
+				</div>
+				<div>It`s empty on your cart.</div>
+				<div
+					@click="$router.push({ path: '/list?categoryId=5ba20ed028b4e92568a9c4e9&category=all' })"
+					class="cart-empty-btn">
+					Continue Shopping
+				</div>
 			</div>
 			<div
 				v-else
@@ -96,6 +104,21 @@
 		text-align: center;
 		padding-top: 20%;
 		color: #808080;
+	}
+
+	.cart-empty-img {
+		padding: 50px 140px 0 140px
+	}
+
+	.cart-empty-img img {
+		width: auto;
+		max-width: 100%
+	}
+
+	.cart-empty-btn {
+		color: #dd127b;
+		padding: 10px;
+		text-decoration: underline;
 	}
 
 	.cart-card-con {
