@@ -134,6 +134,7 @@
 				product: state => state.details.product,
 				priceList: state => state.details.priceList,
 				favoriteData: state => state.details.favoriteData,
+				favoriteList: state => state.details.favoriteList
 			})
 		},
 		data () {
@@ -141,7 +142,6 @@
 				dialogVisible: false,
 				price: '',
 				cartImg: '',
-				favImg: this.$store.state.imgBaseUrl + 'unfavorite.png',
 				productImgs: [],
 				detailForm: {
 					key: '',
@@ -181,19 +181,17 @@
 					this.price = ''
 				}
 			},
-			getCartFavImg () {
-				const cartIdList = this.carts.map(ele => ele.productId)
-				const favList = this.favList
-				const cartImgName = _.find(cartIdList, ele => ele === this.product._id) ? 'cart.png' : 'uncart.png'
-				const favImgName = _.find(favList, ele => ele === this.product._id) ? 'favorite.png' : 'unfavorite.png'
-				this.cartImg = this.$store.state.imgBaseUrl + cartImgName
-				this.favImg = this.$store.state.imgBaseUrl + favImgName
-			},
 			addToFav ({ _id }) {
 				const payload = {
 					productId: _id
 				}
-				this.$store.dispatch('details/createFavorite', { payload })
+				const favoriteProduct = this.favoriteList.find(item => String(item.productId) === String(_id))
+				if (favoriteProduct) {
+					// delete facorite
+					this.$store.dispatch('details/deleteFavorite', { payload: favoriteProduct })
+				} else {
+					this.$store.dispatch('details/createFavorite', { payload })
+				}
 			},
 			addToCart ({ _id, priceType, priceId, maxWeight, customizePrice }) {
 				const productId = String(_id)
