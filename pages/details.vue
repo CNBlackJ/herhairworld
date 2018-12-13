@@ -163,7 +163,6 @@
 			window.addEventListener('resize', this.handleResize)
 			this.handleResize()
 
-			this.$store.dispatch('cart/setCarts')
 			const { productId } = this.$nuxt.$route.query
 			await this.$store.dispatch('details/setProduct', productId)
 			// this.getCartFavImg()
@@ -213,7 +212,7 @@
 				} else {
 					const cusPrice = customizePrice.find(ele => ele.key === this.detailForm.key)
 					const cartInfo = {
-						id: productId+cusPrice._id,
+						uniqueId: productId+cusPrice._id,
 						productId,
 						priceId,
 						maxWeight,
@@ -221,15 +220,8 @@
 						key: cusPrice.key,
 						price: cusPrice.price
 					}
-					// if (this.isAuthenticated) {
-					// 	this.$store.dispatch('list/createCart', cartInfo)
-					// } else {
-					// 	LS.createCart(cartInfo)
-					// 	this.$store.dispatch('cart/setLocalCartList')
-					// }
 					this.$store.dispatch('cart/addToCart', { cartInfo })
 					// this.getCartFavImg()
-					// this.$store.dispatch('cart/setCarts')
 					this.dialogVisible = !this.dialogVisible
 				}
 			},

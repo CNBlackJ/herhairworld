@@ -33,8 +33,9 @@
 			})
 		},
 		created () {
+			this.$store.dispatch('cart/setCartList')
 			this.$store.dispatch('home/setCategories')
-			this.$store.dispatch('cart/setLocalCartList')
+			// this.$store.dispatch('cart/setLocalCartList')
 		},
 		async mounted () {
 			const authToken = window.localStorage.getItem('authToken')
@@ -98,7 +99,8 @@
 	}
 
 	.img-logo {
-		height: 44px;
+		height: 34px;
+		padding: 3px 0;
 	}
 
 	.navbar-right {

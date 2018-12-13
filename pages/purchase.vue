@@ -12,10 +12,10 @@
 
 		<div class="purchase-orders">
 			<div
-				v-for="product in products"
-				:key="product.productId">
+				v-for="cartProd in cartList.filter(item => item.isChecked)"
+				:key="cartProd._id">
 				<purchaseCard
-					:cartProd="product">
+					:cartProd="cartProd">
 				</purchaseCard>
 			</div>
 		</div>
@@ -134,21 +134,20 @@
 		},
 		computed: {
 			...mapState({
-				checkedProducts: state => state.cart.checkedProducts,
 				buyNowProduct: state => state.details.buyNowProduct,
 				products: state => state.purchase.products,
 				paypalConfig: state => state.purchase.paypalConfig,
-				carts: state => state.cart.carts,
+				cartList: state => state.cart.cartList,
 			}),
 			...mapGetters({
 				items: 'purchase/items',
 				amount: 'purchase/amount',
-				summary: 'purchase/summary'
+				summary: 'cart/summary'
 			})
 		},
 		async created () {
 			await this.$store.dispatch('purchase/setPaypalConfig')
-			await this.$store.dispatch('purchase/getPurchaseProducts')
+			// await this.$store.dispatch('purchase/getPurchaseProducts')
 		},
 		methods: {
 			async paySuccess (payResp) {

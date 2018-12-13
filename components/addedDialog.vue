@@ -27,11 +27,7 @@
 		},
 		computed: {
 			...mapState({
-				cartCount: state => {
-					if (state.isAuthenticated) return state.cart.cartList.length
-					return state.cart.localCartList.length
-				},
-				carts: state => state.cart.carts,
+				cartCount: state => state.cart.cartList.length
 			}),
 			...mapGetters({
 				subtotalOnCart: 'cart/subtotalOnCart'
@@ -39,10 +35,8 @@
 		},
 		methods: {
 			async goToPurchase () {
-				await this.$store.dispatch('cart/setCarts')
-				this.$store.commit('cart/SET_CHECKED_PRODUCTS', this.carts.map(ele => ele.productId))
-    		this.$store.dispatch('cart/setSubtotal')
-				this.$router.push({ path: '/purchase' })
+				await this.$store.dispatch('cart/checkAll', { checkAll: true })
+				this.$router.push({ path: '/purchase?checkedAll=true' })
 			}
 		}
 	}

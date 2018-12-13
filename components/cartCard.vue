@@ -3,7 +3,7 @@
 		<el-row>
 			<el-col :xs="2">
 				<div class="cc-checkbox-con">
-					<el-checkbox v-model="isChecked" @change="checkCartProd(cartProd.productId)"></el-checkbox>
+					<el-checkbox v-model="isChecked" @change="checkCartProd(cartProd)"></el-checkbox>
 				</div>
 			</el-col>
 			<el-col :xs="6">
@@ -32,7 +32,7 @@
 						<div>
 							<el-input-number
 								v-model="count"
-								@change="updateCount(product._id)"
+								@change="updateCount(cartProd)"
 								size="mini"
 								:min="1">
 							</el-input-number>
@@ -40,7 +40,7 @@
 						<div>
 							<i
 								class="el-icon-close"
-								@click="selectedToDel(cartProd.productId)"></i>
+								@click="dialogVisible = true"></i>
 						</div>
 					</div>
 				</div>
@@ -55,7 +55,7 @@
 			</div>
 			<span slot="footer">
 				<el-button @click="dialogVisible = false">No</el-button>
-				<el-button class="confirm-btn" @click="removeFromCart">Yes</el-button>
+				<el-button class="confirm-btn" @click="removeFromCart(cartProd)">Yes</el-button>
 			</span>
 		</el-dialog>
 	</div>
@@ -84,7 +84,6 @@
 				isChecked: false,
 				price: 0,
 				count: 1,
-				selectedToDelProductId: '',
 				product: {
 					mainImg: ''
 				},
@@ -95,8 +94,13 @@
 			await this.$store.dispatch('cart/setPriceList')
 			const productId = this.cartProd.productId || this.cartProd._id
 			await this.getProduct(productId)
-			this.isChecked = _.includes(this.$store.state.cart.checkedProducts, productId)
+			this.isChecked = this.cartProd.isChecked
 		},
+		// watch: {
+		// 	cartProd: (newVal, oldVal) => {
+		// 		this.isChecked = newVal.isChecked
+		// 	}
+		// },
     methods: {
 			async getProduct (productId) {
 				this.product = await product.getById(productId)
@@ -109,33 +113,17 @@
 				const val = this.cartProd.key
 				this.size = `${key}: ${val} ${key.toLowerCase() === 'length' ? 'inches' : ''}`
 			},
-      async updateCount (productId) {
-				if (this.isAuthenticated) {
-					const cartInfo = { productId }
-					await cart.updateByProdId({ cart: cartInfo })
-				} else {
-					LS.updateCartCount({ productId, count: this.count })
-				}
-				this.$store.dispatch('cart/setCarts')
-				this.$store.dispatch('cart/setSubtotal')
+      async updateCount ({ _id, count }) {
+				const cartInfo = { _id, count: this.count }
+				this.$store.dispatch('cart/updateCart', { cartInfo })
 			},
-			async selectedToDel (productId) {
-				this.selectedToDelProductId = productId
-				this.dialogVisible = true
-			},
-			async removeFromCart () {
-				const productId = this.selectedToDelProductId
-				if (this.isAuthenticated) {
-					await cart.deleteByProdId(productId)
-				} else {
-					LS.removeFromCart({ productId })
-					this.$store.dispatch('cart/setLocalCartList')
-				}
-				this.$store.dispatch('cart/setCarts')
+			async removeFromCart ({ _id }) {
+				this.$store.dispatch('cart/deleteCart', { cartInfo: { _id } })
 				this.dialogVisible = false
 			},
-			checkCartProd (productId) {
-				this.$store.dispatch('cart/setCheckedProducts', productId)
+			checkCartProd ({ _id }) {
+				const cartInfo = { _id, isChecked: this.isChecked }
+				this.$store.dispatch('cart/updateCart', { cartInfo })
 			}
     }
 	}	

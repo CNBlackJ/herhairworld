@@ -19,17 +19,17 @@
 				<div class="cart-counter">
 					<div class="cart-checkall">
 						<!-- <el-checkbox
-							@change="checkAll"
-							:checked="checkedAll">
+							@change="onCheckAll"
+							v-model="checkedAll">
 						</el-checkbox>
 						<div class="select-all-text">all</div> -->
 					</div>
 	
 					<div class="price-counter">
 						<div class="cart-subtotal">Subtotal:</div>
-						<div class="cart-price-counter">$ {{subtotal}}</div>
+						<div class="cart-price-counter">$ {{subtotalOnChecked}}</div>
 						<div @click="goToPurchase" class="cart-checkout-btn">
-							CHECKOUT ( {{checkedProducts.length}} )
+							CHECKOUT ( {{(cartList.filter(item => item.isChecked)).length}} )
 						</div>
 					</div>
 				</div>
@@ -51,13 +51,13 @@
 			cartCard
 		},
 		computed: {
-			...mapGetters(['isAuthenticated']),
+			...mapGetters({
+				subtotalOnChecked: 'cart/subtotalOnChecked',
+				checkAll: 'cart/checkAll'
+			}),
 			...mapState({
 				isCheckedAll: state => state.cart.isCheckedAll,
-				cartList: state => state.cart.cartList,
-				localCartList: state => state.cart.localCartList,
-				subtotal: state => state.cart.subtotal,
-				checkedProducts: state => state.cart.checkedProducts
+				cartList: state => state.cart.cartList
 			})
 		},
 		data () {
@@ -66,14 +66,19 @@
 			}
 		},
 		async created () {
-			await this.$store.dispatch('cart/getCartData')
+			await this.$store.dispatch('cart/setCartList')
+			this.checkedAll = this.checkAll
 		},
 		methods: {
-			checkAll () {
-				this.checkedAll = !this.checkedAll
+			async onCheckAll () {
+				await this.$store.dispatch('cart/checkAll', { checkAll: this.checkedAll })
 			},
 			goToPurchase () {
-				if (this.checkedProducts.length) this.$router.push({ path: '/purchase' })
+				if ((this.cartList.filter(item => item.isChecked)).length) {
+					this.$router.push({ path: '/purchase' })
+				} else {
+					this.$message('Please selected to purchase.')
+				}
 			}
 		}
 	}
