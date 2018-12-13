@@ -67,9 +67,9 @@
 					</el-col>
 					<el-col :span="9">
 						<div
-							@click="addToFav(product._id)"
+							@click="addToFav(product)"
 							class="detail-fav-btn">
-							<img :src="favImg">
+							<img :src="favoriteImg(product._id)">
 							<span>Add to my wishlist</span>
 						</div>
 					</el-col>
@@ -78,7 +78,7 @@
 
 			<img
 				class="detail-tab-img"
-				v-for="(item, i) in productImgs.product"
+				v-for="(item, i) in productImgs"
 				:key="i"
 				:src="item">
 		</div>
@@ -97,7 +97,7 @@
 					Add to Cart
 				</div>
 				<div
-					@click="buyNow(product._id)"
+					@click="buyNow(product)"
 					class="detail-bottom-buy">
 					&nbsp; Buy Now &nbsp;
 				</div>
@@ -127,15 +127,13 @@
 			recommend
 		},
 		computed: {
-			...mapGetters(['isAuthenticated']),
+			...mapGetters({
+				favoriteImg: 'details/favoriteImg'
+			}),
 			...mapState({
 				product: state => state.details.product,
-				carts: state => state.cart.carts,
-				favList: state => {
-					if (state.isAuthenticated) return state.cart.favList
-					return state.cart.localFavList
-				},
-				priceList: state => state.details.priceList
+				priceList: state => state.details.priceList,
+				favoriteData: state => state.details.favoriteData,
 			})
 		},
 		data () {
@@ -144,12 +142,7 @@
 				price: '',
 				cartImg: '',
 				favImg: this.$store.state.imgBaseUrl + 'unfavorite.png',
-				productImgs: {
-					product: [],
-					wholesale: [],
-					shipping: [],
-					faq: []
-				},
+				productImgs: [],
 				detailForm: {
 					key: '',
 					price: '',
@@ -165,10 +158,10 @@
 
 			const { productId } = this.$nuxt.$route.query
 			await this.$store.dispatch('details/setProduct', productId)
-			// this.getCartFavImg()
+			await this.$store.dispatch('details/listFavorite')
 			const { minPrice, maxPrice } = this.product
 			this.price = minPrice === maxPrice ? this.price = minPrice.toFixed(2) : `${minPrice.toFixed(2)} - ${maxPrice.toFixed(2)}`
-			this.productImgs.product = this.product.detailImgs.product.map(ele => ele.url)
+			this.productImgs = this.product.detailImgs.product.map(ele => ele.url)
 		},
 		destroyed () {
 			window.removeEventListener('resize', this.handleResize)
@@ -196,14 +189,11 @@
 				this.cartImg = this.$store.state.imgBaseUrl + cartImgName
 				this.favImg = this.$store.state.imgBaseUrl + favImgName
 			},
-			addToFav (productId) {
-				if (this.isAuthenticated) {
-					this.$store.dispatch('list/createFav', productId)
-				} else {
-					LS.createFavorite(productId)
-					this.$store.dispatch('cart/setLocalFavList')
+			addToFav ({ _id }) {
+				const payload = {
+					productId: _id
 				}
-				this.getCartFavImg()
+				this.$store.dispatch('details/createFavorite', { payload })
 			},
 			addToCart ({ _id, priceType, priceId, maxWeight, customizePrice }) {
 				const productId = String(_id)
@@ -221,7 +211,6 @@
 						price: cusPrice.price
 					}
 					this.$store.dispatch('cart/addToCart', { cartInfo })
-					// this.getCartFavImg()
 					this.dialogVisible = !this.dialogVisible
 				}
 			},
@@ -234,11 +223,21 @@
 				this.$store.commit('inquiry/SET_SEND_PAGE', sendPage)
 				this.$router.push({ path: '/inquiry' })
 			},
-			async buyNow (productId) {
+			async buyNow ({ _id, priceType, priceId, maxWeight, customizePrice }) {
+				const productId = String(_id)
 				if (!this.detailForm.key) {
-					this.$message(`Please Select ${this.product.priceType}.`)
+					this.$message(`Please Select ${priceType}.`)
 				} else {
-					const productInfo = {...this.detailForm, ...{ productId }}
+					const cusPrice = customizePrice.find(ele => ele.key === this.detailForm.key)
+					const productInfo = {
+						uniqueId: productId+cusPrice._id,
+						productId,
+						priceId,
+						maxWeight,
+						count: this.detailForm.count,
+						key: cusPrice.key,
+						price: cusPrice.price
+					}
 					this.$store.commit('details/SET_BUY_NOW', productInfo)
 					this.$router.push({ path: '/purchase?isBuyNow=true' })
 				}

@@ -12,7 +12,7 @@
 
 		<div class="purchase-orders">
 			<div
-				v-for="cartProd in cartList.filter(item => item.isChecked)"
+				v-for="cartProd in products"
 				:key="cartProd._id">
 				<purchaseCard
 					:cartProd="cartProd">
@@ -86,7 +86,7 @@
 					v-on:payment-completed="paySuccess"
 					v-on:payment-cancelled="cancelPayment"
 					:client="paypalConfig"
-					:items="items"
+					:items="payItems"
 					:invoice-number="String(Date.now())"
 					:button-style="paypal_button_style">
 				</paypal-checkout>
@@ -130,27 +130,33 @@
 					size: 'medium',
 					shape: 'pill'
 				},
+				summary: {
+					total: 0,
+					price: '0.00',
+					shipping: '00.00'
+				},
+				payItems: []
 			}
 		},
 		computed: {
 			...mapState({
 				buyNowProduct: state => state.details.buyNowProduct,
 				paypalConfig: state => state.purchase.paypalConfig,
-				cartList: state => state.cart.cartList,
-			}),
-			...mapGetters({
-				items: 'cart/items',
-				summary: 'cart/summary'
+				products: state => state.purchase.products
 			})
 		},
 		async created () {
+			const isBuyNow = this.$route.query.isBuyNow
 			await this.$store.dispatch('purchase/setPaypalConfig')
+			this.$store.dispatch('purchase/getPurchaseProducts', { isBuyNow })
+			this.getSummary()
+			this.getPayItems()
 		},
 		methods: {
 			async paySuccess (payResp) {
 				if (payResp.state === 'approved') {
 					const order = {
-						carts: this.cartList.filter(item => item.isChecked).map(cart => cart._id),
+						carts: this.products.map(cart => cart._id),
 						couponCode: this.couponCode,
 						price: this.summary.price,
 						total: this.summary.total,
@@ -193,6 +199,59 @@
 					this.isDisable = false
 					this.showErrMsg = true
 				}
+			},
+			getSummary () {
+				const products = [...this.products]
+				const shipping = 19.99
+				const summary = {
+					total: 0,
+					price: '0.00',
+					shipping: '00.00'
+				}
+				if (products.length) {
+					const counts = products.map(ele => ele.count)
+					const prices = products.map(ele => ele.count * ele.price)
+					summary.total = counts ? counts.reduce((c, n) => c + n) : 0
+					summary.price = (prices.length ? prices.reduce((c, n) => c + n) : 0).toFixed(2)
+					summary.shipping = shipping.toFixed(2)
+					const allWeight = products.map(ele => ele.count * ele.maxWeight).reduce((c, n) => c + n)
+					if (allWeight === 0) {
+						summary.shipping = 0
+					} else {
+						const outWeight = allWeight - 500
+						if (outWeight > 0) {
+							// 超重: 每加0.5kg，多6美金
+							const count = Math.ceil(outWeight / 500)
+							summary.shipping = (19.99 + count * 6).toFixed(2)
+						} else {
+							summary.shipping = 19.99
+						}
+					}
+					summary.amount = Number(summary.price) + Number(summary.shipping)
+				}
+				console.log(summary)
+				this.summary = summary
+			},
+			getPayItems () {
+				const shipping = 19.99
+				const payItems = this.products.map(ele => {
+					return {
+						name: ele.productId,
+						sku: ele.productId,
+						price: ele.price,
+						currency: 'USD',
+						quantity: String(ele.count)
+					}
+				})
+				const shippingItem = {
+					name: 'shipping',
+					sku: 'shippingsku',
+					price: shipping,
+					currency: 'USD',
+					quantity: '1'
+				}
+				payItems.push(shippingItem)
+				this.payItems = payItems
 			}
 		}
 	}

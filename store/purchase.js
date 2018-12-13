@@ -19,17 +19,14 @@ export const mutations = {
 }
 
 export const actions = {
-  getPurchaseProducts ({ state, commit, rootState }) {
-    const checkedProducts = rootState.cart.checkedProducts
-    const buyNowProduct = rootState.details.buyNowProduct
-    const carts = rootState.cart.carts
-    let purchaseProducts = []
-    if (buyNowProduct) {
-      purchaseProducts = [buyNowProduct]
+  getPurchaseProducts ({ state, commit, rootState }, { isBuyNow }) {
+    if (isBuyNow) {
+      const purchaseProducts = rootState.details.buyNowProduct ? [rootState.details.buyNowProduct] : []
+      commit('SET_PRODUCTS', purchaseProducts)
     } else {
-      purchaseProducts = carts.filter(ele => checkedProducts.indexOf(ele.productId) > -1)
+      const purchaseProducts = rootState.cart.cartList.filter(item => item.isChecked)
+      commit('SET_PRODUCTS', purchaseProducts)
     }
-    commit('SET_PRODUCTS', purchaseProducts)
   },
   async setPaypalConfig ({ state, commit }) {
     const isUsingPaymentInfo = await payment.getIsUsingPayment()
