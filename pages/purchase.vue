@@ -229,11 +229,9 @@
 					}
 					summary.amount = Number(summary.price) + Number(summary.shipping)
 				}
-				console.log(summary)
 				this.summary = summary
 			},
 			getPayItems () {
-				const shipping = 19.99
 				const payItems = this.products.map(ele => {
 					return {
 						name: ele.productId,
@@ -246,7 +244,7 @@
 				const shippingItem = {
 					name: 'shipping',
 					sku: 'shippingsku',
-					price: shipping,
+					price: summary.shipping,
 					currency: 'USD',
 					quantity: '1'
 				}
