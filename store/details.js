@@ -9,7 +9,6 @@ export const state = () => ({
     minPrice: 0,
     maxPrice: 0
   },
-  buyNowProduct: null,
   favoriteList: [],
   favoriteData: {}
 })
@@ -17,9 +16,6 @@ export const state = () => ({
 export const mutations = {
   SET_PRODUCT (state, product) {
     state.product = product
-  },
-  SET_BUY_NOW (state, productInfo) {
-    state.buyNowProduct = productInfo
   },
   SET_FAVOROTE_LIST (state, favoriteList) {
     state.favoriteList = favoriteList

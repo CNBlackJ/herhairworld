@@ -227,7 +227,7 @@
 					this.$message(`Please Select ${priceType}.`)
 				} else {
 					const cusPrice = customizePrice.find(ele => ele.key === this.detailForm.key)
-					const productInfo = {
+					const cartInfo = {
 						uniqueId: productId+cusPrice._id,
 						productId,
 						priceId,
@@ -236,7 +236,7 @@
 						key: cusPrice.key,
 						price: cusPrice.price
 					}
-					this.$store.commit('details/SET_BUY_NOW', productInfo)
+					this.$store.commit('cart/addToCart', { cartInfo })
 					this.$router.push({ path: '/purchase?isBuyNow=true' })
 				}
 			}

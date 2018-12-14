@@ -1,14 +1,15 @@
 <template>
 	<div :class="{'footer-fixed': fixedFooter}" class="footer-container">
 		<el-row class="social-con">
-			<el-col :span="2" :offset="8">
-				<img class="foot-img" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/footer_Instagram.png">
-			</el-col>
-			<el-col :span="2" :offset="1">
-				<img class="foot-img" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/footer_fb.png">
-			</el-col>
-			<el-col :span="2" :offset="1">
-				<img class="foot-img" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/footer_youtube.png">
+			<el-col
+				v-for="(item, index) in Object.values(socialImgs)"
+				:key="index"
+				:span="2"
+				:offset="index === 0 ? 8 : 1">
+				<img
+					@click="goLink(item.link)"
+					class="foot-img"
+					:src="baseUrl + item.img">
 			</el-col>
 		</el-row>
 		<div class="footer-center">
@@ -25,17 +26,14 @@
 			</el-row>
 		</div>
 		<el-row class="footer-support" type="flex" justify="start" align="middle" :gutter="10">
-			<el-col :span="3" :offset="6">
-				<img class="foot-img" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/footer_paypal.png">
-			</el-col>
-			<el-col :span="3">
-				<img class="foot-img" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/footer_western_unnion.png">
-			</el-col>
-			<el-col :span="3">
-				<img class="foot-img" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/footer_master.png">
-			</el-col>
-			<el-col :span="3">
-				<img class="foot-img" src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/footer_visa.png">
+			<el-col
+				v-for="(item, index) in footerImgs"
+				:key="index"
+				:span="3"
+				:offset="index === 0 ? 6 : 0">
+				<img
+					class="foot-img"
+					:src="baseUrl + item">
 			</el-col>
 		</el-row>
 		<el-row>
@@ -51,6 +49,7 @@
 		data () {
 			return {
 				fixedFooter: false,
+				baseUrl: 'https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/',
 				links: [
 					{ id: 1, title: 'Contact Us', url: '/wholesale#contact' },
 					{ id: 2, title: 'About Us', url: '/about' },
@@ -58,6 +57,26 @@
 					{ id: 4, title: 'Return & Exchange', url: '/exchange' },
 					{ id: 5, title: 'Wholesale', url: '/wholesale#contact' },
 					{ id: 6, title: 'Home', url: '/' }
+				],
+				socialImgs: {
+					ins: {
+						img: 'footer_Instagram.png',
+						link: 'https://www.instagram.com/herhairworld_factory/'
+					},
+					fb: {
+						img: 'footer_fb.png',
+						link: 'https://www.facebook.com/herhairworld/'
+					},
+					youtube: {
+						img: 'footer_youtube.png',
+						link: 'https://www.youtube.com/channel/UCs5egl2u3CHKxW4mcMRnofA'
+					}
+				},
+				footerImgs: [
+					'footer_paypal.png',
+					'footer_western_unnion.png',
+					'footer_master.png',
+					'footer_visa.png'
 				]
 			}
 		},
@@ -73,6 +92,9 @@
 					}
 					this.$scrollTo(selector, 1000, options)
 				}
+			},
+			goLink(link) {
+				window.location.href = link
 			}
 		}
 	}

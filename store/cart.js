@@ -24,9 +24,6 @@ export const mutations = {
   SET_FAV_LIST (state, favs) {
     state.favList = favs
   },
-  SET_LOCAL_FAV_LIST (state, localFavs) {
-    state.localFavList = localFavs
-  },
   SET_SUBTOTAL (state, subtotal) {
     state.subtotal = subtotal
   },
@@ -55,10 +52,6 @@ export const actions = {
   async setFavList ({ commit }) {
     const favs = await favorite.list({})
     commit('SET_FAV_LIST', favs)
-  },
-  async setLocalFavList ({ commit }) {
-    const localFavs = LS.getVal('favorites')
-    commit('SET_LOCAL_FAV_LIST', localFavs ? JSON.parse(localFavs) : [])
   },
   async setPriceList ({ state, commit }) {
     const { rows } = await price.list({})

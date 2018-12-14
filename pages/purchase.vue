@@ -244,7 +244,7 @@
 				const shippingItem = {
 					name: 'shipping',
 					sku: 'shippingsku',
-					price: summary.shipping,
+					price: this.summary.shipping,
 					currency: 'USD',
 					quantity: '1'
 				}
