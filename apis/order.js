@@ -8,8 +8,8 @@ export default class order {
     return result
   }
 
-  static async list ({ limit, skip, sort, orderIds }) {
-    const queryStr = `?limit=${limit || 20}&skip=${skip || 0}&sort=${sort || '-createdAt'}&orderIds=${orderIds}`
+  static async list ({ limit, skip, sort }) {
+    const queryStr = `?limit=${limit || 20}&skip=${skip || 0}&sort=${sort || '-createdAt'}`
     const resp = (await request.get(`/api/orders${queryStr}`)).data
     let result = null
     if (!resp.error_code) result = resp.data

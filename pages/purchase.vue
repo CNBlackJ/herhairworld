@@ -12,10 +12,10 @@
 
 		<div class="purchase-orders">
 			<div
-				v-for="product in products"
-				:key="product.productId">
+				v-for="cartProd in products"
+				:key="cartProd._id">
 				<purchaseCard
-					:cartProd="product">
+					:cartProd="cartProd">
 				</purchaseCard>
 			</div>
 		</div>
@@ -79,14 +79,14 @@
 			<no-ssr>
 				<paypal-checkout
 					env="sandbox"
-					:amount="String(amount.toFixed(2))"
+					:amount="summary.amount.toFixed(2)"
 					currency="USD"
 					locale="en_US"
 					v-on:payment-authorized="payAuth"
 					v-on:payment-completed="paySuccess"
 					v-on:payment-cancelled="cancelPayment"
 					:client="paypalConfig"
-					:items="items"
+					:items="payItems"
 					:invoice-number="String(Date.now())"
 					:button-style="paypal_button_style">
 				</paypal-checkout>
@@ -130,37 +130,45 @@
 					size: 'medium',
 					shape: 'pill'
 				},
+				summary: {
+					total: 0,
+					price: '0.00',
+					shipping: '00.00'
+				},
+				payItems: []
 			}
 		},
 		computed: {
 			...mapState({
-				checkedProducts: state => state.cart.checkedProducts,
 				buyNowProduct: state => state.details.buyNowProduct,
-				products: state => state.purchase.products,
 				paypalConfig: state => state.purchase.paypalConfig,
-				carts: state => state.cart.carts,
-			}),
-			...mapGetters({
-				items: 'purchase/items',
-				amount: 'purchase/amount',
-				summary: 'purchase/summary'
+				products: state => state.purchase.products
 			})
 		},
 		async created () {
+			const isBuyNow = this.$route.query.isBuyNow
 			await this.$store.dispatch('purchase/setPaypalConfig')
-			await this.$store.dispatch('purchase/getPurchaseProducts')
+			this.$store.dispatch('purchase/getPurchaseProducts', { isBuyNow })
+			this.getSummary()
+			this.getPayItems()
 		},
 		methods: {
 			async paySuccess (payResp) {
 				if (payResp.state === 'approved') {
 					const order = {
-						products: this.products.map(ele => { return { count: ele.count, len: ele.len, price: ele.price, productId: ele.productId } }),
+						carts: this.products.map(cart => cart._id),
 						couponCode: this.couponCode,
 						price: this.summary.price,
 						total: this.summary.total,
 						paymentInfo: JSON.stringify(payResp)
 					}
-					await this.$store.dispatch('orders/createOrder', order)
+					const orderRes = await this.$store.dispatch('orders/createOrder', order)
+					if (orderRes.carts.length) {
+						// 删除购物车中的对应商品
+						for (let cartId of orderRes.carts) {
+							this.$store.dispatch('cart/deleteCart', { cartInfo: { _id: cartId } })
+						}
+					}
 					this.$router.push({ path: '/orders' })
 				} else {
 					console.log(payResp)
@@ -191,6 +199,59 @@
 					this.isDisable = false
 					this.showErrMsg = true
 				}
+			},
+			getSummary () {
+				const products = [...this.products]
+				const shipping = 19.99
+				const summary = {
+					total: 0,
+					price: '0.00',
+					shipping: '00.00'
+				}
+				if (products.length) {
+					const counts = products.map(ele => ele.count)
+					const prices = products.map(ele => ele.count * ele.price)
+					summary.total = counts ? counts.reduce((c, n) => c + n) : 0
+					summary.price = (prices.length ? prices.reduce((c, n) => c + n) : 0).toFixed(2)
+					summary.shipping = shipping.toFixed(2)
+					const allWeight = products.map(ele => ele.count * ele.maxWeight).reduce((c, n) => c + n)
+					if (allWeight === 0) {
+						summary.shipping = 0
+					} else {
+						const outWeight = allWeight - 500
+						if (outWeight > 0) {
+							// 超重: 每加0.5kg，多6美金
+							const count = Math.ceil(outWeight / 500)
+							summary.shipping = (19.99 + count * 6).toFixed(2)
+						} else {
+							summary.shipping = 19.99
+						}
+					}
+					summary.amount = Number(summary.price) + Number(summary.shipping)
+				}
+				console.log(summary)
+				this.summary = summary
+			},
+			getPayItems () {
+				const shipping = 19.99
+				const payItems = this.products.map(ele => {
+					return {
+						name: ele.productId,
+						sku: ele.productId,
+						price: ele.price,
+						currency: 'USD',
+						quantity: String(ele.count)
+					}
+				})
+				const shippingItem = {
+					name: 'shipping',
+					sku: 'shippingsku',
+					price: shipping,
+					currency: 'USD',
+					quantity: '1'
+				}
+				payItems.push(shippingItem)
+				this.payItems = payItems
 			}
 		}
 	}
@@ -198,7 +259,7 @@
 
 <style>
 	.purchase-container {
-		padding-top: 48px;
+		padding-top: 44px;
 	}
 
 	.purchase-step {

@@ -16,18 +16,6 @@
 						$ {{product.price.toFixed(2)}}
 					</div>
 					<div class="prod-fav-cart">
-						<!-- <div>
-							<img
-								@click="addToFav(product._id)"
-								class="prod-fav-icon"
-								:src="favImg">
-						</div>
-						<div>
-							<img
-								@click="addToCart(product._id)"
-								class="prod-fav-icon"
-								:src="cartImg">
-						</div> -->
 						<div
 							class="card-inquiry-btn"
 							v-on:click="getInquiry(product.name)">
@@ -45,10 +33,6 @@
 <script>
 	import { mapState, mapGetters } from 'vuex'
 	import _ from 'lodash'
-
-	import favorite from '@/apis/favorite'
-	import cart from '@/apis/cart'
-	import LS from '@/apis/localStorage'
 
 	import addedDialog from '@/components/addedDialog'
 
@@ -76,14 +60,11 @@
 		data () {
 			return {
 				dialogVisible: false,
-				cartImg: '',
-				favImg: '',
 				price: ''
 			}
 		},
 		async created () {
 			await this.formatPrice()
-			this.getCartFavImg()
 		},
 		methods: {
 			async formatPrice () {
@@ -91,40 +72,9 @@
 				const minPrice = allPrice[0] || 0
 				this.price = minPrice.toFixed(2)
 			},
-			getCartFavImg () {
-				const cartIdList = this.carts.map(ele => ele.productId)
-				const favList = this.favList
-				const cartImgName = _.find(cartIdList, ele => ele === this.product._id) ? 'cart.png' : 'uncart.png'
-				const favImgName = _.find(favList, ele => ele === this.product._id) ? 'favorite.png' : 'unfavorite.png'
-				this.cartImg = this.$store.state.imgBaseUrl + cartImgName
-				this.favImg = this.$store.state.imgBaseUrl + favImgName
-			},
 			showDetail (productId) {
 				this.$store.dispatch('details/setProduct', productId)
 				this.$router.push({ path: `/details?productId=${productId}` })
-			},
-			addToCart (productId) {
-				const { price, key } = this.product.customizePrice[0]
-				const { priceId, maxWeight } = this.product
-				const cartInfo = { productId, price, key, count: 1, priceId, maxWeight }
-
-				if (this.isAuthenticated) {
-					this.$store.dispatch('list/createCart', cartInfo)
-				} else {
-					LS.createCart(cartInfo)
-					this.$store.dispatch('cart/setLocalCartList')
-					this.getCartFavImg()
-				}
-				this.dialogVisible = !this.dialogVisible
-			},
-			addToFav (productId) {
-				if (this.isAuthenticated) {
-					this.$store.dispatch('list/createFav', productId)
-				} else {
-					LS.createFavorite(productId)
-					this.$store.dispatch('cart/setLocalFavList')
-					this.getCartFavImg()
-				}
 			},
 			getInquiry (title) {
         const sendPage = {
@@ -147,7 +97,6 @@
 
   .produc-card-image {
     width: 100%;
-		/* height: 196px; */
     display: block;
   }
 
@@ -179,12 +128,6 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-	}
-
-	.prod-fav-icon {
-		width: 18px;
-		height: 18px;
-		padding: 0 3px;
 	}
 
 	.card-inquiry-btn {

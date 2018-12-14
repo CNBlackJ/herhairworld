@@ -8,35 +8,24 @@ import LS from '@/apis/localStorage'
 const favorite = ''
 
 export const state = () => ({
-  carts: [],
   cartList: [],
-  localCartList: [],
   favList: [],
   localFavList: [],
-  checkedProducts: [],
   subtotal: 0,
   isCheckedAll: false,
-  priceList: []
+  priceList: [],
+  cartData: {}
 })
 
 export const mutations = {
-  SET_CARTS (state, carts) {
-    state.carts = carts
-  },
   SET_CART_LIST (state, carts) {
     state.cartList = carts
-  },
-  SET_LOCAL_CART_LIST (state, localCarts) {
-    state.localCartList = localCarts
   },
   SET_FAV_LIST (state, favs) {
     state.favList = favs
   },
   SET_LOCAL_FAV_LIST (state, localFavs) {
     state.localFavList = localFavs
-  },
-  SET_CHECKED_PRODUCTS (state, checkedProducts) {
-    state.checkedProducts = checkedProducts
   },
   SET_SUBTOTAL (state, subtotal) {
     state.subtotal = subtotal
@@ -46,29 +35,22 @@ export const mutations = {
   },
   SET_PRICE_LIST (state, priceList) {
     state.priceList = priceList
+  },
+  SET_CART_DATA (state, cartData) {
+    state.cartData = cartData
   }
 }
 
 export const actions = {
-  async setCarts ({ state, commit, dispatch, rootGetters }) {
-    const isAuthenticated = rootGetters.isAuthenticated
-    let carts = []
-    if (isAuthenticated) {
-      await dispatch('setCartList')
-      carts = state.cartList
-    } else {
-      dispatch('setLocalCartList')
-      carts = state.localCartList
-    }
-    commit('SET_CARTS', carts)
-  },
   async setCartList ({ commit }) {
-    const carts = await cart.list({})
-    commit('SET_CART_LIST', carts)
-  },
-  async setLocalCartList ({ commit }) {
-    const localCarts = LS.getVal('carts')
-    commit('SET_LOCAL_CART_LIST', localCarts ? JSON.parse(localCarts) : [])
+    const { rows } = await cart.list({})
+    const cartData = Object.keys(rows).length ? rows.reduce(
+      (total, item) => ({
+      ...total,
+      [item.uniqueId]: item
+    }), {}) : {}
+    commit('SET_CART_LIST', rows)
+    commit('SET_CART_DATA', cartData)
   },
   async setFavList ({ commit }) {
     const favs = await favorite.list({})
@@ -78,33 +60,50 @@ export const actions = {
     const localFavs = LS.getVal('favorites')
     commit('SET_LOCAL_FAV_LIST', localFavs ? JSON.parse(localFavs) : [])
   },
-  setCheckedProducts ({ state, commit, dispatch }, productId) {
-    const checkedProducts = [...state.checkedProducts]
-    if (_.find(checkedProducts, ele => ele === productId)) {
-      _.remove(checkedProducts, ele => ele === productId)
-    } else {
-      checkedProducts.push(productId)
-    }
-    commit('SET_CHECKED_PRODUCTS', checkedProducts)
-    commit('SET_IS_CHECKED_ALL', checkedProducts.length === state.carts.length)
-    dispatch('setSubtotal')
-  },
-  setSubtotal ({ state, commit }) {
-    const prices = state.carts.filter(ele => state.checkedProducts.indexOf(ele.productId) > -1).map(ele => ele.price * ele.count)
-    let subtotal = 0
-    if (prices.length) subtotal = prices.reduce((c, n) => c + n)
-    commit('SET_SUBTOTAL', subtotal)
-  },
   async setPriceList ({ state, commit }) {
     const { rows } = await price.list({})
     commit('SET_PRICE_LIST', rows)
+  },
+  async addToCart ({ state, commit, dispatch }, { cartInfo }) {
+    const { uniqueId, productId, count } = cartInfo
+    if (state.cartData[uniqueId]) {
+      // 更新数量
+      const newCartInfo = {...state.cartData[uniqueId]}
+      newCartInfo.count = newCartInfo.count + count
+      await cart.update(newCartInfo)
+    } else {
+      // 创建
+      await cart.create({ cart: cartInfo })
+    }
+    await dispatch('setCartList')
+  },
+  async updateCart ({ state, commit, dispatch }, { cartInfo }) {
+    await cart.update(cartInfo)
+    await dispatch('setCartList')
+  },
+  async deleteCart ({ state, dispatch }, { cartInfo }) {
+    await cart.delete(cartInfo)
+    await dispatch('setCartList')
+  },
+  async checkAll ({ dispatch }, { checkAll }) {
+    await cart.checkAll({ checkAll })
+    await dispatch('setCartList')
   }
 }
 
 export const getters = {
   subtotalOnCart (state) {
-    const { localCartList } = state
-    const prices = localCartList.map(ele => ele.count * ele.price)
+    const cartList = state.cartList
+    const prices = cartList.map(ele => ele.count * ele.price)
     return (prices.length ? prices.reduce((c, n) => c + n) : 0).toFixed(2)
+  },
+  subtotalOnChecked (state) {
+    const cartList = state.cartList
+    const prices = cartList.filter(item => item.isChecked).map(ele => ele.count * ele.price)
+    return (prices.length ? prices.reduce((c, n) => c + n) : 0).toFixed(2)
+  },
+  checkAll (state) {
+    const checkAll = !state.cartList.find(item => !item.isChecked)
+    return checkAll
   }
 }

@@ -60,7 +60,6 @@
 						<el-input-number
 							size="small"
 							v-model="detailForm.count"
-							@change="changeQty"
 							:min="1" 
 							:max="product.quantity"
 							label="quantity">
@@ -68,9 +67,9 @@
 					</el-col>
 					<el-col :span="9">
 						<div
-							@click="addToFav(product._id)"
+							@click="addToFav(product)"
 							class="detail-fav-btn">
-							<img :src="favImg">
+							<img :src="favoriteImg(product._id)">
 							<span>Add to my wishlist</span>
 						</div>
 					</el-col>
@@ -79,7 +78,7 @@
 
 			<img
 				class="detail-tab-img"
-				v-for="(item, i) in productImgs.product"
+				v-for="(item, i) in productImgs"
 				:key="i"
 				:src="item">
 		</div>
@@ -92,25 +91,13 @@
 				<span>wholesale inquiry</span>
 			</div>
 			<div class="detail-bottom-right">
-				<el-tooltip
-					v-if="isExistCart"
-					effect="dark"
-					:content="addToCartTip"
-					placement="top">
-					<div
-						@click="addToCart(product._id)"
-						class="detail-bottom-cart">
-						Add to Cart
-					</div>
-				</el-tooltip>
 				<div
-				  v-else
-					@click="addToCart(product._id)"
+					@click="addToCart(product)"
 					class="detail-bottom-cart">
 					Add to Cart
 				</div>
 				<div
-					@click="buyNow(product._id)"
+					@click="buyNow(product)"
 					class="detail-bottom-buy">
 					&nbsp; Buy Now &nbsp;
 				</div>
@@ -140,36 +127,27 @@
 			recommend
 		},
 		computed: {
-			...mapGetters(['isAuthenticated']),
+			...mapGetters({
+				favoriteImg: 'details/favoriteImg'
+			}),
 			...mapState({
 				product: state => state.details.product,
-				carts: state => state.cart.carts,
-				favList: state => {
-					if (state.isAuthenticated) return state.cart.favList
-					return state.cart.localFavList
-				},
-				priceList: state => state.details.priceList
+				priceList: state => state.details.priceList,
+				favoriteData: state => state.details.favoriteData,
+				favoriteList: state => state.details.favoriteList
 			})
 		},
 		data () {
 			return {
 				dialogVisible: false,
-				addToCartTip: 'It`s in cart',
 				price: '',
 				cartImg: '',
-				favImg: this.$store.state.imgBaseUrl + 'unfavorite.png',
-				productImgs: {
-					product: [],
-					wholesale: [],
-					shipping: [],
-					faq: []
-				},
+				productImgs: [],
 				detailForm: {
 					key: '',
 					price: '',
 					count: 1
 				},
-				isExistCart: false,
 				carouselHeigth: ''
 			}
 		},
@@ -178,16 +156,12 @@
 			window.addEventListener('resize', this.handleResize)
 			this.handleResize()
 
-			this.$store.dispatch('cart/setCarts')
 			const { productId } = this.$nuxt.$route.query
 			await this.$store.dispatch('details/setProduct', productId)
-			this.getCartFavImg()
-			this.price = `${this.product.minPrice.toFixed(2)} - ${this.product.maxPrice.toFixed(2)}`
-			if (this.product.minPrice === this.product.maxPrice) {
-				this.price = this.product.minPrice.toFixed(2)
-			}
-			this.isExistCart = !!this.carts.find(cart => cart.productId === productId)
-			this.productImgs.product = this.product.detailImgs.product.map(ele => ele.url)
+			await this.$store.dispatch('details/listFavorite')
+			const { minPrice, maxPrice } = this.product
+			this.price = minPrice === maxPrice ? this.price = minPrice.toFixed(2) : `${minPrice.toFixed(2)} - ${maxPrice.toFixed(2)}`
+			this.productImgs = this.product.detailImgs.product.map(ele => ele.url)
 		},
 		destroyed () {
 			window.removeEventListener('resize', this.handleResize)
@@ -207,56 +181,35 @@
 					this.price = ''
 				}
 			},
-			changeQty () {
-				console.log('change qty...')
-			},
-			clickTab (tab, event) {
-				console.log(tab, event)
-			},
-			getCartFavImg () {
-				const cartIdList = this.carts.map(ele => ele.productId)
-				const favList = this.favList
-				const cartImgName = _.find(cartIdList, ele => ele === this.product._id) ? 'cart.png' : 'uncart.png'
-				const favImgName = _.find(favList, ele => ele === this.product._id) ? 'favorite.png' : 'unfavorite.png'
-				this.cartImg = this.$store.state.imgBaseUrl + cartImgName
-				this.favImg = this.$store.state.imgBaseUrl + favImgName
-			},
-			addToFav (productId) {
-				if (this.isAuthenticated) {
-					this.$store.dispatch('list/createFav', productId)
-				} else {
-					LS.createFavorite(productId)
-					this.$store.dispatch('cart/setLocalFavList')
+			addToFav ({ _id }) {
+				const payload = {
+					productId: _id
 				}
-				this.getCartFavImg()
+				const favoriteProduct = this.favoriteList.find(item => String(item.productId) === String(_id))
+				if (favoriteProduct) {
+					// delete facorite
+					this.$store.dispatch('details/deleteFavorite', { payload: favoriteProduct })
+				} else {
+					this.$store.dispatch('details/createFavorite', { payload })
+				}
 			},
-			addToCart (productId) {
-				// check length
-				if (!this.isExistCart) {
-					if (!this.detailForm.key) {
-						this.$message(`Please Select ${this.product.priceType}.`)
-					} else {
-						const cusPrice = this.product.customizePrice.find(ele => ele.key === this.detailForm.key)
-						const { priceId, maxWeight } = this.product
-						const cartInfo = {
-							productId,
-							priceId,
-							maxWeight,
-							count: this.detailForm.count,
-							key: cusPrice.key,
-							price: cusPrice.price
-						}
-						if (this.isAuthenticated) {
-							this.$store.dispatch('list/createCart', cartInfo)
-						} else {
-							LS.createCart(cartInfo)
-							this.$store.dispatch('cart/setLocalCartList')
-						}
-						this.getCartFavImg()
-						this.$store.dispatch('cart/setCarts')
-						this.isExistCart = true
-						this.dialogVisible = !this.dialogVisible
+			addToCart ({ _id, priceType, priceId, maxWeight, customizePrice }) {
+				const productId = String(_id)
+				if (!this.detailForm.key) {
+					this.$message(`Please Select ${priceType}.`)
+				} else {
+					const cusPrice = customizePrice.find(ele => ele.key === this.detailForm.key)
+					const cartInfo = {
+						uniqueId: productId+cusPrice._id,
+						productId,
+						priceId,
+						maxWeight,
+						count: this.detailForm.count,
+						key: cusPrice.key,
+						price: cusPrice.price
 					}
+					this.$store.dispatch('cart/addToCart', { cartInfo })
+					this.dialogVisible = !this.dialogVisible
 				}
 			},
 			getInquiry () {
@@ -268,11 +221,21 @@
 				this.$store.commit('inquiry/SET_SEND_PAGE', sendPage)
 				this.$router.push({ path: '/inquiry' })
 			},
-			async buyNow (productId) {
+			async buyNow ({ _id, priceType, priceId, maxWeight, customizePrice }) {
+				const productId = String(_id)
 				if (!this.detailForm.key) {
-					this.$message(`Please Select ${this.product.priceType}.`)
+					this.$message(`Please Select ${priceType}.`)
 				} else {
-					const productInfo = {...this.detailForm, ...{ productId }}
+					const cusPrice = customizePrice.find(ele => ele.key === this.detailForm.key)
+					const productInfo = {
+						uniqueId: productId+cusPrice._id,
+						productId,
+						priceId,
+						maxWeight,
+						count: this.detailForm.count,
+						key: cusPrice.key,
+						price: cusPrice.price
+					}
 					this.$store.commit('details/SET_BUY_NOW', productInfo)
 					this.$router.push({ path: '/purchase?isBuyNow=true' })
 				}
@@ -283,7 +246,7 @@
 
 <style>
 	.detail-container {
-		padding-top: 48px;
+		padding-top: 44px;
 		background-color: #efefef;
 		padding-bottom: 50px;
 	}

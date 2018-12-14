@@ -204,7 +204,7 @@
 
 <style>
 	.user-container {
-		padding-top: 48px;
+		padding-top: 44px;
 		width: 100%;
 	}
 

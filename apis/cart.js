@@ -9,19 +9,18 @@ export default class cart {
   static async list ({ limit, skip, sort }) {
     const queryStr = `?limit=${limit || 20}&skip=${skip || 0}&sort=${sort || '-createdAt'}`
     const resp = (await request.get(`/api/carts${queryStr}`)).data
-    let results = []
-    if (!resp.error_code) results = resp.data
-    return results
+    let result = {}
+    if (!resp.error_code) result = resp.data
+    return result
   }
 
-  static async update ({ cart }) {
-    const id = cart._id
-    delete cart._id
-    delete cart.createdAt
-    delete cart.updatedAt
-    delete cart.isDeleted
-    delete cart.__v
-    const resp = await request.put(`/api/carts/${id}`, cart)
+  static async update ({ _id, count, isChecked }) {
+    const resp = await request.put(`/api/carts/${_id}`, { count, isChecked })
+    return resp.data
+  }
+
+  static async delete ({ _id }) {
+    const resp = await request.delete(`/api/carts/${_id}`)
     return resp.data
   }
 
@@ -34,6 +33,11 @@ export default class cart {
 
   static async deleteByProdId ({ productId }) {
     const resp = await request.delete(`/api/carts/productId/${productId}`)
+    return resp.data
+  }
+
+  static async checkAll ({ checkAll }) {
+    const resp = await request.post('/api/carts/checkAll', { checkAll })
     return resp.data
   }
 }

@@ -20,7 +20,6 @@ export default {
 			auth0User: JSON.stringify(userInfo)
 		}
 		const auth0UserInfo = await user.auth0Create({ auth0User })
-		console.log(auth0UserInfo)
 		setToken({ token: auth0UserInfo.authToken })
 		this.$store.commit('SET_USER', auth0UserInfo)
 		this.$router.replace('/user')

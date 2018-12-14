@@ -36,7 +36,7 @@
 </template>
 
 <script>
-	import { mapState, mapGetters } from 'vuex'
+	import { mapState } from 'vuex'
 
 	import product from '@/apis/product'
 	import cart from '@/apis/cart'
@@ -47,7 +47,6 @@
 			'cartProd'
 		],
 		computed: {
-			...mapGetters(['isAuthenticated']),
 			...mapState({
 				priceList: state => state.cart.priceList
 			})
@@ -57,7 +56,6 @@
 				isChecked: false,
 				price: 0,
 				count: 1,
-				length: 0,
 				product: {
 					mainImg: ''
 				},
@@ -65,7 +63,7 @@
 			}
 		},
 		async created () {
-			const productId = this.cartProd.productId
+			const { productId } = this.cartProd
 			await this.getProduct(productId)
 			await this.$store.dispatch('cart/setPriceList')
 		},
@@ -74,19 +72,12 @@
 				this.product = await product.getById(productId)
 				this.price = Number(this.cartProd.price).toFixed(2)
 				this.count = this.cartProd.count
-				this.length = this.cartProd.len
 
 				const { priceId } = this.product
 				const price = this.priceList.find(ele => String(ele._id) === priceId)
 				const key = price ? price.key : ''
 				const val = this.cartProd.key
 				this.size = `${key}: ${val} ${key.toLowerCase() === 'length' ? 'inches' : ''}`
-			},
-      async updateCount (productId) {
-				if (this.isAuthenticated) {
-					const cartInfo = { productId }
-					await cart.updateByProdId({ cart: cartInfo })
-				}
 			}
     }
 	}	

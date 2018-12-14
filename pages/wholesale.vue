@@ -90,7 +90,7 @@
 
 <style>
 	.wholesale-container {
-		padding-top: 48px;
+		padding-top: 44px;
 	}
 
 	.wholesale-head {

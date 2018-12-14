@@ -94,7 +94,7 @@
 
 <style>
 	.search-container {
-		padding-top: 48px;
+		padding-top: 44px;
 	}
 
 	.search-head {

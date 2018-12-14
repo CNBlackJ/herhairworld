@@ -3,13 +3,21 @@
 		<div class="cart-container">
 			<div
 				class="cart-empty"
-				v-if="carts.length <= 0">
-				It`s empty on your cart~
+				v-if="cartList.length <= 0">
+				<div class="cart-empty-img">
+					<img src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/empty_cart.jpg" alt="">
+				</div>
+				<div>It`s empty on your cart.</div>
+				<div
+					@click="$router.push({ path: '/list?categoryId=5ba20ed028b4e92568a9c4e9&category=all' })"
+					class="cart-empty-btn">
+					Continue Shopping
+				</div>
 			</div>
 			<div
 				v-else
-				v-for="cart in carts"
-				:key="cart.productId"
+				v-for="(cart, index) in cartList"
+				:key="index"
 				class="cart-card-con">
 				<cartCard
 					:cartProd="cart">
@@ -19,17 +27,17 @@
 				<div class="cart-counter">
 					<div class="cart-checkall">
 						<!-- <el-checkbox
-							@change="checkAll"
-							:checked="checkedAll">
+							@change="onCheckAll"
+							v-model="checkedAll">
 						</el-checkbox>
 						<div class="select-all-text">all</div> -->
 					</div>
 	
 					<div class="price-counter">
 						<div class="cart-subtotal">Subtotal:</div>
-						<div class="cart-price-counter">$ {{subtotal}}</div>
+						<div class="cart-price-counter">$ {{subtotalOnChecked}}</div>
 						<div @click="goToPurchase" class="cart-checkout-btn">
-							CHECKOUT ( {{checkedProducts.length}} )
+							CHECKOUT ( {{(cartList.filter(item => item.isChecked)).length}} )
 						</div>
 					</div>
 				</div>
@@ -51,13 +59,13 @@
 			cartCard
 		},
 		computed: {
-			...mapGetters(['isAuthenticated']),
+			...mapGetters({
+				subtotalOnChecked: 'cart/subtotalOnChecked',
+				checkAll: 'cart/checkAll'
+			}),
 			...mapState({
 				isCheckedAll: state => state.cart.isCheckedAll,
-				carts: state => state.cart.carts,
-				localCartList: state => state.cart.localCartList,
-				subtotal: state => state.cart.subtotal,
-				checkedProducts: state => state.cart.checkedProducts
+				cartList: state => state.cart.cartList
 			})
 		},
 		data () {
@@ -66,14 +74,19 @@
 			}
 		},
 		async created () {
-			await this.$store.dispatch('cart/setCarts')
+			await this.$store.dispatch('cart/setCartList')
+			this.checkedAll = this.checkAll
 		},
 		methods: {
-			checkAll () {
-				this.checkedAll = !this.checkedAll
+			async onCheckAll () {
+				await this.$store.dispatch('cart/checkAll', { checkAll: this.checkedAll })
 			},
 			goToPurchase () {
-				if (this.checkedProducts.length) this.$router.push({ path: '/purchase' })
+				if ((this.cartList.filter(item => item.isChecked)).length) {
+					this.$router.push({ path: '/purchase' })
+				} else {
+					this.$message('Please selected to purchase.')
+				}
 			}
 		}
 	}
@@ -81,7 +94,7 @@
 
 <style>
 	.cart-container {
-		padding-top: 48px;
+		padding-top: 44px;
 		background-color: #efefef;
     height: 667px;
 	}
@@ -91,6 +104,21 @@
 		text-align: center;
 		padding-top: 20%;
 		color: #808080;
+	}
+
+	.cart-empty-img {
+		padding: 50px 140px 0 140px
+	}
+
+	.cart-empty-img img {
+		width: auto;
+		max-width: 100%
+	}
+
+	.cart-empty-btn {
+		color: #dd127b;
+		padding: 10px;
+		text-decoration: underline;
 	}
 
 	.cart-card-con {
