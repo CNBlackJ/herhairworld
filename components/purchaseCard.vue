@@ -26,7 +26,7 @@
 					</div>
 					<div class="cc-counter">
 						<div class="cc-count">
-							count: {{count}}
+							Quantity: {{count}}
 						</div>
 					</div>
 				</div>

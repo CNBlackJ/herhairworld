@@ -52,23 +52,23 @@
 
 		<div class="purchase-summary">
 			<el-row>
-				<el-col :span="5" :offset="13">
-					total:
-				</el-col>
-				<el-col :span="5">
-					{{summary.total}}
-				</el-col>
-				<el-col :span="5" :offset="13">
-					price:
+				<el-col :span="12" :offset="6">
+					Subtotal({{summary.total}} item{{summary.total > 1 ? 's' : ''}}):
 				</el-col>
 				<el-col :span="5" style="color: #dd127b">
 					$ {{summary.price}}
 				</el-col>
-				<el-col :span="5" :offset="13">
-					shipping:
+				<el-col :span="12" :offset="6">
+					(+)Shipping Charges:
 				</el-col>
 				<el-col :span="5" style="color: #dd127b">
 					$ {{summary.shipping}}
+				</el-col>
+				<el-col :span="12" :offset="6">
+					Grand Total:
+				</el-col>
+				<el-col :span="5" style="color: #dd127b">
+					$ {{summary.amount}}
 				</el-col>
 			</el-row>
 		</div>
@@ -227,7 +227,7 @@
 							summary.shipping = 19.99
 						}
 					}
-					summary.amount = Number(summary.price) + Number(summary.shipping)
+					summary.amount = Number(summary.price) + Number(summary.shipping) 
 				}
 				this.summary = summary
 			},
