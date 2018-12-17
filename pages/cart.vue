@@ -7,7 +7,7 @@
 				<div class="cart-empty-img">
 					<img src="https://herhairword-1255936829.cos.ap-guangzhou.myqcloud.com/empty_cart.jpg" alt="">
 				</div>
-				<div>It`s empty on your cart.</div>
+				<div>It's empty on your cart.</div>
 				<div
 					@click="$router.push({ path: '/list?categoryId=5ba20ed028b4e92568a9c4e9&category=all' })"
 					class="cart-empty-btn">
