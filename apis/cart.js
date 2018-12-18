@@ -2,8 +2,17 @@ import request from './request'
 
 export default class cart {
   static async create ({ cart }) {
-    const resp = await request.post('/api/carts', cart)
-    return resp.data
+    const resp = (await request.post('/api/carts', cart)).data
+    let result = {}
+    if (!resp.error_code) result = resp.data
+    return result
+  }
+
+  static async get (_id) {
+    const resp = (await request.get(`/api/carts/${_id}`)).data
+    let result = {}
+    if (!resp.error_code) result = resp.data
+    return result
   }
 
   static async list ({ limit, skip, sort }) {

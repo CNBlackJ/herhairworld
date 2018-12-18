@@ -1,4 +1,5 @@
 import payment from '@/apis/payment'
+import cart from '@/apis/cart'
 
 export const state = () => ({
   paypalConfig: {
@@ -19,10 +20,10 @@ export const mutations = {
 }
 
 export const actions = {
-  getPurchaseProducts ({ state, commit, rootState }, { isBuyNow }) {
+  async getPurchaseProducts ({ state, commit, rootState }, { isBuyNow }) {
     if (isBuyNow) {
-      const purchaseProducts = rootState.details.buyNowProduct ? [rootState.details.buyNowProduct] : []
-      commit('SET_PRODUCTS', purchaseProducts)
+      const purchaseProducts = await cart.get(isBuyNow) // rootState.details.buyNowProduct ? [rootState.details.buyNowProduct] : []
+      commit('SET_PRODUCTS', purchaseProducts ? [purchaseProducts] : [])
     } else {
       const purchaseProducts = rootState.cart.cartList.filter(item => item.isChecked)
       commit('SET_PRODUCTS', purchaseProducts)

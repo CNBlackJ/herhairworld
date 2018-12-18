@@ -206,7 +206,8 @@
 						maxWeight,
 						count: this.detailForm.count,
 						key: cusPrice.key,
-						price: cusPrice.price
+						price: cusPrice.price,
+						type: 'cart'
 					}
 					this.$store.dispatch('cart/addToCart', { cartInfo })
 					this.dialogVisible = !this.dialogVisible
@@ -234,10 +235,11 @@
 						maxWeight,
 						count: this.detailForm.count,
 						key: cusPrice.key,
-						price: cusPrice.price
+						price: cusPrice.price,
+						type: 'buyNow'
 					}
-					this.$store.dispatch('details/createBuyNow', cartInfo)
-					this.$router.push({ path: '/purchase?isBuyNow=true' })
+					const resp = await this.$store.dispatch('details/createBuyNow', cartInfo)
+					this.$router.push({ path: `/purchase?isBuyNow=${resp._id}` })
 				}
 			}
 		}

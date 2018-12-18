@@ -79,7 +79,7 @@
 			<no-ssr>
 				<paypal-checkout
 					env="sandbox"
-					:amount="summary.amount.toFixed(2)"
+					:amount="summary.amount"
 					currency="USD"
 					locale="en_US"
 					v-on:payment-authorized="payAuth"
@@ -140,7 +140,6 @@
 		},
 		computed: {
 			...mapState({
-				buyNowProduct: state => state.details.buyNowProduct,
 				paypalConfig: state => state.purchase.paypalConfig,
 				products: state => state.purchase.products
 			})
@@ -148,13 +147,9 @@
 		async created () {
 			const isBuyNow = this.$route.query.isBuyNow
 			await this.$store.dispatch('purchase/setPaypalConfig')
-			this.$store.dispatch('purchase/getPurchaseProducts', { isBuyNow })
+			await this.$store.dispatch('purchase/getPurchaseProducts', { isBuyNow })
 			this.getSummary()
 			this.getPayItems()
-		},
-		destroyed () {
-			this.$store.commit('details/SET_BUY_NOW_PRODUCT', null)
-			this.$store.commit('purchase/SET_PRODUCTS', [])
 		},
 		methods: {
 			async paySuccess (payResp) {
@@ -231,7 +226,7 @@
 							summary.shipping = 19.99
 						}
 					}
-					summary.amount = Number(summary.price) + Number(summary.shipping) 
+					summary.amount = (Number(summary.price) + Number(summary.shipping)).toFixed(2)
 				}
 				this.summary = summary
 			},
