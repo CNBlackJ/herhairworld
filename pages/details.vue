@@ -236,7 +236,7 @@
 						key: cusPrice.key,
 						price: cusPrice.price
 					}
-					this.$store.commit('cart/addToCart', { cartInfo })
+					this.$store.dispatch('details/createBuyNow', cartInfo)
 					this.$router.push({ path: '/purchase?isBuyNow=true' })
 				}
 			}

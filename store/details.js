@@ -10,7 +10,8 @@ export const state = () => ({
     maxPrice: 0
   },
   favoriteList: [],
-  favoriteData: {}
+  favoriteData: {},
+  buyNowProduct: null
 })
 
 export const mutations = {
@@ -22,6 +23,9 @@ export const mutations = {
   },
   SET_FAVOROTE_DATA (state, favoriteData) {
     state.favoriteData = favoriteData
+  },
+  SET_BUY_NOW_PRODUCT (state, buyNowProduct) {
+    state.buyNowProduct = buyNowProduct
   }
 }
 
@@ -53,6 +57,9 @@ export const actions = {
     }), {}) : {}
     commit('SET_FAVOROTE_LIST', rows)
     commit('SET_FAVOROTE_DATA', favoriteData)
+  },
+  async createBuyNow ({ state, commit }, payload = {}) {
+    commit('SET_BUY_NOW_PRODUCT', payload)
   }
 }
 

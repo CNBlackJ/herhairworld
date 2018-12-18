@@ -152,6 +152,10 @@
 			this.getSummary()
 			this.getPayItems()
 		},
+		destroyed () {
+			this.$store.commit('details/SET_BUY_NOW_PRODUCT', null)
+			this.$store.commit('purchase/SET_PRODUCTS', [])
+		},
 		methods: {
 			async paySuccess (payResp) {
 				if (payResp.state === 'approved') {
