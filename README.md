@@ -6,6 +6,23 @@ An e-commerce web app for mobile.
 
 Using [Nuxt.js](https://nuxtjs.org/) and [ElementUI](https://github.com/ElemeFE/element) to build this web app.
 
+## Screenshot
+
+### mobile
+![homepage](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/homepage.jpg)
+![list](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/list.jpg)
+![details](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/details.jpg)
+![cart](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/cart.jpg)
+![search](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/search.jpg)
+![search_result](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/search_result.jpg)
+![wholesale](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/wholesale.jpg)
+![sidebar](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/sidebar.jpg)
+
+### admin
+![admin_dashboard](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/admin_dashboard.jpg)
+![admin_pageconfig](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/admin_pageconfig.jpg)
+![admin_product](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/admin_product.jpg)
+
 ## REF
 
 - Mobile web app: [herhairworld](https://github.com/CNBlackJ/herhairworld) 
