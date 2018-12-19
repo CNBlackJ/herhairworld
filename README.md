@@ -9,19 +9,19 @@ Using [Nuxt.js](https://nuxtjs.org/) and [ElementUI](https://github.com/ElemeFE/
 ## Screenshot
 
 ### mobile
-![homepage](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/homepage.jpg)
-![list](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/list.jpg)
-![details](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/details.jpg)
-![cart](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/cart.jpg)
-![search](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/search.jpg)
-![search_result](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/search_result.jpg)
-![wholesale](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/wholesale.jpg)
-![sidebar](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/sidebar.jpg)
+![homepage](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/homepage.jpg =200x)
+![list](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/list.jpg =200x)
+![details](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/details.jpg =200x)
+![cart](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/cart.jpg =200x)
+![search](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/search.jpg =200x)
+![search_result](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/search_result.jpg =200x)
+![wholesale](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/wholesale.jpg =200x)
+![sidebar](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/sidebar.jpg =200x)
 
 ### admin
-![admin_dashboard](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/admin_dashboard.jpg)
-![admin_pageconfig](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/admin_pageconfig.jpg)
-![admin_product](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/admin_product.jpg)
+![admin_dashboard](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/admin_dashboard.jpg =200x)
+![admin_pageconfig](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/admin_pageconfig.jpg =200x)
+![admin_product](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/admin_product.jpg =200x)
 
 ## REF
 
