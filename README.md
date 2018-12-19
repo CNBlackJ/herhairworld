@@ -9,20 +9,14 @@ Using [Nuxt.js](https://nuxtjs.org/) and [ElementUI](https://github.com/ElemeFE/
 ## Screenshot
 
 ### mobile
-<img src="https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/home.jpg" width="100">
-<img src="https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/list.jpg" width="100">
-<img src="https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/details.jpg" width="100">
-<img src="https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/cart.jpg" width="100">
-<img src="https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/search.jpg" width="100">
-<img src="https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/search_result.jpg" width="100">
-<img src="https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/wholesale.jpg" width="100">
-<img src="https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/sidebar.jpg" width="100">
+
+![herhairworld](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/herhairworld.png)
 
 ### admin
 
-<img src="https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/admin_pageconfig.png" width="100">
-<img src="https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/admin_dashboard.png" width="100">
-<img src="https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/admin_product.png" width="100">
+![admin_pageconfig](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/admin_pageconfig.png)
+![admin_dashboard](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/admin_dashboard.png)
+![admin_product](https://article-imgs-1255936829.cos.ap-guangzhou.myqcloud.com/herhairworld_demo/admin_product.png)
 
 ## REF
 
