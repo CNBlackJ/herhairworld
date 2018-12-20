@@ -6,7 +6,13 @@ export const state = () => ({
   activateCat: null,
   pageConfig: {
     index: {
-      banner: [],
+      banner: [
+        {
+          img: "https://herhairworld.wifihi.cn/e108c5b0d4c04143938bc035d4d713bd.jpg",
+          path: "list?categoryId=5bd5ad1e6904fd11b38581fb&category=bundles",
+          _id: "5ba5a90b3950363ce9e3404d"
+        }
+      ],
       services: [],
       categories: []
     }

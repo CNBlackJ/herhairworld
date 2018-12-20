@@ -7,7 +7,7 @@ const baseURL = {
 }
 
 export default ({ app, store, redirect }) => {
-  const BASE_URL = require('~/config.json').BASE_URL
+  const BASE_URL = require('~/config.json').BASE_URL || 'http://192.168.0.102:3010'
   axios.defaults.baseURL = BASE_URL || baseURL[process.env.NODE_ENV] || baseURL['staging']
   let authToken = ''
   if (process.client) {

@@ -1,6 +1,7 @@
 <template>
   <div class="index-container">
     <indexCarousel></indexCarousel>
+    {{$store.state.home.pageConfig}}
     <indexContent title="featured categories"></indexContent>
     <category></category>
 

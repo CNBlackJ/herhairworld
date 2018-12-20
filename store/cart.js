@@ -41,6 +41,7 @@ export const mutations = {
 export const actions = {
   async setCartList ({ commit }) {
     const { rows } = await cart.list({})
+    console.log('===+', rows)
     const cartData = Object.keys(rows).length ? rows.reduce(
       (total, item) => ({
       ...total,
