@@ -12,12 +12,7 @@
 	export default {
 		props: [
 			'title'
-		],
-		data () {
-			return {
-				name: 'inde Btn'
-			}
-		}
+		]
 	}
 </script>
 
