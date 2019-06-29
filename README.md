@@ -1,6 +1,6 @@
 # herhairworld web app
 
-An e-commerce web app for mobile.
+基于nuxt.js和element ui构建的在线电子商务(e-commerce)商城手机端。
 
 ## Description
 
