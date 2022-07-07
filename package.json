@@ -28,7 +28,7 @@
     "jwt-decode": "^2.2.0",
     "ly-tab": "^2.1.1",
     "md5": "^2.2.1",
-    "moment": "^2.22.2",
+    "moment": "^2.29.4",
     "nuxt": "^1.4.2",
     "uuid": "^3.3.2",
     "vue-infinite-scroll": "^2.0.2",
